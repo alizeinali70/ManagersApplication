@@ -60,16 +60,7 @@
                   </a>
                 </li>
               </ul>
-            </li>
-            @*<li class="nav-item">
-              <a href="pages/widgets.html" class="nav-link">
-                <i class="nav-icon fa fa-th"></i>
-                <p>
-                  ویجت‌ها
-                  <span class="right badge badge-danger">جدید</span>
-                </p>
-              </a>
-            </li>*@
+            </li>            
           </ul>
         </nav>
         <!-- /.sidebar-menu -->
@@ -79,12 +70,5 @@
   </aside>
 
 @code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
+   
 }

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagersApplication.Server", "ManagersApplication\Server\ManagersApplication.Server.csproj", "{5057AE67-EBEA-443A-9122-4827B67FEFA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManagersApplication.Server", "ManagersApplication\Server\ManagersApplication.Server.csproj", "{5057AE67-EBEA-443A-9122-4827B67FEFA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagersApplication.Client", "ManagersApplication\Client\ManagersApplication.Client.csproj", "{B12C2E11-BF76-4679-9A9B-A1A78C3418AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManagersApplication.Client", "ManagersApplication\Client\ManagersApplication.Client.csproj", "{B12C2E11-BF76-4679-9A9B-A1A78C3418AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagersApplication.Shared", "ManagersApplication\Shared\ManagersApplication.Shared.csproj", "{2CD40BAA-82A1-4677-89D3-9B3A765D8673}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManagersApplication.Shared", "ManagersApplication\Shared\ManagersApplication.Shared.csproj", "{2CD40BAA-82A1-4677-89D3-9B3A765D8673}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

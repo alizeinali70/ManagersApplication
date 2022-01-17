@@ -1,7 +1,5 @@
 ﻿@inherits LayoutComponentBase
-
-
-
+@inject NavigationManager NavigationManager
 
 <div>
     <div class="">
@@ -14,7 +12,7 @@
             <div class="container-fluid">
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
-                    <div class="col-lg-3 col-6" style="cursor:pointer">
+                    <div class="col-lg-3 col-6" @onclick="Go_To_Branching" style="cursor:pointer">
                         <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner">
@@ -29,7 +27,7 @@
                         </div>
                     </div>
                     <!-- ./col -->
-                    <div class="col-lg-3 col-6" style="cursor:pointer">
+                    <div class="col-lg-3 col-6" @onclick="Go_To_Energy" style="cursor:pointer">
                         <!-- small box -->
                         <div class="small-box bg-success">
                             <div class="inner">
@@ -44,7 +42,7 @@
                         </div>
                     </div>
                     <!-- ./col -->
-                    <div class="col-lg-3 col-6" style="cursor:pointer">
+                    <div class="col-lg-3 col-6" @onclick="Go_To_Inspector" style="cursor:pointer">
                         <!-- small box -->
                         <div class="small-box bg-warning">
                             <div class="inner">
@@ -98,3 +96,30 @@
 
 
 </div>
+
+@code{
+   private void Go_To_Branching()
+    {
+        NavigationManager.NavigateTo("Branching");
+        //current = true;
+        //today = false;
+        //all=false;
+        
+    }private void Go_To_Energy()
+    {
+        NavigationManager.NavigateTo("Energy");
+        //current = true;
+        //today = false;
+        //all=false;
+        
+    }
+    private void Go_To_Inspector()
+    {
+        NavigationManager.NavigateTo("Inspector");
+        //current = true;
+        //today = false;
+        //all=false;
+        
+    }
+
+}

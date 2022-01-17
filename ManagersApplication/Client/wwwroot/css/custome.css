@@ -4,3 +4,6 @@
         margin-right: 250px;
     }
 }
+.scroll {
+    overflow-x: auto;
+}

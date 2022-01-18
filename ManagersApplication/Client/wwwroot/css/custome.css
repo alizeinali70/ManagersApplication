@@ -1,9 +1,29 @@
-﻿
+﻿@font-face {
+    font-family: 'IranSans';
+    src: url('fonts/IranSans.ttf') format('truetype');
+}
+div{
+    font-family:IranSans;
+}
 @media (min-width:992px) {
     .margin-right {
         margin-right: 250px;
     }
+
+    table {
+        font-size: 16px!important;
+    }
 }
-.scroll {
-    overflow-x: auto;
+@media (max-width:992px) {
+    table, .card-header, .card-title {
+        font-size: 12px !important;
+    }
 }
+
+    .scroll {
+        overflow-x: auto;
+        overflow-y: auto;
+    }
+    .td-width{
+        width:100px;
+    }

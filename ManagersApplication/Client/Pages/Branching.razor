@@ -1,8 +1,9 @@
 ﻿@page "/Branching"
+@inject NavigationManager NavigationManager
 
 
 <div class="card">
-   <div class="card-header bg-primary">
+   <div class="card-header bg-info">
         <h3 class="card-title">نمایش کلیه درخواست ها</h3>
     </div>
      <!-- /.card-header -->
@@ -27,14 +28,18 @@
                 </td>*@
                 <td>1398/05/26</td>
                 <td>قرارداد</td>
-                <td> <button class="btn btn-block btn-primary">نمایش درخواست</button> </td>
+                <td> <button class="btn btn-block btn-primary bg-primary-gradient" @onclick="Click" style="width:65px">نمایش</button> </td>
             </tr>
             
         </table>
     </div>
-    <!-- /.card-body -->
+    <!-- /.card-body -->    
 </div>
 
 @code {
-
+    private void Click()
+    {
+        NavigationManager.NavigateTo("Branching_Item");
+        
+    }
 }

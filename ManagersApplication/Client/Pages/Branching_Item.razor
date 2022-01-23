@@ -1,5 +1,6 @@
 ﻿@page "/Branching_Item"
 @inject IJSRuntime JsRuntime
+@inject NavigationManager NavigationManager
 
 <div class="container-fluid bg-light">
     <!-- COLOR PALETTE -->
@@ -66,24 +67,30 @@
     <!-- /.card -->
     <div class="row col-lg-12 ">
         <div class="col-lg-2 col-3">
-            <button class="btn btn-block btn-primary bg-success-gradient text-center" @onclick="DeleteSymbol" style="width:65px">تایید</button>
+            <button class="btn btn-block btn-primary bg-success-gradient text-center"  style="width:65px">تایید</button>
         </div>
         <div class="col-lg-2 col-3">
 
-            <button class="btn btn-block btn-primary bg-warning-gradient text-center" style="width:65px">بازگشت</button>
+            <button class="btn btn-block btn-primary bg-warning-gradient text-center" @onclick="Back" style="width:65px">بازگشت</button>
         </div>
     </div>
 </div>
 
 @code {
 
-    async Task DeleteSymbol()
+    //async Task DeleteSymbol()
+    //{
+    //    bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "آیا از تایید این درخواست مطمئن هستید؟");
+    //    if (confirmed)
+    //    {
+    //        // Delete!
+    //    }
+    //}
+
+    private void Back()
     {
-        bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure?");
-        if (confirmed)
-        {
-            // Delete!
-        }
+        NavigationManager.NavigateTo("Branching");
+
     }
 
 }

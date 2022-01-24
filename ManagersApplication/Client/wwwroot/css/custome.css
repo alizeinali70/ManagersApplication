@@ -15,15 +15,37 @@ div{
     }
 }
 @media (max-width:992px) {
-    table, .card-header, .card-title {
+    table {
+        font-size: 10px !important;        
+    }
+
+    .card-header, .card-title {
         font-size: 12px !important;
+    }
+    .td-width {
+        width: 100px!important;
     }
 }
 
     .scroll {
-        overflow-x: auto;
+        overflow-x: auto;h
         overflow-y: auto;
     }
-    .td-width{
-        width:100px;
-    }
+    
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    right:0;
+    width: 100%;
+    padding:0!important;
+    margin-top:2px;
+}
+
+textarea {
+    overflow-y: scroll !important;
+    height: 100px !important;
+    resize: none !important; /* Remove this if you want the user to resize the textarea */
+    font-size: 10px !important;
+}

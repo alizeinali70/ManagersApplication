@@ -1,5 +1,7 @@
 ﻿@page "/Branching"
 @inject NavigationManager NavigationManager
+@inject HttpClient Http
+
 
 
 <div class="card">
@@ -37,6 +39,15 @@
 </div>
 
 @code {
+
+    Branching[] BranchList;
+
+    protected override async Task OnInitializedAsync()
+    {
+      //  BranchList = await Http.GetJsonAsync<Branching[]>("/api/Branching/GetAsync");
+        BranchList = await Http.GetFromJsonAsync<Branching[]>("/api/Branching");
+    }
+
     private void Click()
     {
         NavigationManager.NavigateTo("Branching_Item");

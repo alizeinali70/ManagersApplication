@@ -44,8 +44,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-      //  BranchList = await Http.GetJsonAsync<Branching[]>("/api/Branching/GetAsync");
-        BranchList = await Http.GetFromJsonAsync<Branching[]>("/api/Branching");
+        //  BranchList = await Http.GetJsonAsync<Branching[]>("/api/Branching/GetAsync");
+       // BranchList = await Http.GetFromJsonAsync<Branching[]>("/api/Branching");
+       BranchList=await SelectDbContext
+       
     }
 
     private void Click()

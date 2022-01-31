@@ -11,14 +11,27 @@ namespace ManagersApplication.Server.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class BranchingController : ControllerBase
-    {       
+    {
+        public readonly IConfiguration _config;
+
+        public BranchingController(IConfiguration config)
+        {
+            _config = config;
+        }
 
         [HttpGet]
         public async Task<List<Branching>> GetAsync()
         {
-            BranchingDBContext? context = HttpContext.RequestServices.GetService(typeof(BranchingDBContext)) as BranchingDBContext;
-            return await context.GetAllAsync();
-
+            try
+            {
+                SelectDBContext context = new SelectDBContext(_config);
+                List<Branching> list = await context.GetAllAsync();
+                return list;
+            }
+            catch (Exception exp)
+            {
+                throw;
+            }
         }
     }
 }

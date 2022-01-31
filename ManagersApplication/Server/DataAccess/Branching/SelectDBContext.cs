@@ -1,25 +1,23 @@
 ﻿using ManagersApplication.Shared;
 using Oracle.ManagedDataAccess.Client;
-using System.Collections;
-using System.Collections.Generic;
+
 
 namespace ManagersApplication.Server.DataAccess
 {
-    public class BranchingDBContext
+    public class SelectDBContext
     {
-        public readonly IConfiguration _config;
-       
+       // public readonly IConfiguration _config;
+        string _conn;
 
-        public BranchingDBContext(IConfiguration configuration)
+        public SelectDBContext(IConfiguration configuration)
         {
-            _config = configuration;
-            _config.GetValue<string>("ConnectionStrings:OracleConnection");
-
+           _conn= configuration.GetValue<string>("ConnectionStrings:OracleConnection");
         }
 
         private OracleConnection GetOracleConnection()
         {
-            return new OracleConnection(_config.ToString());
+           return new OracleConnection(_conn);
+            
         }
 
         public async Task<List<Branching>> GetAllAsync()
@@ -29,16 +27,18 @@ namespace ManagersApplication.Server.DataAccess
             {
                 var cmdtext = "select RQID,RQST_DATE,ACTV_DESC from adf_task where rqtp_code=9 and sub_sys=1 and actv_name ='Cntd'";
                 OracleCommand cmd = new OracleCommand(cmdtext, conn);
+                conn.Open();
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (await reader.ReadAsync())
                     {
                         list.Add(new Branching()
                         {
-                            RQID = await reader.GetFieldValueAsync<string>(0)
+                            RQID = await reader.GetFieldValueAsync<Int64>(0)
                         });
                     }
                 }
+                conn.Close();
                 return list;
             }
             

@@ -1,4 +1,6 @@
 ﻿using ManagersApplication.Server.DataAccess;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.ResponseCompression;
 
 namespace ManagersApplication.Server
 {
@@ -16,11 +18,34 @@ namespace ManagersApplication.Server
         public void ConfigureServices(IServiceCollection services)
         {
 
+
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            var Connstr = "DATA SOURCE=192.168.1.75:1521/shirazback;PASSWORD=shiraz;PERSIST SECURITY INFO=True;USER ID=shiraz";
-            services.Add(new ServiceDescriptor(typeof(OracleDBContext), new OracleDBContext(Connstr)));
+            var connStr = "Data Source = (DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.168.21.116)(PORT = 1521)) (CONNECT_DATA=(SID=ORCL)));User Id=webusernew;Password=webusernew;";
+            services.Add(new ServiceDescriptor(typeof(OracleDBContext), new OracleDBContext(connStr)));
+
+
+
+            services.AddResponseCompression(opts =>
+            {
+                opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+                    new[] { "application/octet-stream" });
+            });
+            // Server Side Blazor doesn't register HttpClient by default
+            if (!services.Any(x => x.ServiceType == typeof(HttpClient)))
+            {
+                // Setup HttpClient for server side in a client side compatible fashion
+                services.AddScoped<HttpClient>(s =>
+                {
+                    // Creating the URI helper needs to wait until the JS Runtime is initialized, so defer it. 
+                    var uriHelper = s.GetRequiredService<NavigationManager>();
+                    return new HttpClient
+                    {
+                        BaseAddress = new Uri(uriHelper.BaseUri)
+                    };
+                });
+            }
 
         }
 
@@ -49,7 +74,8 @@ namespace ManagersApplication.Server
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
-                endpoints.MapFallbackToFile("index.html");
+                endpoints.MapFallbackToFile("/_Host");
+                //endpoints.MapFallbackToFile("index.html");
             });
         }
     }

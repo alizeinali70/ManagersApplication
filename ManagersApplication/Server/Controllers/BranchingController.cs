@@ -2,6 +2,8 @@
 using ManagersApplication.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ManagersApplication.Server.Controllers
 {
@@ -14,6 +16,7 @@ namespace ManagersApplication.Server.Controllers
         {
             OracleDBContext? context = HttpContext.RequestServices.GetService(typeof(OracleDBContext)) as OracleDBContext;
             return await context.GetAllAsync();
+
         }
     }
 }

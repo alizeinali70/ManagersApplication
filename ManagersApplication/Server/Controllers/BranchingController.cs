@@ -7,14 +7,16 @@ using System.Threading.Tasks;
 
 namespace ManagersApplication.Server.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class BranchingController : ControllerBase
-    {
+    {       
+
         [HttpGet]
         public async Task<List<Branching>> GetAsync()
         {
-            OracleDBContext? context = HttpContext.RequestServices.GetService(typeof(OracleDBContext)) as OracleDBContext;
+            BranchingDBContext? context = HttpContext.RequestServices.GetService(typeof(BranchingDBContext)) as BranchingDBContext;
             return await context.GetAllAsync();
 
         }

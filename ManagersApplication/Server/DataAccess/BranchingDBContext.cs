@@ -5,19 +5,21 @@ using System.Collections.Generic;
 
 namespace ManagersApplication.Server.DataAccess
 {
-    public class OracleDBContext 
+    public class BranchingDBContext
     {
-        public string _conn { get; set; }
+        public readonly IConfiguration _config;
+       
 
-        public OracleDBContext(string conn)
+        public BranchingDBContext(IConfiguration configuration)
         {
-            _conn = conn;
+            _config = configuration;
+            _config.GetValue<string>("ConnectionStrings:OracleConnection");
 
         }
 
         private OracleConnection GetOracleConnection()
         {
-            return new OracleConnection(_conn);
+            return new OracleConnection(_config.ToString());
         }
 
         public async Task<List<Branching>> GetAllAsync()

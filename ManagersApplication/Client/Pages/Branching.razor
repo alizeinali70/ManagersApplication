@@ -1,14 +1,13 @@
 ﻿@page "/Branching"
-@inject NavigationManager NavigationManager
-@inject HttpClient Http
+
 
 
 
 <div class="card">
-   <div class="card-header bg-info">
+    <div class="card-header bg-info">
         <h3 class="card-title">نمایش کلیه درخواست ها</h3>
     </div>
-     <!-- /.card-header -->
+    <!-- /.card-header -->
     <div class="card-body p-0 scroll">
         <table class="table table-striped">
             <tr>
@@ -22,37 +21,43 @@
             <tr>
                 <td>1.</td>
                 <td>7366718</td>
-              @*  <td>
+                @*  <td>
                     انشعاب
                     <div class="progress progress-xs">
-                        <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+                    <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
                     </div>
-                </td>*@
+                    </td>*@
                 <td>1400/1/03</td>
                 <td>تصویب قرارداد</td>
                 <td> <button class="btn btn-block btn-primary bg-primary-gradient" @onclick="Click" style="width:65px">نمایش</button> </td>
             </tr>
-            
+
         </table>
+        @* <ul>
+            @foreach(var item in BranchList)
+            {
+            <li>@item.</li>
+            }
+            </ul>*@
+
+
     </div>
-    <!-- /.card-body -->    
+    <!-- /.card-body -->
 </div>
 
-@functions  {
+@code {
 
-    Branching[] BranchList;
+    private Branching[] BranchList;
 
     protected override async Task OnInitializedAsync()
     {
-        //  BranchList = await Http.GetJsonAsync<Branching[]>("/api/Branching/GetAsync");
-       // BranchList = await Http.GetFromJsonAsync<Branching[]>("/api/Branching");
-       BranchList=await SelectDbContext
-       
+        BranchList = await Http.GetFromJsonAsync<Branching[]>("api/Branching");
+
     }
 
     private void Click()
     {
         NavigationManager.NavigateTo("Branching_Item");
-        
+
     }
 }

@@ -22,10 +22,7 @@ namespace ManagersApplication.Server
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-           // var connStr = "Data Source = (DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.168.21.116)(PORT = 1521)) (CONNECT_DATA=(SID=ORCL)));User Id=webusernew;Password=webusernew;";
-         //   services.Add(new ServiceDescriptor(typeof(OracleDBContext), new OracleDBContext(connStr)));
-
-
+            services.AddScoped<SelectDBContext>();
 
             services.AddResponseCompression(opts =>
             {

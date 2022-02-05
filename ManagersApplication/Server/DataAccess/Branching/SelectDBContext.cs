@@ -22,7 +22,9 @@ namespace ManagersApplication.Server.DataAccess
 
         public async Task<List<Branching>> GetAllAsync()
         {
-            List<Branching> list = new List<Branching>();
+            try
+            {
+                List<Branching> list = new List<Branching>();
             using (OracleConnection conn = GetOracleConnection())
             {
                 var cmdtext = "select RQID,RQST_DATE,ACTV_DESC from adf_task where rqtp_code=9 and sub_sys=1 and actv_name ='Cntd'";
@@ -35,13 +37,20 @@ namespace ManagersApplication.Server.DataAccess
                         list.Add(new Branching()
                         {
                             RQID = await reader.GetFieldValueAsync<Int64>(0)
+                            //ACTV_DESC= await reader.GetFieldValueAsync<string>(1),
+                            //RQST_DATE= await reader.GetFieldValueAsync<string>(2),
                         });
                     }
                 }
                 conn.Close();
                 return list;
             }
-            
+            }
+            catch (Exception exp)
+            {
+                throw;
+            }
+
         }
     }
 }

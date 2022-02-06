@@ -7,20 +7,20 @@ using System.Threading.Tasks;
 
 namespace ManagersApplication.Server.Controllers
 {
-
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class BranchingController : ControllerBase
     {
-        public readonly IConfiguration _config;
+        private readonly IConfiguration _config;
 
         public BranchingController(IConfiguration config)
         {
             _config = config;
         }
 
-        [HttpGet]
-        public async Task<List<Branching>> GetAsync()
+        [HttpGet]        
+        public async Task<ActionResult<List<Branching>>> GetAsync()
         {
             try
             {

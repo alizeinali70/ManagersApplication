@@ -6,18 +6,18 @@ namespace ManagersApplication.Server.DataAccess
 {
     public class SelectDBContext
     {
-       // public readonly IConfiguration _config;
+        // public readonly IConfiguration _config;
         string _conn;
 
         public SelectDBContext(IConfiguration configuration)
         {
-           _conn= configuration.GetValue<string>("ConnectionStrings:OracleConnection");
+            _conn = configuration.GetValue<string>("ConnectionStrings:OracleConnection");
         }
 
         private OracleConnection GetOracleConnection()
         {
-           return new OracleConnection(_conn);
-            
+            return new OracleConnection(_conn);
+
         }
 
         public async Task<List<Branching>> GetAllAsync()
@@ -25,26 +25,26 @@ namespace ManagersApplication.Server.DataAccess
             try
             {
                 List<Branching> list = new List<Branching>();
-            using (OracleConnection conn = GetOracleConnection())
-            {
-                var cmdtext = "select RQID,RQST_DATE,ACTV_DESC from adf_task where rqtp_code=9 and sub_sys=1 and actv_name ='Cntd'";
-                OracleCommand cmd = new OracleCommand(cmdtext, conn);
-                conn.Open();
-                using (var reader = cmd.ExecuteReader())
+                using (OracleConnection conn = GetOracleConnection())
                 {
-                    while (await reader.ReadAsync())
+                    var cmdtext = "select RQID,RQST_DATE,ACTV_DESC from adf_task where rqtp_code=9 and sub_sys=1 and actv_name ='Cntd'";
+                    OracleCommand cmd = new OracleCommand(cmdtext, conn);
+                    conn.Open();
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        list.Add(new Branching()
+                        while (await reader.ReadAsync())
                         {
-                            RQID = await reader.GetFieldValueAsync<Int64>(0)
-                            //ACTV_DESC= await reader.GetFieldValueAsync<string>(1),
-                            //RQST_DATE= await reader.GetFieldValueAsync<string>(2),
-                        });
+                            list.Add(new Branching()
+                            {
+                                RQID = await reader.GetFieldValueAsync<Int64>(0)
+                                //ACTV_DESC= await reader.GetFieldValueAsync<string>(1),
+                                //RQST_DATE= await reader.GetFieldValueAsync<string>(2),
+                            });
+                        }
                     }
+                    conn.Close();
+                    return list;
                 }
-                conn.Close();
-                return list;
-            }
             }
             catch (Exception exp)
             {

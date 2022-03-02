@@ -1,11 +1,12 @@
 ﻿@page "/Branching"
-
+@using ManagersApplication.Shared
+@inject HttpClient Http
 
 
 
 <div class="card">
     <div class="card-header bg-info">
-        <h3 class="card-title">نمایش کلیه درخواست ها</h3>
+        <h3 class="card-title">نمایش درخواست های انشعاب</h3>
     </div>
     <!-- /.card-header -->
     <div class="card-body p-0 scroll">
@@ -18,27 +19,19 @@
                 <th>مرحله</th>
                 <th></th>
             </tr>
-            <tr>
-                <td>1.</td>
-                <td>7366718</td>
-                @*  <td>
-                    انشعاب
-                    <div class="progress progress-xs">
-                    <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                    </div>
-                    </td>*@
-                <td>1400/1/03</td>
-                <td>تصویب قرارداد</td>
-                <td> <button class="btn btn-block btn-primary bg-primary-gradient" @onclick="Click" style="width:65px">نمایش</button> </td>
-            </tr>
-
-        </table>
-        @* <ul>
-            @foreach(var item in BranchList)
-            {
-            <li>@item.</li>
+            @foreach (var item in BranchList)
+            {   
+                 
+                @*<tr>
+                    <td>@item.ID</td>
+                    <td>@item.RQID</td>                    
+                    <td>@item.UPDT_DATE</td>
+                    <td>@item.ACTV_DESC</td>
+                    <td> <button class="btn btn-block btn-primary bg-primary-gradient" @onclick="Click" style="width:65px">نمایش</button> </td>
+                </tr>*@
             }
-            </ul>*@
+        </table>
+       
 
 
     </div>
@@ -46,11 +39,19 @@
 </div>
 
 @code {
-
-    private Branching[]? BranchList;
+    public Branching[] BranchList;
+    [Parameter]
+    public int ID { get; set; }
+    [Parameter]
+    public Int64 RQID { get; set; }
+    [Parameter]
+    public DateTime UPDT_DATE { get; set; }
+    [Parameter]
+    public string ACTV_DESC { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+
         BranchList = await Http.GetFromJsonAsync<Branching[]>("api/Branching");
 
     }

@@ -1,4 +1,4 @@
-﻿@page "/Branching_Item"
+﻿@page "/Branching_Item/{RQID}"
 @inject IJSRuntime JsRuntime
 @inject NavigationManager NavigationManager
 
@@ -21,7 +21,7 @@
     <!-- /.card -->
 </div>
 
-
+@RQID
 <div class="container-fluid bg-light">
     <!-- COLOR PALETTE -->
     <div class="card card-info">
@@ -97,7 +97,7 @@
                     <div class="col-lg-8 col-8"><textarea class="form-control"></textarea> </div>
                 </div>
         </div>
-    <div class="row col-lg-12 mt-2">
+    <div class="row col-lg-12 mt-2 mb-2">
         <div class="col-lg-1 col-4">
             <button class="btn btn-block btn-primary bg-success-gradient text-center"  style="width:85px">تایید</button>
         </div>
@@ -112,6 +112,8 @@
 </div>
 
 @code {
+    [Parameter]
+    public Int64 RQID { get; set; }
 
     //async Task DeleteSymbol()
     //{
@@ -122,6 +124,10 @@
     //    }
     //}
 
+    protected override async Task OnInitializedAsync()
+    {
+        var a=RQID;
+    }
     private void Back()
     {
         NavigationManager.NavigateTo("Branching");

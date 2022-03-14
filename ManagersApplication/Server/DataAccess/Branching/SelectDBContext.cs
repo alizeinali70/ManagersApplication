@@ -8,7 +8,7 @@ namespace ManagersApplication.Server.DataAccess
     {
         // public readonly IConfiguration _config;
         string _conn;
-
+       
         public SelectDBContext(IConfiguration configuration)
         {
             _conn = configuration.GetValue<string>("ConnectionStrings:OracleConnection");

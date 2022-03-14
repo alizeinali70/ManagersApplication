@@ -9,6 +9,9 @@ namespace ManagersApplication.Shared
 {
     public class Branching
     {
+        
+
+
         [Key]
         public int ID { get; set; }
         public Int64 RQID { get; set; }

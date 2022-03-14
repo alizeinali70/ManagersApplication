@@ -1,6 +1,7 @@
 ﻿@page "/Branching"
 @using ManagersApplication.Shared
 @inject HttpClient Http
+@inject NavigationManager UriHelper
 
 
 
@@ -20,16 +21,16 @@
                 <th></th>
             </tr>
             @foreach (var item in BranchList)
-            {   
-                 
-                @*<tr>
+            {                    
+                <tr>
                     <td>@item.ID</td>
                     <td>@item.RQID</td>                    
                     <td>@item.UPDT_DATE</td>
                     <td>@item.ACTV_DESC</td>
-                    <td> <button class="btn btn-block btn-primary bg-primary-gradient" @onclick="Click" style="width:65px">نمایش</button> </td>
-                </tr>*@
+                    <td> <button class="btn btn-block btn-primary bg-primary-gradient" @onclick="()=>Click(item.RQID)" style="width:65px">نمایش</button> </td>
+                </tr>
             }
+            
         </table>
        
 
@@ -39,7 +40,7 @@
 </div>
 
 @code {
-    public Branching[] BranchList;
+    private List<Branching> BranchList=new List<Branching>();
     [Parameter]
     public int ID { get; set; }
     [Parameter]
@@ -47,18 +48,19 @@
     [Parameter]
     public DateTime UPDT_DATE { get; set; }
     [Parameter]
-    public string ACTV_DESC { get; set; }
+    public string? ACTV_DESC { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
 
-        BranchList = await Http.GetFromJsonAsync<Branching[]>("api/Branching");
+        BranchList = await Http.GetFromJsonAsync<List<Branching>>("api/Branching");
 
     }
 
-    private void Click()
+    private void Click(Int64 RQID)
     {
-        NavigationManager.NavigateTo("Branching_Item");
+        var a = RQID;
+        NavigationManager.NavigateTo($"Branching_Item/{RQID}");
 
     }
 }

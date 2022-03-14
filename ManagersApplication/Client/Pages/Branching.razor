@@ -1,7 +1,7 @@
 ﻿@page "/Branching"
-@using ManagersApplication.Shared
-@inject HttpClient Http
-@inject NavigationManager UriHelper
+
+
+
 
 
 
@@ -53,14 +53,14 @@
     protected override async Task OnInitializedAsync()
     {
 
-        BranchList = await Http.GetFromJsonAsync<List<Branching>>("api/Branching");
+        BranchList = await Http.GetFromJsonAsync<List<Branching>>("api/Branching/Get_All_Contract_Async");
 
     }
 
     private void Click(Int64 RQID)
     {
         var a = RQID;
-        NavigationManager.NavigateTo($"Branching_Item/{RQID}");
+        NavigationManager.NavigateTo($"Branching_Item/{RQID.ToString()}");
 
     }
 }

@@ -1,6 +1,7 @@
-﻿@page "/Branching_Item/{RQID}"
-@inject IJSRuntime JsRuntime
-@inject NavigationManager NavigationManager
+﻿@page "/Branching_Item"
+@page "/Branching_Item/{RQID}"
+
+
 
 <div class="container-fluid bg-light">
     <!-- COLOR PALETTE -->
@@ -8,7 +9,7 @@
         <div class="card-header">
             <h3 class="card-title">
                 <i class="fa fa-tag"></i>
-                فرم قرارداد
+                فرم قرارداد - نام متقاضی: @Requster_Name
             </h3>
         </div>
         <div class="card-body">
@@ -53,7 +54,8 @@
             <div class="row col-lg-6 float-right">
                 <div class="row col-lg-12">
                     <div class="col-lg-4 col-4"> تعهدات متقاضی: </div>
-                    <div class="col-lg-8 col-8"><textarea class="form-control" >
+                    <div class="col-lg-8 col-8">
+                        <textarea class="form-control">
                         تعهد یعنی وظیفه یا ضمانتی در مقابل کسی یا برای چیزی و خود را ملزم به انجام کاری دانستن.
 
 تعهدِ شخصی یعنی کارهایی که به خاطر وظایف و التزام‌هایی انجام می‌شوند. این وظایف و التزام‌ها ممکن است توسط خود شخص تعیین شده باشند، وظایفی دو طرفه و دوجانبه باشند یا به روشنی مکتوب شده باشند.
@@ -66,12 +68,14 @@
 
 یکی از ملزومات موفقیت تعهد است. تعهد و احساس مسئولیت به ما نیرویی می‌دهد که هر مسئله یا مشکلی که پیش می‌آید از اهدافمان دست نکشیم .
 
-                    </textarea> </div>
+                    </textarea>
+                    </div>
                 </div>
 
                 <div class="row col-lg-12">
                     <div class="col-lg-4 col-4"> تعهدات شرکت: </div>
-                    <div class="col-lg-8 col-8"><textarea class="form-control">
+                    <div class="col-lg-8 col-8">
+                        <textarea class="form-control">
 
                         تعهد یعنی وظیفه یا ضمانتی در مقابل کسی یا برای چیزی و خود را ملزم به انجام کاری دانستن.
 
@@ -84,7 +88,8 @@
 واژهٔ تعهد به اقتضای موضوع، معادل «شرط»، «التزام»، «عهد»، «عهده» و «ضمان» استعمال شده، و غالباً در موضوعات عقد ضمان، حواله و کفالت به کار رفته‌است (جعفری، ۱/۲۷ بب‍؛ ابن منظور، ذیل عهد).
 
 یکی از ملزومات موفقیت تعهد است. تعهد و احساس مسئولیت به ما نیرویی می‌دهد که هر مسئله یا مشکلی که پیش می‌آید از اهدافمان دست نکشیم .
-                    </textarea>  </div>
+                    </textarea>
+                    </div>
                 </div>
             </div>
         </div>
@@ -92,17 +97,17 @@
     </div>
     <!-- /.card -->
     <div class="row col-lg-12 ">
-         <div class="row col-lg-4">
-                    <div class="col-lg-4 col-4"> دلیل عدم تایید: </div>
-                    <div class="col-lg-8 col-8"><textarea class="form-control"></textarea> </div>
-                </div>
+        <div class="row col-lg-4">
+            <div class="col-lg-4 col-4"> دلیل عدم تایید: </div>
+            <div class="col-lg-8 col-8"><textarea class="form-control"></textarea> </div>
         </div>
+    </div>
     <div class="row col-lg-12 mt-2 mb-2">
         <div class="col-lg-1 col-4">
-            <button class="btn btn-block btn-primary bg-success-gradient text-center"  style="width:85px">تایید</button>
+            <button class="btn btn-block btn-primary bg-success-gradient text-center" style="width:85px">تایید</button>
         </div>
         <div class="col-lg-1 col-4">
-            <button class="btn btn-block btn-primary bg-danger-gradient text-center"  style="width:85px">عدم تایید</button>
+            <button class="btn btn-block btn-primary bg-danger-gradient text-center" style="width:85px">عدم تایید</button>
         </div>
         <div class="col-lg-1 col-4">
 
@@ -113,7 +118,10 @@
 
 @code {
     [Parameter]
-    public Int64 RQID { get; set; }
+    public string RQID { get; set; }
+
+    [Parameter]
+    public Branching_Item Requster_Name { get; set; }
 
     //async Task DeleteSymbol()
     //{
@@ -126,7 +134,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var a=RQID;
+        var a = RQID;
+        Requster_Name = await Http.GetFromJsonAsync<Branching_Item>("api/Branching/{RQID}");
+
+        
     }
     private void Back()
     {

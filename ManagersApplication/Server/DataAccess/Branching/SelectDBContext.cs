@@ -20,7 +20,7 @@ namespace ManagersApplication.Server.DataAccess
 
         }
 
-        public async Task<List<Branching>> GetAllAsync()
+        public async Task<List<Branching>> GetAllContractAsync()
         {
             int i = 0;
             try
@@ -41,6 +41,84 @@ namespace ManagersApplication.Server.DataAccess
                                 RQID = await reader.GetFieldValueAsync<Int64>(0),
                                 UPDT_DATE = await reader.GetFieldValueAsync<DateTime>(1),
                                 ACTV_DESC = await reader.GetFieldValueAsync<string>(2),
+                            });
+                        }
+                    }
+                    conn.Close();
+                    return list;
+                }
+            }
+            catch (Exception exp)
+            {
+                throw;
+            }
+
+        }
+        
+        
+        public async Task<Branching_Item> GetNameAsync(string RQID)
+        {           
+            try
+            {
+                List<Branching_Item> list = new List<Branching_Item>();
+                Branching_Item _Item = new Branching_Item();
+                using (OracleConnection conn = GetOracleConnection())
+                {
+                    var cmdtext = "select Name from adm_requester where rqst_rqid="+RQID;
+                    OracleCommand cmd = new OracleCommand(cmdtext, conn);
+                    conn.Open();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            _Item.Requster_Name = await reader.GetFieldValueAsync<string>(0);
+                        }
+                    }
+                    conn.Close();
+                    return _Item;
+                }
+            }
+            catch (Exception exp)
+            {
+                throw;
+            }
+
+        }
+
+
+        public async Task<List<Branching_Item>> GetRquestRowAsync(string RQID)
+        {
+            int i = 0;
+            try
+            {
+                List<Branching_Item> list = new List<Branching_Item>();
+                using (OracleConnection conn = GetOracleConnection())
+                {
+                    var cmdtext = "select Gnrt,Serv_Type,Rqtt_Code,Brnc_Type,Loct_Row_No,Inst_Supr,Admn_Numb," +
+                        "Rqtp_Code,Use_Type,Ampr,Phas,Powr,Volt_Type" +
+                        " from request_row where rqst_rqid = " + RQID;
+                    OracleCommand cmd = new OracleCommand(cmdtext, conn);
+                    conn.Open();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            list.Add(new Branching_Item()
+                            {
+                                ID = ++i,
+                                Gnrt = await reader.GetFieldValueAsync<string>(0),
+                                Serv_Type = await reader.GetFieldValueAsync<string>(1),
+                                Rqtt_Code = await reader.GetFieldValueAsync<string>(2),
+                                Brnc_Type = await reader.GetFieldValueAsync<string>(3),
+                                Loct_Row_No = await reader.GetFieldValueAsync<string>(4),
+                                Inst_Supr = await reader.GetFieldValueAsync<string>(5),
+                                Admn_Numb = await reader.GetFieldValueAsync<string>(6),
+                                Rqtp_Code = await reader.GetFieldValueAsync<string>(7),
+                                Use_Type = await reader.GetFieldValueAsync<string>(8),
+                                Ampr = await reader.GetFieldValueAsync<string>(9),
+                                Phas = await reader.GetFieldValueAsync<string>(10),
+                                Powr = await reader.GetFieldValueAsync<string>(11),
+                                Volt_Type = await reader.GetFieldValueAsync<string>(12),
                             });
                         }
                     }

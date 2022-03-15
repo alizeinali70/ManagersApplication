@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ManagersApplication.Server.Controllers
 {
     [Produces("application/json")]
-    [Route("api/[controller]/[function]")]
+    [Route("api/")]
     [ApiController]
     public class BranchingController : ControllerBase
     {
@@ -19,7 +19,8 @@ namespace ManagersApplication.Server.Controllers
             _config = config;
         }
 
-        [HttpGet]        
+        [HttpGet("[controller]/[action]")]
+        [Route("Branching/Get_All_Contract_Async")]
         public async Task<ActionResult<List<Branching>>> Get_All_Contract_Async()
         {
             try
@@ -34,13 +35,14 @@ namespace ManagersApplication.Server.Controllers
             }
         }
 
-        [HttpGet]        
-        public async Task<ActionResult<Branching_Item>> Get_Requester_Name_Async(string RQID)
-        {
+        [HttpGet("[controller]/[action]")]
+        [Route("Branching/Get_Requester_Name_Async/")]
+        public async Task<ActionResult<Branching_Item>> Get_Requester_Name_Async([FromBody]string RQID)
+        {           
             try
             {
                 SelectDBContext context = new SelectDBContext(_config);
-                Branching_Item _Item = await context.GetNameAsync(RQID);
+                Branching_Item _Item = await context.GetNameAsync(RQID);               
                 return _Item;
             }
             catch (Exception exp)

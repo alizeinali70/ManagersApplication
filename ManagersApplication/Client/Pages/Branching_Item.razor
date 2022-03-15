@@ -1,4 +1,4 @@
-﻿@page "/Branching_Item"
+﻿
 @page "/Branching_Item/{RQID}"
 
 
@@ -121,7 +121,7 @@
     public string RQID { get; set; }
 
     [Parameter]
-    public Branching_Item Requster_Name { get; set; }
+    public string Requster_Name { get; set; }
 
     //async Task DeleteSymbol()
     //{
@@ -134,10 +134,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var a = RQID;
-        Requster_Name = await Http.GetFromJsonAsync<Branching_Item>("api/Branching/{RQID}");
+        var _response = await Http.PostAsJsonAsync("api/Branching/Get_Requester_Name_Async/", RQID);
 
-        
+
+        //Requster_Name =_response.Content;
+        var rRequster_Name = await _response.Content.ReadAsStringAsync();
+
+
     }
     private void Back()
     {

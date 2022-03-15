@@ -12,7 +12,7 @@ namespace ManagersApplication.Shared
 
         [Key]
         public int ID { get; set; }
-        public Int64 RQID { get; set; }
+        public long RQID { get; set; }
         public DateTime UPDT_DATE { get; set; }
         public string ACTV_DESC { get; set; }
     }
@@ -21,6 +21,7 @@ namespace ManagersApplication.Shared
 
         [Key]
         public int ID { get; set; }
+        public long RQID { get; set; }
         public string Requster_Name { get; set; }
         public string Gnrt { get; set; }
         public string Serv_Type { get; set; }

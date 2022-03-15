@@ -8,6 +8,11 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
+//builder.Services.AddScoped(sp =>
+//    new HttpClient
+//    {
+//        BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
+//    });
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

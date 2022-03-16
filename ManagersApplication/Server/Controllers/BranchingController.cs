@@ -50,5 +50,21 @@ namespace ManagersApplication.Server.Controllers
                 throw;
             }
         }
+
+        [HttpPost("[controller]/[action]")]
+        [Route("Branching/Get_RequestRow_Async/")]
+        public async Task<ActionResult<List<Branching_Item>>> Get_RequestRow_Async([FromBody] string RQID)
+        {
+            try
+            {
+                SelectDBContext context = new SelectDBContext(_config);
+                List<Branching_Item> list = await context.GetRquestRowAsync(RQID);
+                return list;
+            }
+            catch (Exception exp)
+            {
+                throw;
+            }
+        }
     }
 }

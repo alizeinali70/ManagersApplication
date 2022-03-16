@@ -53,7 +53,7 @@
     protected override async Task OnInitializedAsync()
     {
 
-        BranchList = await Http.GetFromJsonAsync<List<Branching>>("api/Branching/Get_All_Contract_Async");
+        BranchList = await Http.GetFromJsonAsync<List<Branching>>("api/Branching/Get_All_Contract_Async/");
 
     }
 

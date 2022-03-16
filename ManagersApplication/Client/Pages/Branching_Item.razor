@@ -114,18 +114,15 @@
         </div>
     </div>
 </div>
-@rRequster_Name
+
 
 @code {
     [Parameter]
     public string RQID { get; set; }
 
-    [Parameter]
     public string Requster_Name { get; set; }
-
-    public string rRequster_Name { get; set; }
-
-    private List<Branching_Item> BranchItemList=new List<Branching_Item>();
+    public string BranchItemList { get; set; }
+    //private List<Branching_Item> BranchItemList=new List<Branching_Item>();
 
     //async Task DeleteSymbol()
     //{
@@ -138,19 +135,18 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var _response = await Http.PostAsJsonAsync("api/Branching/Get_Requester_Name_Async/", RQID);
-        var BranchItemList = await Http.PostAsJsonAsync("api/Branching/Get_RequestRow_Async/", RQID);
-        //BranchItemList = await Http.GetFromJsonAsync<List<Branching_Item>>("api/Branching/Get_RequestRow_Async/{RQID}");
-
-
-        //Requster_Name =_response.Content;
-        rRequster_Name = await _response.Content.ReadAsStringAsync();
-
-        var res = JsonConvert.DeserializeObject<Branching_Item>(rRequster_Name);
-        Requster_Name = res.Requster_Name;
-
-        // await JsonSerializer.DeserializeAsync<Branching_Item>(json);
-
+        
+        //////////////////////////////////////////
+        var result_name = await Http.PostAsJsonAsync("api/Branching/Get_Requester_Name_Async/", RQID);
+        Requster_Name = await result_name.Content.ReadAsStringAsync();
+        var result_name_json = JsonConvert.DeserializeObject<Branching_Item>(Requster_Name);
+        Requster_Name = result_name_json.Requster_Name;
+        //////////////////////////////////////////
+        var result_list = await Http.PostAsJsonAsync("api/Branching/Get_RequestRow_Async/", RQID);
+        BranchItemList = await result_list.Content.ReadAsStringAsync();
+        var result_list_json = JsonConvert.DeserializeObject<Branching_Item>(BranchItemList);
+        
+        //////////////////////////////////////////
     }
     private void Back()
     {

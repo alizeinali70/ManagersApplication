@@ -15,10 +15,10 @@ namespace ManagersApplication.Shared
         public long RQID { get; set; }
         public DateTime UPDT_DATE { get; set; }
         public string ACTV_DESC { get; set; }
+
     }
     public class Branching_Item
     {
-
         [Key]
         public int ID { get; set; }
         public string RQID { get; set; }
@@ -35,9 +35,10 @@ namespace ManagersApplication.Shared
         public Int32 Ampr { get; set; }
         public string Phas { get; set; }
         public double Powr { get; set; }
-        public string Volt_Type { get; set; }
-
+        public string Volt_Type { get; set; }       
     }
+    
+
 }
 
     

@@ -1,4 +1,5 @@
 ﻿@page "/Branching_Item/{RQID}"
+@using Newtonsoft.Json.Linq
 
 
 
@@ -21,7 +22,7 @@
     <!-- /.card -->
 </div>
 
-@RQID
+@*@RQID*@
 <div class="container-fluid bg-light">
     <!-- COLOR PALETTE -->
     <div class="card card-info">
@@ -135,7 +136,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        
+
         //////////////////////////////////////////
         var result_name = await Http.PostAsJsonAsync("api/Branching/Get_Requester_Name_Async/", RQID);
         Requster_Name = await result_name.Content.ReadAsStringAsync();
@@ -143,9 +144,13 @@
         Requster_Name = result_name_json.Requster_Name;
         //////////////////////////////////////////
         var result_list = await Http.PostAsJsonAsync("api/Branching/Get_RequestRow_Async/", RQID);
-        BranchItemList = await result_list.Content.ReadAsStringAsync();
-        var result_list_json = JsonConvert.DeserializeObject<Branching_Item>(BranchItemList);
-        
+        BranchItemList =await result_list.Content.ReadAsStringAsync();
+        string test = "[{\"id\":1,\"rqid\":\"8980989\",\"requster_Name\":\"ali\",\"gnrt\":\"2\",\"serv_Type\":\"2\",\"rqtt_Code\":6,\"brnc_Type\":\"1\",\"loct_Row_No\":3,\"inst_Supr\":\"3\",\"admn_Numb\":1,\"rqtp_Code\":6,\"use_Type\":\"4\",\"ampr\":50,\"phas\":\"3\",\"powr\":30,\"volt_Type\":\"2\"}]";
+        var model = JsonConvert.DeserializeObject<List<Branching_Item>>(result_list.Content.ReadAsStringAsync().Result);
+        dynamic data = JArray.Parse(test);
+
+        // var  List = model.
+
         //////////////////////////////////////////
     }
     private void Back()
@@ -153,5 +158,7 @@
         NavigationManager.NavigateTo("Branching");
 
     }
+
+    
 
 }

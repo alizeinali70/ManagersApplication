@@ -58,7 +58,9 @@ namespace ManagersApplication.Server.Controllers
             try
             {
                 SelectDBContext context = new SelectDBContext(_config);
-                List<Branching_Item> list = await context.GetRquestRowAsync(RQID);
+                List<Branching_Item> list =await context.GetRquestRowAsync(RQID);
+               
+               
                 return list;
             }
             catch (Exception exp)

@@ -58,7 +58,15 @@ namespace ManagersApplication.Server.Controllers
             try
             {
                 SelectDBContext context = new SelectDBContext(_config);
-                List<Branching_Item> list =await context.GetRquestRowAsync(RQID);
+                 List<Branching_Item> list =await context.GetRquestRowAsync(RQID);
+                //List<Branching_Item> list = new List<Branching_Item>();
+                //list.Add(new Branching_Item
+                //{
+                //    RQID = "123",
+                //    Requster_Name = "ali",
+                //    Gnrt = "test",
+                //    Ampr = 200
+                //});
                
                
                 return list;

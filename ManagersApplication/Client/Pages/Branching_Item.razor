@@ -123,6 +123,20 @@
 
     public string Requster_Name { get; set; }
     public string BranchItemList { get; set; }
+    public string Gnrt { get; set; }
+    public string Serv_Type { get; set; }
+    public Int16 Rqtt_Code { get; set; }
+    public string Brnc_Type { get; set; }
+    public Int16 Loct_Row_No { get; set; }
+    public string Inst_Supr { get; set; }
+    public Int16 Admn_Numb { get; set; }
+    public Int16 Rqtp_Code { get; set; }
+    public string Use_Type { get; set; }
+    public Int32 Ampr { get; set; }
+    public string Phas { get; set; }
+    public double Powr { get; set; }
+    public string Volt_Type { get; set; }
+
     //private List<Branching_Item> BranchItemList=new List<Branching_Item>();
 
     //async Task DeleteSymbol()
@@ -133,6 +147,9 @@
     //        // Delete!
     //    }
     //}
+    //string test = "[{\"id\":1,\"rqid\":\"8980989\",\"requster_Name\":\"ali\",\"gnrt\":\"2\",\"serv_Type\":\"2\",
+    // \"rqtt_Code\":6,\"brnc_Type\":\"1\",\"loct_Row_No\":3,\"inst_Supr\":\"3\",\"admn_Numb\":1,\"rqtp_Code\":6,
+    // \"use_Type\":\"4\",\"ampr\":50,\"phas\":\"3\",\"powr\":30,\"volt_Type\":\"2\"}]";
 
     protected override async Task OnInitializedAsync()
     {
@@ -144,14 +161,8 @@
         Requster_Name = result_name_json.Requster_Name;
         //////////////////////////////////////////
         var result_list = await Http.PostAsJsonAsync("api/Branching/Get_RequestRow_Async/", RQID);
-        BranchItemList =await result_list.Content.ReadAsStringAsync();
-        string test = "[{\"id\":1,\"rqid\":\"8980989\",\"requster_Name\":\"ali\",\"gnrt\":\"2\",\"serv_Type\":\"2\",\"rqtt_Code\":6,\"brnc_Type\":\"1\",\"loct_Row_No\":3,\"inst_Supr\":\"3\",\"admn_Numb\":1,\"rqtp_Code\":6,\"use_Type\":\"4\",\"ampr\":50,\"phas\":\"3\",\"powr\":30,\"volt_Type\":\"2\"}]";
-        var model = JsonConvert.DeserializeObject<List<Branching_Item>>(result_list.Content.ReadAsStringAsync().Result);
-        dynamic data = JArray.Parse(test);
-
-        // var  List = model.
-
-        //////////////////////////////////////////
+        BranchItemList = await result_list.Content.ReadAsStringAsync();
+        var _json = JsonConvert.DeserializeObject<List<Branching_Item>>(BranchItemList);
     }
     private void Back()
     {
@@ -159,6 +170,6 @@
 
     }
 
-    
+
 
 }

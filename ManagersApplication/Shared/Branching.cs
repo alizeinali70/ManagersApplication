@@ -25,12 +25,15 @@ namespace ManagersApplication.Shared
         public string Requster_Name { get; set; }
         public string Gnrt { get; set; }
         public string Serv_Type { get; set; }
-        public Int16 Rqtt_Code { get; set; }
+        //public Int16 Rqtt_Code { get; set; }
+        public string Rqtt_Desc { get; set; }
         public string Brnc_Type { get; set; }
-        public Int16 Loct_Row_No { get; set; }
+        //public Int16 Loct_Row_No { get; set; }
+        public string Loct_Desc { get; set; }
         public string Inst_Supr { get; set; }
         public Int16 Admn_Numb { get; set; }
-        public Int16 Rqtp_Code { get; set; }
+        //public Int16 Rqtp_Code { get; set; }
+        public string Rqtp_Desc { get; set; }
         public string Use_Type { get; set; }
         public Int32 Ampr { get; set; }
         public string Phas { get; set; }

@@ -56,25 +56,111 @@
                     <th>قدرت</th>
                     <th class="td-width">ولتاژ تحویلی</th>
                 </tr>
-                <tr>
-                    @foreach (var item in BranchItemList)
-                   {                      
-                       <td>@item.Gnrt</td>
-                       <td>@item.Serv_Type</td>
-                       <td>@item.Rqtt_Code</td>
-                       <td>@item.Brnc_Type</td>
-                       <td>@item.Loct_Row_No</td>
-                       <td>@item.Inst_Supr</td>
-                       <td>@item.Admn_Numb</td>
-                       <td>@item.Rqtp_Code</td>
-                       <td>@item.Use_Type</td>
-                       <td>@item.Ampr</td>
-                       <td>@item.Phas</td>
-                       <td>@item.Powr</td>
-                       <td>@item.Volt_Type</td>
-                   }                    
-                </tr>
-  
+
+                @foreach (var item in BranchItemList)
+                {
+                    <tr>
+                        @if (item.Gnrt == "1")
+                        {
+                            <td>جدید</td>
+                        }
+                        else
+                        {
+                            <td>تغییر قدرت</td>
+                        }
+
+                        @if (item.Serv_Type == "1")
+                        {
+                            <td>عادی</td>
+                        }
+                        else
+                        {
+                            <td>دیماندی</td>
+                        }
+                        @item.Rqtt_Desc
+
+                        @if (item.Brnc_Type == "1")
+                        {
+                            <td>دائم</td>
+                        }
+                        else if (item.Brnc_Type == "2")
+                        {
+                            <td>آزاد</td>
+                        }
+                        else if (item.Brnc_Type == "3")
+                        {
+                            <td>حاشیه شهر</td>
+                        }
+                        else if (item.Brnc_Type == "4")
+                        {
+                            <td>آزاد به دائم</td>
+                        }
+                        else if (item.Brnc_Type == "5")
+                        {
+                            <td>فتوولتاییک</td>
+                        }
+                        else if (item.Brnc_Type == "6")
+                        {
+                            <td>غیر دائم</td>
+                        }
+                        @item.Loct_Desc
+
+                        @if (item.Inst_Supr == "1")
+                        {
+                            <td>شرکت</td>
+                        }
+                        else if (item.Inst_Supr == "2")
+                        {
+                            <td>متقاضی</td>
+                        }
+                        else
+                        {
+                            <td>شبکه موجود</td>
+                        }
+                        <td>@item.Admn_Numb</td>
+
+                        @item.Rqtp_Desc
+
+                        @if (item.Use_Type == "1")
+                        {
+                            <td>خانگی</td>
+                        }
+                        else if (item.Use_Type == "2")
+                        {
+                            <td>عمومی</td>
+                        }
+                        else if (item.Use_Type == "3")
+                        {
+                            <td>کشاورزی</td>
+                        }
+                        else if (item.Use_Type == "4")
+                        {
+                            <td>صنعتی</td>
+                        }
+                        else if (item.Use_Type == "5")
+                        {
+                            <td>سایر مصارف</td>
+                        }
+
+
+                        <td>@item.Ampr</td>
+
+                        <td>@item.Phas</td>
+
+                        <td>@item.Powr</td>
+
+                        @if (item.Volt_Type == "1")
+                        {
+                            <td></td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                    </tr>
+                }
+
+
 
 
             </table>
@@ -89,12 +175,12 @@
     public string Requster_Name { get; set; }
     public string Gnrt { get; set; }
     public string Serv_Type { get; set; }
-    public Int16 Rqtt_Code { get; set; }
+    public string Rqtt_Desc { get; set; }
     public string Brnc_Type { get; set; }
-    public Int16 Loct_Row_No { get; set; }
+    public string Loct_Desc { get; set; }
     public string Inst_Supr { get; set; }
     public Int16 Admn_Numb { get; set; }
-    public Int16 Rqtp_Code { get; set; }
+    public string Rqtp_Desc { get; set; }
     public string Use_Type { get; set; }
     public Int32 Ampr { get; set; }
     public string Phas { get; set; }
@@ -112,6 +198,6 @@
         //////////////////////////////////////////
         var result_list = await Http.PostAsJsonAsync("api/Branching/Get_RequestRow_Async/", RQID);
         var _json = await result_list.Content.ReadAsStringAsync();
-         BranchItemList= JsonConvert.DeserializeObject<List<Branching_Item>>(_json);
+        BranchItemList = JsonConvert.DeserializeObject<List<Branching_Item>>(_json);
     }
 }

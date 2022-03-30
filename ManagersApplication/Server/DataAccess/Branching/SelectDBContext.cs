@@ -8,7 +8,7 @@ namespace ManagersApplication.Server.DataAccess
     {
         // public readonly IConfiguration _config;
         string _conn;
-       
+
         public SelectDBContext(IConfiguration configuration)
         {
             _conn = configuration.GetValue<string>("ConnectionStrings:OracleConnection");
@@ -54,17 +54,17 @@ namespace ManagersApplication.Server.DataAccess
             }
 
         }
-        
-        
+
+
         public async Task<Branching_Item> GetNameAsync(string RQID)
-        {           
+        {
             try
             {
                 List<Branching_Item> list = new List<Branching_Item>();
                 Branching_Item _Item = new Branching_Item();
                 using (OracleConnection conn = GetOracleConnection())
                 {
-                    var cmdtext = "select Name from adm_requester where rqst_rqid="+RQID;
+                    var cmdtext = "select Name from adm_requester where rqst_rqid=" + RQID;
                     OracleCommand cmd = new OracleCommand(cmdtext, conn);
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
@@ -94,9 +94,17 @@ namespace ManagersApplication.Server.DataAccess
                 List<Branching_Item> list = new List<Branching_Item>();
                 using (OracleConnection conn = GetOracleConnection())
                 {
-                    var cmdtext = "select Gnrt,Serv_Type,Rqtt_Code,Brnc_Type,Loct_Row_No,Inst_Supr,Admn_Numb," +
-                        "Rqtp_Code,Use_Type,Ampr,Phas,Powr,Volt_Type" +
-                        " from request_row where rqst_rqid = " + RQID;
+                    //var cmdtext = "select Gnrt,Serv_Type,Rqtt_Code,Brnc_Type,Loct_Row_No,Inst_Supr,Admn_Numb," +
+                    //    "Rqtp_Code,Use_Type,Ampr,Phas,Powr,Volt_Type" +
+                    //    " from request_row where rqst_rqid = " + RQID;
+
+                    var cmdtext = "select Gnrt,Serv_Type,Rqtt_Desc,Brnc_Type,Loct_Desc,Inst_Supr,Admn_Numb,Rqtp_Desc,Use_Type," +
+                        " Ampr,Phas,Powr,Volt_Type from request_row " +
+                        " left join requester_type on request_row.Rqtt_Code = requester_type.CODE " +
+                        " left join adm_location on request_row.Loct_Row_No = adm_location.ROW_NO " +
+                        " left join request_type on request_row.RQTP_CODE = request_type.Code" +
+                        " where rqst_rqid = " + RQID;
+
                     OracleCommand cmd = new OracleCommand(cmdtext, conn);
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
@@ -108,12 +116,12 @@ namespace ManagersApplication.Server.DataAccess
                                 ID = ++i,
                                 Gnrt = await reader.GetFieldValueAsync<string>(0),
                                 Serv_Type = await reader.GetFieldValueAsync<string>(1),
-                                Rqtt_Code = await reader.GetFieldValueAsync<Int16>(2),
+                                Rqtt_Desc = await reader.GetFieldValueAsync<string>(2),
                                 Brnc_Type = await reader.GetFieldValueAsync<string>(3),
-                                Loct_Row_No = await reader.GetFieldValueAsync<Int16>(4),
+                                Loct_Desc = await reader.GetFieldValueAsync<string>(4),
                                 Inst_Supr = await reader.GetFieldValueAsync<string>(5),
                                 Admn_Numb = await reader.GetFieldValueAsync<Int16>(6),
-                                Rqtp_Code = await reader.GetFieldValueAsync<Int16>(7),
+                                Rqtp_Desc = await reader.GetFieldValueAsync<string>(7),
                                 Use_Type = await reader.GetFieldValueAsync<string>(8),
                                 Ampr = await reader.GetFieldValueAsync<Int32>(9),
                                 Phas = await reader.GetFieldValueAsync<string>(10),

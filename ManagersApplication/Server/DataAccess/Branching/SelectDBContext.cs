@@ -151,14 +151,20 @@ namespace ManagersApplication.Server.DataAccess
                     {
                         while (await reader.ReadAsync())
                         {
-                            contract_Item.Cont_Date = reader.GetString(0);
-                            contract_Item.View_Date= reader.GetString(1);
-                            contract_Item.Resp_Inst_Equp = reader.GetInt16(2);
-                            contract_Item.Resp_Dlve_Powr = reader.GetInt16(3);
-                            contract_Item.Comt_Aplr = reader.GetString(4);
-                            contract_Item.Comt_Comp= reader.GetString(5);
+                            if (!reader.IsDBNull(0))
+                                contract_Item.Cont_Date = reader.GetString(0);
+                            if (!reader.IsDBNull(1))
+                                contract_Item.View_Date = reader.GetString(1);
+                            if (!reader.IsDBNull(2))
+                                contract_Item.Resp_Inst_Equp = reader.GetInt16(2);
+                            if (!reader.IsDBNull(3))
+                                contract_Item.Resp_Dlve_Powr = reader.GetInt16(3);
+                            if (!reader.IsDBNull(4))
+                                contract_Item.Comt_Aplr = reader.GetString(4);
+                            if (!reader.IsDBNull(5))
+                                contract_Item.Comt_Comp = reader.GetString(5);
                         }
-                    }                    
+                    }
                 }
                 return contract_Item;
             }

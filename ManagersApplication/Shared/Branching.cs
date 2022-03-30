@@ -41,6 +41,18 @@ namespace ManagersApplication.Shared
         public string Volt_Type { get; set; }       
     }
     
+    public class Contract_Item
+    {
+        //[Key]
+        //public int ID { get; set; }
+        public string Cont_Date { get; set; }
+        public string View_Date { get; set; }
+        public Int16 Resp_Inst_Equp { get; set; }
+        public Int16 Resp_Dlve_Powr { get; set; }
+        public string Comt_Aplr { get; set; }
+        
+        public string Comt_Comp { get; set; }
+    }
 
 }
 

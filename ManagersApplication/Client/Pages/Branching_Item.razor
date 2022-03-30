@@ -122,21 +122,7 @@
 
     public string Requster_Name { get; set; }
    
-
-    //private List<Branching_Item> BranchItemList=new List<Branching_Item>();
-
-    //async Task DeleteSymbol()
-    //{
-    //    bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "آیا از تایید این درخواست مطمئن هستید؟");
-    //    if (confirmed)
-    //    {
-    //        // Delete!
-    //    }
-    //}
-    //string test = "[{\"id\":1,\"rqid\":\"8980989\",\"requster_Name\":\"ali\",\"gnrt\":\"2\",\"serv_Type\":\"2\",
-    // \"rqtt_Code\":6,\"brnc_Type\":\"1\",\"loct_Row_No\":3,\"inst_Supr\":\"3\",\"admn_Numb\":1,\"rqtp_Code\":6,
-    // \"use_Type\":\"4\",\"ampr\":50,\"phas\":\"3\",\"powr\":30,\"volt_Type\":\"2\"}]";
-
+    
     protected override async Task OnInitializedAsync()
     {
         //////////////////////////////////////////
@@ -145,7 +131,10 @@
         var result_name_json = JsonConvert.DeserializeObject<Branching_Item>(Requster_Name);
         Requster_Name = result_name_json.Requster_Name;
         //////////////////////////////////////////
-       
+        var contract_Item = await Http.PostAsJsonAsync("api/Branching/Get_AdmContract/", RQID);
+        var data=await contract_Item.Content.ReadAsStringAsync();
+        var json=JsonConvert.DeserializeObject<Contract_Item>(data);
+
     }
     private void Back()
     {

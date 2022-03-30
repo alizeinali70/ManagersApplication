@@ -94,10 +94,6 @@ namespace ManagersApplication.Server.DataAccess
                 List<Branching_Item> list = new List<Branching_Item>();
                 using (OracleConnection conn = GetOracleConnection())
                 {
-                    //var cmdtext = "select Gnrt,Serv_Type,Rqtt_Code,Brnc_Type,Loct_Row_No,Inst_Supr,Admn_Numb," +
-                    //    "Rqtp_Code,Use_Type,Ampr,Phas,Powr,Volt_Type" +
-                    //    " from request_row where rqst_rqid = " + RQID;
-
                     var cmdtext = "select Gnrt,Serv_Type,Rqtt_Desc,Brnc_Type,Loct_Desc,Inst_Supr,Admn_Numb,Rqtp_Desc,Use_Type," +
                         " Ampr,Phas,Powr,Volt_Type from request_row " +
                         " left join requester_type on request_row.Rqtt_Code = requester_type.CODE " +
@@ -139,6 +135,38 @@ namespace ManagersApplication.Server.DataAccess
                 throw;
             }
 
+        }
+        public async Task<Contract_Item> GetAdmContract(string RQID)
+        {
+            try
+            {
+                Contract_Item contract_Item = new Contract_Item();
+                using (OracleConnection conn = GetOracleConnection())
+                {
+                    var cmdtext = "select Cont_Date,View_Date,Resp_Inst_Equp,Resp_Dlve_Powr,Comt_Aplr,Comt_Comp from adm_contract " +
+                        "where rqro_rqst_rqid=" + RQID;
+                    OracleCommand cmd = new OracleCommand(cmdtext, conn);
+                    conn.Open();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            contract_Item.Cont_Date = reader.GetString(0);
+                            contract_Item.View_Date= reader.GetString(1);
+                            contract_Item.Resp_Inst_Equp = reader.GetInt16(2);
+                            contract_Item.Resp_Dlve_Powr = reader.GetInt16(3);
+                            contract_Item.Comt_Aplr = reader.GetString(4);
+                            contract_Item.Comt_Comp= reader.GetString(5);
+                        }
+                    }                    
+                }
+                return contract_Item;
+            }
+            catch (Exception exp)
+            {
+
+                throw;
+            }
         }
     }
 }

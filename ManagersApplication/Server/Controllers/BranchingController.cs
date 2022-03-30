@@ -37,12 +37,12 @@ namespace ManagersApplication.Server.Controllers
 
         [HttpGet("[controller]/[action]")]
         [Route("Branching/Get_Requester_Name_Async/")]
-        public async Task<ActionResult<Branching_Item>> Get_Requester_Name_Async([FromBody]string RQID)
-        {           
+        public async Task<ActionResult<Branching_Item>> Get_Requester_Name_Async([FromBody] string RQID)
+        {
             try
             {
                 SelectDBContext context = new SelectDBContext(_config);
-                Branching_Item _Item = await context.GetNameAsync(RQID);               
+                Branching_Item _Item = await context.GetNameAsync(RQID);
                 return _Item;
             }
             catch (Exception exp)
@@ -58,7 +58,7 @@ namespace ManagersApplication.Server.Controllers
             try
             {
                 SelectDBContext context = new SelectDBContext(_config);
-                 List<Branching_Item> list =await context.GetRquestRowAsync(RQID);
+                List<Branching_Item> list = await context.GetRquestRowAsync(RQID);
                 //List<Branching_Item> list = new List<Branching_Item>();
                 //list.Add(new Branching_Item
                 //{
@@ -67,8 +67,8 @@ namespace ManagersApplication.Server.Controllers
                 //    Gnrt = "test",
                 //    Ampr = 200
                 //});
-               
-               
+
+
                 return list;
             }
             catch (Exception exp)
@@ -76,5 +76,15 @@ namespace ManagersApplication.Server.Controllers
                 throw;
             }
         }
+
+        [HttpPost("[controller]/[action]")]
+        [Route("Branching/Get_AdmContract/")]
+        public async Task<ActionResult<Contract_Item>> Get_AdmContract([FromBody] string RQID)
+            {
+            SelectDBContext context = new SelectDBContext(_config);
+            Contract_Item contract_Item=await context.GetAdmContract(RQID);
+            return contract_Item;
+        }
+
     }
 }

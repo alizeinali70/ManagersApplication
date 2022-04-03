@@ -152,9 +152,9 @@ namespace ManagersApplication.Server.DataAccess
                         while (await reader.ReadAsync())
                         {
                             if (!reader.IsDBNull(0))
-                                contract_Item.Cont_Date = reader.GetString(0);
+                                contract_Item.Cont_Date = reader.GetDateTime(0);
                             if (!reader.IsDBNull(1))
-                                contract_Item.View_Date = reader.GetString(1);
+                                contract_Item.View_Date = reader.GetDateTime(1);
                             if (!reader.IsDBNull(2))
                                 contract_Item.Resp_Inst_Equp = reader.GetInt16(2);
                             if (!reader.IsDBNull(3))

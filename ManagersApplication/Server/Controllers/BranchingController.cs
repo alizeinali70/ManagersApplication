@@ -3,6 +3,7 @@ using ManagersApplication.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace ManagersApplication.Server.Controllers
@@ -80,9 +81,18 @@ namespace ManagersApplication.Server.Controllers
         [HttpPost("[controller]/[action]")]
         [Route("Branching/Get_AdmContract/")]
         public async Task<ActionResult<Contract_Item>> Get_AdmContract([FromBody] string RQID)
-            {
+        {
+            PersianCalendar pc = new PersianCalendar();
+            
             SelectDBContext context = new SelectDBContext(_config);
-            Contract_Item contract_Item=await context.GetAdmContract(RQID);
+            Contract_Item contract_Item = await context.GetAdmContract(RQID);
+
+          
+
+
+            //var a = pc.ToDateTime(contract_Item.Cont_Date.Year, contract_Item.Cont_Date.Month, contract_Item.Cont_Date.Day,0,0,0,0);
+            
+            //contract_Item.View_Date = pc.ToDateTime(contract_Item.View_Date.Year, contract_Item.View_Date.Month, contract_Item.View_Date.Day, 0, 0, 0, 0, PersianCalendar.PersianEra);
             return contract_Item;
         }
 

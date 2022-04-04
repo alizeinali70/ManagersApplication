@@ -83,19 +83,27 @@ namespace ManagersApplication.Server.Controllers
         [Route("Branching/Get_AdmContract/")]
         public async Task<ActionResult<Contract_Item>> Get_AdmContract([FromBody] string RQID)
         {
-            PersianCalendar pc = new PersianCalendar();
-            
-            SelectDBContext context = new SelectDBContext(_config);
-            Contract_Item contract_Item = await context.GetAdmContract(RQID);
+            try
+            {
+                SelectDBContext context = new SelectDBContext(_config);
+                Contract_Item contract_Item = await context.GetAdmContract(RQID);
+
+                var contdate= contract_Item.Cont_Date.ToString("MM/dd/yyyy");
+                var viewdate= contract_Item.View_Date.ToString("MM/dd/yyyy");
+             //   contract_Item.Cont_Date = Convert.ToDateTime(contdate);
+
+                //contract_Item.View_Date = Convert.ToDateTime(ConvertDate.ToFa());
 
 
+                return contract_Item;
+            }
+            catch (Exception exp)
+            {
 
+                throw;
+            }
 
-            contract_Item.Cont_Date = ConvertDate.ToFa(contract_Item.Cont_Date).ToString();
-            contract_Item.View_Date = ConvertDate.ToFa(contract_Item.View_Date).ToString();
-
-            
-            return contract_Item;
+           
         }
 
     }

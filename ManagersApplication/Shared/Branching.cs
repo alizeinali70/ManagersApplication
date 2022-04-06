@@ -13,7 +13,7 @@ namespace ManagersApplication.Shared
         [Key]
         public int ID { get; set; }
         public long RQID { get; set; }
-        public DateTime UPDT_DATE { get; set; }
+        public string UPDT_DATE { get; set; }
         public string ACTV_DESC { get; set; }
 
     }
@@ -49,8 +49,8 @@ namespace ManagersApplication.Shared
         /// <summary>
         /// //Cont_Date,View_Date,Resp_Inst_Equp,Resp_Dlve_Powr,Comt_Aplr,Comt_Comp
         /// </summary>
-        public DateTime Cont_Date { get; set; }
-        public DateTime View_Date { get; set; }
+        public string Cont_Date { get; set; }
+        public string View_Date { get; set; }
         public Int16 Resp_Inst_Equp { get; set; }
         public Int16 Resp_Dlve_Powr { get; set; }
         public string Comt_Aplr { get; set; }        

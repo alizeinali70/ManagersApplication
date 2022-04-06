@@ -28,7 +28,7 @@ namespace ManagersApplication.Server.DataAccess
                 List<Branching> list = new List<Branching>();
                 using (OracleConnection conn = GetOracleConnection())
                 {
-                    var cmdtext = "select RQID,UPDT_DATE,ACTV_DESC from adf_task where rqtp_code=9 and sub_sys=1 and actv_name ='Cntd'";
+                    var cmdtext = "select RQID,to_char(UPDT_DATE,'yyyy/MM/dd'),ACTV_DESC from adf_task where rqtp_code=9 and sub_sys=1 and actv_name ='Cntd'";
                     OracleCommand cmd = new OracleCommand(cmdtext, conn);
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
@@ -39,7 +39,7 @@ namespace ManagersApplication.Server.DataAccess
                             {
                                 ID = ++i,
                                 RQID = await reader.GetFieldValueAsync<Int64>(0),
-                                UPDT_DATE = await reader.GetFieldValueAsync<DateTime>(1),
+                                UPDT_DATE = await reader.GetFieldValueAsync<string>(1),
                                 ACTV_DESC = await reader.GetFieldValueAsync<string>(2),
                             });
                         }
@@ -152,9 +152,9 @@ namespace ManagersApplication.Server.DataAccess
                         while (await reader.ReadAsync())
                         {
                             if (!reader.IsDBNull(0))
-                                contract_Item.Cont_Date = reader.GetDateTime(0);
+                                contract_Item.Cont_Date = reader.GetString(0);
                             if (!reader.IsDBNull(1))
-                                contract_Item.View_Date = reader.GetDateTime(1);
+                                contract_Item.View_Date = reader.GetString(1);
                             if (!reader.IsDBNull(2))
                                 contract_Item.Resp_Inst_Equp = reader.GetInt16(2);
                             if (!reader.IsDBNull(3))

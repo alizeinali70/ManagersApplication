@@ -2,7 +2,6 @@
 using ManagersApplication.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PersianDate.Standard;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -26,9 +25,15 @@ namespace ManagersApplication.Server.Controllers
         public async Task<ActionResult<List<Branching>>> Get_All_Contract_Async()
         {
             try
-            {
+            {               
                 SelectDBContext context = new SelectDBContext(_config);
                 List<Branching> list = await context.GetAllContractAsync();
+                foreach (var item in list)
+                {
+                    item.UPDT_DATE = ConvertDate.MiladiToShamsi(item.UPDT_DATE);
+                                
+                   // item.UPDT_DATE = Convert.ToDateTime(ConvertDate.MiladiToShamsi(item.UPDT_DATE.ToString("yyyy/MM/dd"))).Date;                   
+                }
                 return list;
             }
             catch (Exception exp)
@@ -61,16 +66,7 @@ namespace ManagersApplication.Server.Controllers
             {
                 SelectDBContext context = new SelectDBContext(_config);
                 List<Branching_Item> list = await context.GetRquestRowAsync(RQID);
-                //List<Branching_Item> list = new List<Branching_Item>();
-                //list.Add(new Branching_Item
-                //{
-                //    RQID = "123",
-                //    Requster_Name = "ali",
-                //    Gnrt = "test",
-                //    Ampr = 200
-                //});
-
-
+               
                 return list;
             }
             catch (Exception exp)
@@ -88,11 +84,9 @@ namespace ManagersApplication.Server.Controllers
                 SelectDBContext context = new SelectDBContext(_config);
                 Contract_Item contract_Item = await context.GetAdmContract(RQID);
 
-                var contdate= contract_Item.Cont_Date.ToString("MM/dd/yyyy");
-                var viewdate= contract_Item.View_Date.ToString("MM/dd/yyyy");
-             //   contract_Item.Cont_Date = Convert.ToDateTime(contdate);
+                contract_Item.Cont_Date = ConvertDate.MiladiToShamsi(contract_Item.Cont_Date);
 
-                //contract_Item.View_Date = Convert.ToDateTime(ConvertDate.ToFa());
+                contract_Item.View_Date = ConvertDate.MiladiToShamsi(contract_Item.View_Date);
 
 
                 return contract_Item;
@@ -103,7 +97,7 @@ namespace ManagersApplication.Server.Controllers
                 throw;
             }
 
-           
+
         }
 
     }

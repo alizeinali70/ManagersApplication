@@ -72,7 +72,7 @@ namespace ManagersApplication.Server
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
                 endpoints.MapFallbackToFile("/_Host");
-                //endpoints.MapFallbackToFile("index.html");
+                //endpoints.MapFallbackToFile("/Login/Login");
             });
         }
     }

@@ -1,6 +1,6 @@
 ﻿using ManagersApplication.Shared;
 using Oracle.ManagedDataAccess.Client;
-
+using System.Data;
 
 namespace ManagersApplication.Server.DataAccess
 {
@@ -55,7 +55,6 @@ namespace ManagersApplication.Server.DataAccess
 
         }
 
-
         public async Task<Branching_Item> GetNameAsync(string RQID)
         {
             try
@@ -84,7 +83,6 @@ namespace ManagersApplication.Server.DataAccess
             }
 
         }
-
 
         public async Task<List<Branching_Item>> GetRquestRowAsync(string RQID)
         {
@@ -136,6 +134,7 @@ namespace ManagersApplication.Server.DataAccess
             }
 
         }
+
         public async Task<Contract_Item> GetAdmContract(string RQID)
         {
             try
@@ -173,6 +172,37 @@ namespace ManagersApplication.Server.DataAccess
 
                 throw;
             }
+        }
+
+        OracleTransaction transection = null;
+
+        public async Task<string> ConfirmContract(string RQID)
+        {
+            ////ADFA_RCPT_RQST.ACPT_CNTA_U(P_RQID NUMBER) RETURN NUMBER 
+            ///
+
+
+            var cmdtext = "";
+            using (OracleConnection conn = GetOracleConnection())
+            {
+                cmdtext = "ADFA_RCPT_RQST.ACPT_CNTA_U";
+
+                OracleCommand cmd = new OracleCommand();
+                cmd.Connection = conn;
+                cmd.CommandText= "ADFA_RCPT_RQST.ACPT_CNTA_U";
+                cmd.CommandType = CommandType.StoredProcedure;
+                
+                cmd.Parameters.Add(new OracleParameter("P_RQID", OracleDbType.Double, 200)).Value = RQID;
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                transection.Rollback();
+
+
+                conn.Close();
+            }
+
+            return cmdtext;
         }
     }
 }

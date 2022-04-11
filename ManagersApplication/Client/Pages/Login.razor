@@ -1,0 +1,32 @@
+﻿@page "/"
+@inject NavigationManager NavManager
+@layout _LoginLayout
+
+<div class="login-container">
+    <section class="login" id="login">
+        <header>
+            <h2>اپلیکیشن مدیران</h2>
+            <h4>شرکت توزیع برق شیراز</h4>
+        </header>
+        <div>
+            <input @bind="username" type="text" class="login-input" placeholder="نام کاربری" required autofocus />
+            <input @bind="password" type="password" class="login-input" placeholder="کلمه عبور" required />
+            <div class="submit-container">
+                <button type="submit" class="btn btn-block btn-primary" @onclick="()=>Sign_In(username,password)">ورود</button>
+            </div>
+        </div>
+        <h6 class="text-center mt-3">شرکت فنی و مهندسی عصراندیشه</h6>
+    </section>
+
+</div>
+
+
+@code {
+    private string username { get; set; }
+    private string password { get; set; }
+    protected void Sign_In(string username, string password)
+    {
+        if (username == "modir" && password == "123")
+            NavManager.NavigateTo("/Index");
+    }
+}

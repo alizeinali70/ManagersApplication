@@ -77,7 +77,7 @@
     </div>
     <div class="row col-lg-12 mt-2 mb-2">
         <div class="col-lg-1 col-4">
-            <button class="btn btn-block btn-primary bg-success-gradient text-center" style="width:85px">تایید</button>
+            <button class="btn btn-block btn-primary bg-success-gradient text-center" @onclick="Confirm" style="width:85px">تایید</button>
         </div>
         <div class="col-lg-1 col-4">
             <button class="btn btn-block btn-primary bg-danger-gradient text-center" style="width:85px">عدم تایید</button>
@@ -115,6 +115,13 @@
         _contract=JsonConvert.DeserializeObject<Contract_Item>(data);
 
     }
+    private async Task Confirm()
+    {
+        var result_name = await Http.PostAsJsonAsync("api/Branching/ConfirmContractasync/", RQID);
+
+    }
+
+    
     private void Back()
     {
         NavigationManager.NavigateTo("Branching");

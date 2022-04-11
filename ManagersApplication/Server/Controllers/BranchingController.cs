@@ -25,14 +25,14 @@ namespace ManagersApplication.Server.Controllers
         public async Task<ActionResult<List<Branching>>> Get_All_Contract_Async()
         {
             try
-            {               
+            {
                 SelectDBContext context = new SelectDBContext(_config);
                 List<Branching> list = await context.GetAllContractAsync();
                 foreach (var item in list)
                 {
                     item.UPDT_DATE = ConvertDate.MiladiToShamsi(item.UPDT_DATE);
-                                
-                   // item.UPDT_DATE = Convert.ToDateTime(ConvertDate.MiladiToShamsi(item.UPDT_DATE.ToString("yyyy/MM/dd"))).Date;                   
+
+                    // item.UPDT_DATE = Convert.ToDateTime(ConvertDate.MiladiToShamsi(item.UPDT_DATE.ToString("yyyy/MM/dd"))).Date;                   
                 }
                 return list;
             }
@@ -66,7 +66,7 @@ namespace ManagersApplication.Server.Controllers
             {
                 SelectDBContext context = new SelectDBContext(_config);
                 List<Branching_Item> list = await context.GetRquestRowAsync(RQID);
-               
+
                 return list;
             }
             catch (Exception exp)
@@ -100,5 +100,21 @@ namespace ManagersApplication.Server.Controllers
 
         }
 
+        [HttpPost("[controller]/[action]")]
+        [Route("Branching/ConfirmContractasync/")]
+        public async Task<ActionResult<string>> ConfirmContractasync([FromBody] string RQID)
+        {
+            try
+            {
+                SelectDBContext context = new SelectDBContext(_config);
+                string res = await context.ConfirmContract(RQID);
+                return res;
+            }
+            catch (Exception exp)
+            {
+
+                throw;
+            }
+}
     }
 }

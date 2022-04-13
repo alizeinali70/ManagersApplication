@@ -20,15 +20,25 @@ namespace ManagersApplication.Server.DataAccess
 
         }
 
-        public async Task<List<Branching>> GetAllContractAsync()
+        public async Task<List<Branching>> GetAllContractAsync(string regn_code)
         {
             int i = 0;
+            string cmdtext = "";
             try
             {
                 List<Branching> list = new List<Branching>();
                 using (OracleConnection conn = GetOracleConnection())
                 {
-                    var cmdtext = "select RQID,to_char(UPDT_DATE,'yyyy/MM/dd'),ACTV_DESC from adf_task where rqtp_code=9 and sub_sys=1 and actv_name ='Cntd'";
+                    if (regn_code == null)
+                    {
+                        cmdtext = "select RQID,to_char(UPDT_DATE,'yyyy/MM/dd'),ACTV_DESC from adf_task where " +
+                           "rqtp_code=9 and sub_sys=1 and actv_name ='Cntd'";
+                    }
+                    else
+                    {
+                        cmdtext = "select RQID,to_char(UPDT_DATE,'yyyy/MM/dd'),ACTV_DESC from adf_task where " +
+                             "rqtp_code=9 and sub_sys=1 and actv_name ='Cntd' and Regn_Code = " + regn_code;
+                    }
                     OracleCommand cmd = new OracleCommand(cmdtext, conn);
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
@@ -205,7 +215,7 @@ namespace ManagersApplication.Server.DataAccess
             return cmdtext;
         }
 
-        public async Task<int> CountAllContractAsync()
+        public async Task<int> CountAllContractAsync(string regn_code)
         {
             int count = 0;
             try
@@ -213,9 +223,19 @@ namespace ManagersApplication.Server.DataAccess
                 List<Branching> list = new List<Branching>();
                 using (OracleConnection conn = GetOracleConnection())
                 {
-                    var cmdtext = "select count(RQID) from adf_task where rqtp_code=9 and sub_sys=1 and actv_name ='Cntd'";
+                    var cmdtext = "";
+                    if (regn_code == null)
+                    {
+                        cmdtext = "select RQID,to_char(UPDT_DATE,'yyyy/MM/dd'),ACTV_DESC from adf_task where " +
+                           "rqtp_code=9 and sub_sys=1 and actv_name ='Cntd'";
+                    }
+                    else
+                    {
+                        cmdtext = "select RQID,to_char(UPDT_DATE,'yyyy/MM/dd'),ACTV_DESC from adf_task where " +
+                             "rqtp_code=9 and sub_sys=1 and actv_name ='Cntd' and Regn_Code = " + regn_code;
+                    }
                     OracleCommand cmd = new OracleCommand(cmdtext, conn);
-                    OracleDataAdapter da=new OracleDataAdapter(cmd);
+                    OracleDataAdapter da = new OracleDataAdapter(cmd);
                     DataSet ds = new DataSet();
                     da.Fill(ds);
                     conn.Open();

@@ -25,11 +25,20 @@
 @code {
     private string username { get; set; }
     private string password { get; set; }
+    [Parameter]
+    public string regn_code { get; set; }
     public string error { get; set; }
     protected void Sign_In(string username, string password)
     {
         if (username.ToLower() == "modir" && password == "123")
+        {
             NavManager.NavigateTo("/Index");
+        }
+        else if (username.ToLower() == "zonobi" && password == "123")
+        {
+            regn_code = "001";
+            NavManager.NavigateTo($"/Index/{regn_code}/");
+        }
         else
             error = "نام کاربری یا کلمه عبور اشتباه است";
     }

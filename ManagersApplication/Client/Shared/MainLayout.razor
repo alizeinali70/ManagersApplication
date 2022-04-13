@@ -106,10 +106,12 @@
 @code {
     public int count { get; set; }
 
+  //  public string regn_code { get; set; }
      protected override async Task OnInitializedAsync()
     {
 
-        count = await Http.GetFromJsonAsync<int>("api/Branching/Count_All_Contract_Async/");
+      //  var getcount = await Http.PostAsJsonAsync("api/Branching/Count_All_Contract_Async/", regn_code);
+                           
 
     }
 

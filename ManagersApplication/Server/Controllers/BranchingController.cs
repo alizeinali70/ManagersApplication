@@ -22,12 +22,12 @@ namespace ManagersApplication.Server.Controllers
 
         [HttpGet("[controller]/[action]")]
         [Route("Branching/Get_All_Contract_Async")]
-        public async Task<ActionResult<List<Branching>>> Get_All_Contract_Async()
+        public async Task<ActionResult<List<Branching>>> Get_All_Contract_Async([FromBody] string Regn_Code)
         {
             try
             {
                 SelectDBContext context = new SelectDBContext(_config);
-                List<Branching> list = await context.GetAllContractAsync();
+                List<Branching> list = await context.GetAllContractAsync(Regn_Code);
                 foreach (var item in list)
                 {
                     item.UPDT_DATE = ConvertDate.MiladiToShamsi(item.UPDT_DATE);
@@ -119,12 +119,12 @@ namespace ManagersApplication.Server.Controllers
 
         [HttpGet("[controller]/[action]")]
         [Route("Branching/Count_All_Contract_Async")]
-        public async Task<ActionResult<int>> Count_All_Contract_Async()
+        public async Task<ActionResult<int>> Count_All_Contract_Async([FromBody] string Regn_Code)
         {
             try
             {
                 SelectDBContext context = new SelectDBContext(_config);
-        int count = await context.CountAllContractAsync();
+        int count = await context.CountAllContractAsync(Regn_Code);
                
                 return count;
             }

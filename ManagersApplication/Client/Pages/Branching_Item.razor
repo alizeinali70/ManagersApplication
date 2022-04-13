@@ -31,21 +31,21 @@
                 قرارداد
             </h3>
         </div>
-        <div class="card-body">
+        <div class="card-body font">
             <div class=" col-lg-6 float-right">
-                <div class="row col-lg-12 ">
+                <div class="row col-lg-12 mb-2">
                     <div class="col-lg-4 col-7"> تاریخ قرارداد:</div>
                     <div class="col-lg-4 col-5">@_contract.Cont_Date </div>
                 </div>
-                <div class="row col-lg-12">
+                <div class="row col-lg-12 mb-2">
                     <div class="col-lg-4 col-7">تاریخ صورت جلسه: </div>
                     <div class="col-lg-4 col-5">@_contract.View_Date </div>
                 </div>
-                <div class="row col-lg-12">
+                <div class="row col-lg-12 mb-2">
                     <div class="col-lg-6 col-10">مهلت تعهدات متقاضی(روز): </div>
                     <div class="col-lg-3 col-2">@_contract.Resp_Inst_Equp </div>
                 </div>
-                <div class="row col-lg-12">
+                <div class="row col-lg-12 mb-2">
                     <div class="col-lg-6 col-10">مهلت تعهدات شرکت(روز): </div>
                     <div class="col-lg-3 col-2">@_contract.Resp_Dlve_Powr </div>
                 </div>
@@ -77,10 +77,10 @@
     </div>
     <div class="row col-lg-12 mt-2 mb-2">
         <div class="col-lg-1 col-4">
-            <button class="btn btn-block btn-primary bg-success-gradient text-center" @onclick="Confirm" style="width:85px">تایید</button>
+            <button class="btn btn-block btn-primary bg-success-gradient text-center" disabled @onclick="Confirm" style="width:85px">تایید</button>
         </div>
         <div class="col-lg-1 col-4">
-            <button class="btn btn-block btn-primary bg-danger-gradient text-center" style="width:85px">عدم تایید</button>
+            <button class="btn btn-block btn-primary bg-danger-gradient text-center" disabled style="width:85px">عدم تایید</button>
         </div>
         <div class="col-lg-1 col-4">
 

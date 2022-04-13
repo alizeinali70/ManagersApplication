@@ -9,13 +9,14 @@
             <h4>شرکت توزیع برق شیراز</h4>
         </header>
         <div>
-            <input @bind="username" type="text" class="login-input" placeholder="نام کاربری" required autofocus />
-            <input @bind="password" type="password" class="login-input" placeholder="کلمه عبور" required />
+            <input @bind="username" type="text" class="login-input" placeholder="نام کاربری" />
+            <input @bind="password" type="password" class="login-input" placeholder="کلمه عبور" />
+            <label class="text-danger">@error</label>
             <div class="submit-container">
                 <button type="submit" class="btn btn-block btn-primary" @onclick="()=>Sign_In(username,password)">ورود</button>
             </div>
         </div>
-        <h6 class="text-center mt-3">شرکت فنی و مهندسی عصراندیشه</h6>
+        <h6 class="text-center mt-3">شرکت فنی مهندسی عصراندیشه</h6>
     </section>
 
 </div>
@@ -24,9 +25,12 @@
 @code {
     private string username { get; set; }
     private string password { get; set; }
+    public string error { get; set; }
     protected void Sign_In(string username, string password)
     {
-        if (username == "modir" && password == "123")
+        if (username.ToLower() == "modir" && password == "123")
             NavManager.NavigateTo("/Index");
+        else
+            error = "نام کاربری یا کلمه عبور اشتباه است";
     }
 }

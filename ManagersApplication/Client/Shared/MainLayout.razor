@@ -37,7 +37,7 @@
                         <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3>1</h3>
+                                <h3>@count</h3>
 
                                 <p>انشعاب</p>
                             </div>
@@ -96,14 +96,23 @@
 
 
     <br />
-    <footer class="main-footer footer">
-        <strong><a href="">شرکت عصراندیشه 1400</a></strong>
+    <footer class="main-footer footer text-center">
+        <h6><a href="">شرکت فنی مهندسی عصراندیشه 1401</a></h6>
     </footer>
 
 
 </div>
 
 @code {
+    public int count { get; set; }
+
+     protected override async Task OnInitializedAsync()
+    {
+
+        count = await Http.GetFromJsonAsync<int>("api/Branching/Count_All_Contract_Async/");
+
+    }
+
     private void Go_To_Branching()
     {
         NavigationManager.NavigateTo("Branching");

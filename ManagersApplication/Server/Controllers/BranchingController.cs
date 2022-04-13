@@ -115,6 +115,24 @@ namespace ManagersApplication.Server.Controllers
 
                 throw;
             }
-}
+        }
+
+        [HttpGet("[controller]/[action]")]
+        [Route("Branching/Count_All_Contract_Async")]
+        public async Task<ActionResult<int>> Count_All_Contract_Async()
+        {
+            try
+            {
+                SelectDBContext context = new SelectDBContext(_config);
+        int count = await context.CountAllContractAsync();
+               
+                return count;
+            }
+            catch (Exception exp)
+            {
+                throw;
+            }
+        }
+        
     }
 }

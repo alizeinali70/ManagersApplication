@@ -10,25 +10,43 @@ div{
         margin-right: 250px;
     }
 
-    table {
-        font-size: 16px!important;
+    table, .card-body {
+        font-size: 13px !important;
+    }
+    table, th, td {
+        border: 1px solid;
+        text-align: center;
+        padding: 0.75rem;
+    }
+    .main-footer {
+        margin-right: 0px!important;
     }
 }
 @media (max-width:992px) {
-    table {
-        font-size: 10px !important;        
+    table, .card-body {
+        font-size: 8px !important;
     }
-
+    table, th, td {
+        border: 1px solid;
+    }
+    table, th, td {
+        border: 1px solid;
+        text-align: center;
+        padding: 0.75rem;
+    }
     .card-header, .card-title {
         font-size: 12px !important;
     }
     .td-width {
         width: 100px!important;
     }
+    .main-footer {
+        margin-right: 0px !important;
+    }
 }
 
     .scroll {
-        overflow-x: auto;h
+        overflow-x: auto;
         overflow-y: auto;
     }
     

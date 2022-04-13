@@ -189,9 +189,9 @@ namespace ManagersApplication.Server.DataAccess
 
                 OracleCommand cmd = new OracleCommand();
                 cmd.Connection = conn;
-                cmd.CommandText= "ADFA_RCPT_RQST.ACPT_CNTA_U";
+                cmd.CommandText = "ADFA_RCPT_RQST.ACPT_CNTA_U";
                 cmd.CommandType = CommandType.StoredProcedure;
-                
+
                 cmd.Parameters.Add(new OracleParameter("P_RQID", OracleDbType.Double, 200)).Value = RQID;
 
                 conn.Open();
@@ -203,6 +203,33 @@ namespace ManagersApplication.Server.DataAccess
             }
 
             return cmdtext;
+        }
+
+        public async Task<int> CountAllContractAsync()
+        {
+            int count = 0;
+            try
+            {
+                List<Branching> list = new List<Branching>();
+                using (OracleConnection conn = GetOracleConnection())
+                {
+                    var cmdtext = "select count(RQID) from adf_task where rqtp_code=9 and sub_sys=1 and actv_name ='Cntd'";
+                    OracleCommand cmd = new OracleCommand(cmdtext, conn);
+                    OracleDataAdapter da=new OracleDataAdapter(cmd);
+                    DataSet ds = new DataSet();
+                    da.Fill(ds);
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+
+                    count = int.Parse(ds.Tables[0].Rows[0].ItemArray[0].ToString());
+                    return count;
+                }
+            }
+            catch (Exception exp)
+            {
+                throw;
+            }
         }
     }
 }

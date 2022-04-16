@@ -30,6 +30,8 @@
     public string error { get; set; }
     protected void Sign_In(string username, string password)
     {
+        username = "zonobi"; password = "123";
+
         if (username.ToLower() == "modir" && password == "123")
         {
             NavManager.NavigateTo("/Index");

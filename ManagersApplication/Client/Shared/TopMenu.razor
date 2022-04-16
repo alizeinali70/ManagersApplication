@@ -1,0 +1,83 @@
+﻿@page "/TopMenu/{regn_code}"
+
+ <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <!-- Small boxes (Stat box) -->
+                <div class="row">
+                    <div class="col-lg-4 col-4" @onclick="Go_To_Branching" style="cursor:pointer">
+                        <!-- small box -->
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3>@BCount</h3>
+
+                                <p>انشعاب</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-bag"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-4"  @onclick="Go_To_Energy" style="cursor:pointer">
+                        <!-- small box -->
+                        <div class="small-box bg-success">
+                            <div class="inner">
+                                <h3>0<sup style="font-size: 20px"></sup></h3>
+
+                                <p>انرژی</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-4 col-4" @onclick="Go_To_Inspector" style="cursor:pointer">
+                        <!-- small box -->
+                        <div class="small-box bg-warning">
+                            <div class="inner">
+                                <h3>0</h3>
+
+                                <p>بازرسی</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-person-add"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.row -->
+                <!-- Main row -->
+                <!-- /.row (main row) -->
+            </div>
+        </section>
+        <!-- /.content -->
+
+@code {
+    [Parameter]
+    public string regn_code { get; set; }
+    [Parameter]
+    public int BCount { get; set; }
+     protected override async Task OnInitializedAsync()
+    {
+        var getcount = await Http.PostAsJsonAsync<string>("api/Branching/Count_All_Contract_Async/", regn_code);
+        BCount=int.Parse(await getcount.Content.ReadAsStringAsync()); 
+    }
+
+    private void Go_To_Branching()
+    {
+        NavigationManager.NavigateTo("Branching");
+
+    }
+    private void Go_To_Energy()
+    {
+        /// NavigationManager.NavigateTo("Energy");
+
+    }
+    private void Go_To_Inspector()
+    {
+        /// NavigationManager.NavigateTo("Inspector");
+
+    }
+}

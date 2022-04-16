@@ -1,14 +1,9 @@
 ﻿@page "/Index/{regn_code}"
 
-
+<TopMenu regn_code=@regn_code></TopMenu>
 
 @code {
+    [Parameter]
     public string regn_code { get; set; }
-     protected override async Task OnInitializedAsync()
-    {
-
-        var getcount = await Http.PostAsJsonAsync("api/Branching/Count_All_Contract_Async/", regn_code);
-                           
-
-    }
+     
 }

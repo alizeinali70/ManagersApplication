@@ -242,7 +242,8 @@ namespace ManagersApplication.Server.DataAccess
                     cmd.ExecuteNonQuery();
                     conn.Close();
 
-                    count = int.Parse(ds.Tables[0].Rows[0].ItemArray[0].ToString());
+                    // count = int.Parse(ds.Tables[0].Rows[0].ItemArray[0].ToString());
+                    count = ds.Tables[0].Rows.Count;
                     return count;
                 }
             }

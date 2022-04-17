@@ -1,4 +1,4 @@
-﻿@page "/Branching_Item/{RQID}"
+﻿@page "/Branching_Item/{RQID}/{regn_code}"
 
 
 
@@ -98,7 +98,8 @@
 
     [Parameter]
     public Contract_Item _contract { get; set; }
-
+     [Parameter]
+    public string regn_code { get; set; }
 
 
     protected override async Task OnInitializedAsync()
@@ -124,8 +125,7 @@
     
     private void Back()
     {
-        NavigationManager.NavigateTo("Branching");
-
+        NavigationManager.NavigateTo($"/Branching/{regn_code}/");
     }
 
 

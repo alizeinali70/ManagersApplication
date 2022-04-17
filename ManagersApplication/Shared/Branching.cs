@@ -14,8 +14,7 @@ namespace ManagersApplication.Shared
         public int ID { get; set; }
         public long RQID { get; set; }
         public string UPDT_DATE { get; set; }
-        public string ACTV_DESC { get; set; }
-     //   public string Regn_Code { get; set; }
+        public string ACTV_DESC { get; set; }     
 
     }
     public class Branching_Item

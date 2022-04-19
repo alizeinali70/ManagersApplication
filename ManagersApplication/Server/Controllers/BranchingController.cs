@@ -100,14 +100,31 @@ namespace ManagersApplication.Server.Controllers
 
         }
 
-        [HttpPost("[controller]/[action]")]
-        [Route("Branching/ConfirmContractasync/")]
-        public async Task<ActionResult<string>> ConfirmContractasync([FromBody] string RQID)
+        [HttpGet("[controller]/[action]")]
+        [Route("Branching/Count_All_Contract_Async")]
+        public async Task<ActionResult<int>> Count_All_Contract_Async([FromBody] string Regn_Code)
         {
             try
             {
                 SelectDBContext context = new SelectDBContext(_config);
-                string res = await context.ConfirmContract(RQID);
+                int count = await context.CountAllContractAsync(Regn_Code);
+
+                return count;
+            }
+            catch (Exception exp)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost("[controller]/[action]")]
+        [Route("Branching/ConfirmContractasync/")]
+        public async Task<ActionResult<int>> ConfirmContractasync([FromBody] string RQID)
+        {
+            try
+            {
+                SelectDBContext context = new SelectDBContext(_config);
+                int res = await context.ConfirmContract(RQID);
                 return res;
             }
             catch (Exception exp)
@@ -117,22 +134,25 @@ namespace ManagersApplication.Server.Controllers
             }
         }
 
-        [HttpGet("[controller]/[action]")]
-        [Route("Branching/Count_All_Contract_Async")]
-        public async Task<ActionResult<int>> Count_All_Contract_Async([FromBody] string Regn_Code)
+        [HttpPost("[controller]/[action]")]
+        [Route("Branching/RejectContractasync/")]
+        public async Task<ActionResult<int>> RejectContractasync([FromBody] List<string> lst)
         {
             try
             {
+                string RQID=lst[0];
+                string Desc=lst[1]; 
                 SelectDBContext context = new SelectDBContext(_config);
-        int count = await context.CountAllContractAsync(Regn_Code);
-               
-                return count;
+                int res = await context.RejectContract(RQID, Desc);
+                return res;
             }
             catch (Exception exp)
             {
+
                 throw;
             }
         }
-        
+
+
     }
 }

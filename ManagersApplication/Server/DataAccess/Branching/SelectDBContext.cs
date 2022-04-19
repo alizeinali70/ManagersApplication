@@ -8,6 +8,7 @@ namespace ManagersApplication.Server.DataAccess
     {
         // public readonly IConfiguration _config;
         string _conn;
+        OracleTransaction transection = null;
 
         public SelectDBContext(IConfiguration configuration)
         {
@@ -183,38 +184,7 @@ namespace ManagersApplication.Server.DataAccess
                 throw;
             }
         }
-
-        OracleTransaction transection = null;
-
-        public async Task<string> ConfirmContract(string RQID)
-        {
-            ////ADFA_RCPT_RQST.ACPT_CNTA_U(P_RQID NUMBER) RETURN NUMBER 
-            ///
-
-
-            var cmdtext = "";
-            using (OracleConnection conn = GetOracleConnection())
-            {
-                cmdtext = "ADFA_RCPT_RQST.ACPT_CNTA_U";
-
-                OracleCommand cmd = new OracleCommand();
-                cmd.Connection = conn;
-                cmd.CommandText = "ADFA_RCPT_RQST.ACPT_CNTA_U";
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                cmd.Parameters.Add(new OracleParameter("P_RQID", OracleDbType.Double, 200)).Value = RQID;
-
-                conn.Open();
-                cmd.ExecuteNonQuery();
-                transection.Rollback();
-
-
-                conn.Close();
-            }
-
-            return cmdtext;
-        }
-
+      
         public async Task<int> CountAllContractAsync(string regn_code)
         {
             int count = 0;
@@ -252,5 +222,83 @@ namespace ManagersApplication.Server.DataAccess
                 throw;
             }
         }
+     
+        public async Task<int> ConfirmContract(string RQID)
+        {
+            ////ADFA_RCPT_RQST.ACPT_CNTA_U(P_RQID NUMBER) RETURN NUMBER 
+            ///
+
+            var res = "";
+
+            using (OracleConnection conn = GetOracleConnection())
+            {
+                conn.Open();
+                transection = conn.BeginTransaction();
+                OracleCommand cmd = new OracleCommand();
+                cmd.CommandText = "ADFA_RCPT_RQST.ACPT_CNTA_U";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Connection = conn;
+
+                //out
+                OracleParameter result = new OracleParameter("RSLT", OracleDbType.Int32, 2);
+                result.Direction = ParameterDirection.ReturnValue;
+                cmd.Parameters.Add(result);
+                
+                //in
+                cmd.Parameters.Add(new OracleParameter("P_RQID", OracleDbType.Long, 10)).Value = long.Parse(RQID);
+
+                cmd.ExecuteNonQuery();
+                res = result.Value.ToString();
+               if (res == "0")
+                  transection.Commit();
+               else
+                   transection.Rollback();
+
+
+                conn.Close();
+            }
+
+            return int.Parse(res);
+        }
+
+        public async Task<int> RejectContract(string RQID,string Desc)
+        {
+            ////ADFA_RCPT_RQST.ACPT_CNTA_U(P_RQID NUMBER) RETURN NUMBER 
+            ///
+
+            var res = "";
+
+            using (OracleConnection conn = GetOracleConnection())
+            {
+                conn.Open();
+                transection = conn.BeginTransaction();
+                OracleCommand cmd = new OracleCommand();
+                cmd.CommandText = "ADFA_RCPT_RQST.DGRE_CNTA_U";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Connection = conn;
+
+                //out
+                OracleParameter result = new OracleParameter("RSLT", OracleDbType.Int32, 2);
+                result.Direction = ParameterDirection.ReturnValue;
+                cmd.Parameters.Add(result);
+
+                //in
+                cmd.Parameters.Add(new OracleParameter("P_RQID", OracleDbType.Long, 10)).Value = long.Parse(RQID);
+                cmd.Parameters.Add(new OracleParameter("P_DESC", OracleDbType.Varchar2, 200)).Value = Desc;
+
+                cmd.ExecuteNonQuery();
+                res = result.Value.ToString();
+                if (res == "0")
+                    transection.Commit();
+                else
+                    transection.Rollback();
+
+
+                conn.Close();
+            }
+
+            return int.Parse(res);
+        }
+
     }
 }

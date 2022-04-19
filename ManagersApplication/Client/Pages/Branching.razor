@@ -2,7 +2,8 @@
 
 <div class="card">
     <div class="card-header bg-info">
-        <h3 class="card-title">نمایش درخواست های انشعاب</h3>
+        <h3 class="card-title float-right">نمایش درخواست های انشعاب</h3>
+         <button class="btn btn-block warning bg-warning-gradient float-left text-right" @onclick="Back" style="width:65px">بازگشت</button>
     </div>
     <!-- /.card-header -->
     <div class="card-body p-0 scroll">
@@ -63,6 +64,10 @@
     {
         var a = RQID;
         NavigationManager.NavigateTo($"Branching_Item/{RQID.ToString()}/{regn_code}");
+    }
 
+     private void Back()
+    {
+        NavigationManager.NavigateTo($"/Index/{regn_code}/");
     }
 }

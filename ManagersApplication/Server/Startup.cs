@@ -22,7 +22,7 @@ namespace ManagersApplication.Server
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddScoped<SelectDBContext>();
+            services.AddScoped<DBContext>();
 
             services.AddResponseCompression(opts =>
             {

@@ -76,9 +76,34 @@
             <div class="col-lg-8 col-8"><textarea @bind=Desc class="form-control"></textarea> </div>
         </div>
         <div class="row col-lg-8">
-            <div class="col-lg-8 col-8"><label class="text-danger">@Result_Message</label> </div>
+            <!-- /.card-header -->
+        <div class="card-body p-0 scroll" style="height:137px;">
+            <table class="table table-striped">
+                <tr>
+                    
+                    <th>نوع عکس</th>
+                    <th>عکس</th>
+                    <th>نمایش</th>
+                    
+                </tr>
+
+                @foreach (var item in Img_list)
+                {
+                    <tr>
+                        <td>@item.Image_Type_Desc</td>
+                        <td>@item.Image</td>
+                        <td></td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+        <!-- /.card-body -->
         </div>
     </div>
+     <div class="row col-lg-8">
+            <div class="col-lg-8 col-8"><label class="text-danger">@Result_Message</label> </div>
+        </div>
     <div class="row col-lg-12 mt-2 mb-2">
         <div class="col-lg-1 col-4">
             <button class="btn btn-block btn-primary bg-success-gradient text-center" @onclick="Confirm" style="width:85px">تایید</button>
@@ -89,6 +114,9 @@
         <div class="col-lg-1 col-4">
             <button class="btn btn-block btn-primary bg-warning-gradient text-center" @onclick="Back" style="width:85px">بازگشت</button>
         </div>
+        @*<div class="col-lg-1 col-4">
+            <button class="btn btn-block btn-primary bg-warning-gradient text-center" @onclick="View_Img" style="width:85px">مشاهده مدارک</button>
+        </div>*@
     </div>
 </div>
 
@@ -109,20 +137,18 @@
     public List<string> lst { get; set; }
 
     public string Result_Message { get; set; }
+    [Parameter]
+    public List<Sas_Image_Document> Img_list { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         _contract = new Contract_Item();
         //////////////////////////////////////////
-        var result_name = await Http.PostAsJsonAsync("api/Branching/Get_Requester_Name_Async/", RQID);
-        Requster_Name = await result_name.Content.ReadAsStringAsync();
-        var result_name_json = JsonConvert.DeserializeObject<Branching_Item>(Requster_Name);
-        Requster_Name = result_name_json.Requster_Name;
+        Get_Requester_Name_Async();
         //////////////////////////////////////////
-        var contract_Item = await Http.PostAsJsonAsync("api/Branching/Get_AdmContract/", RQID);
-        var data = await contract_Item.Content.ReadAsStringAsync();
-        _contract = JsonConvert.DeserializeObject<Contract_Item>(data);
-
+        Get_AdmContract();
+        //////////////////////////////////////////
+        View_Img();
     }
     private async Task Confirm()
     {
@@ -142,11 +168,10 @@
         lst.Add(Desc);
         var result = await Http.PostAsJsonAsync("api/Branching/RejectContractasync/", lst);
         var res=await result.Content.ReadAsStringAsync();
-      if (res == "0")
+        if (res == "0")
             Result_Message = "ثبت با موفقیت انجام شد";
         else
-            Result_Message = "درخواست شرایط مورد نظر را ندارد";
-        
+            Result_Message = "درخواست شرایط مورد نظر را ندارد";        
     }
 
     private void Back()
@@ -155,5 +180,26 @@
     }
 
 
+    private async Task Get_Requester_Name_Async()
+    {
+        var result_name = await Http.PostAsJsonAsync("api/Branching/Get_Requester_Name_Async/", RQID);
+        Requster_Name = await result_name.Content.ReadAsStringAsync();
+        var result_name_json = JsonConvert.DeserializeObject<Branching_Item>(Requster_Name);
+        Requster_Name = result_name_json.Requster_Name;
+    }
 
+    private async Task Get_AdmContract()
+    {
+        var contract_Item = await Http.PostAsJsonAsync("api/Branching/Get_AdmContract/", RQID);
+        var data = await contract_Item.Content.ReadAsStringAsync();
+        _contract = JsonConvert.DeserializeObject<Contract_Item>(data);
+    }
+
+    private async Task View_Img()
+    {
+        Img_list = new List<Sas_Image_Document>();
+        var result = await Http.PostAsJsonAsync("api/Branching/View_Imgasync/", RQID);
+        var res=await result.Content.ReadAsStringAsync();
+        Img_list = JsonConvert.DeserializeObject<List<Sas_Image_Document>>(res);
+    }
 }

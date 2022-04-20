@@ -4,13 +4,13 @@ using System.Data;
 
 namespace ManagersApplication.Server.DataAccess
 {
-    public class SelectDBContext
+    public class DBContext
     {
         // public readonly IConfiguration _config;
         string _conn;
         OracleTransaction transection = null;
 
-        public SelectDBContext(IConfiguration configuration)
+        public DBContext(IConfiguration configuration)
         {
             _conn = configuration.GetValue<string>("ConnectionStrings:OracleConnection");
         }
@@ -30,7 +30,7 @@ namespace ManagersApplication.Server.DataAccess
                 List<Branching> list = new List<Branching>();
                 using (OracleConnection conn = GetOracleConnection())
                 {
-                    if (regn_code == null)
+                    if (regn_code == "999")
                     {
                         cmdtext = "select RQID,to_char(UPDT_DATE,'yyyy/MM/dd'),ACTV_DESC from adf_task where " +
                            "rqtp_code=9 and sub_sys=1 and actv_name ='Cntd'";
@@ -194,7 +194,7 @@ namespace ManagersApplication.Server.DataAccess
                 using (OracleConnection conn = GetOracleConnection())
                 {
                     var cmdtext = "";
-                    if (regn_code == null)
+                    if (regn_code == "999")
                     {
                         cmdtext = "select RQID,to_char(UPDT_DATE,'yyyy/MM/dd'),ACTV_DESC from adf_task where " +
                            "rqtp_code=9 and sub_sys=1 and actv_name ='Cntd'";
@@ -298,6 +298,55 @@ namespace ManagersApplication.Server.DataAccess
             }
 
             return int.Parse(res);
+        }
+
+        public async Task<List<object>> View_Img(string RQID)
+        {
+            ////ADFA_APPS_PACK.GETL_SCAN_P(P_RQID NUMBER , P_RESULT OUT sys_refcursor) IS
+            ///
+
+            var res = "";
+            List<object> list = new List<object>();
+            using (OracleConnection conn = GetOracleConnection())
+            {
+                conn.Open();
+                transection = conn.BeginTransaction();
+                OracleCommand cmd = new OracleCommand();
+                cmd.CommandText = "ADFA_APPS_PACK.GETL_SCAN_P";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Connection = conn;
+                cmd.BindByName=true;
+                //out
+                OracleParameter result = new OracleParameter("P_RESULT", OracleDbType.RefCursor);
+                result.Direction = ParameterDirection.Output;
+                cmd.Parameters.Add(result);
+
+                //in
+                cmd.Parameters.Add(new OracleParameter("P_RQID", OracleDbType.Long, 10)).Value = long.Parse(RQID);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        list.Add(new Sas_Image_Document
+                        {
+                            Image_Type_Desc = reader.GetValue(3),
+                            Image = reader.GetValue(4)
+                        });
+                    }
+                    
+                }
+                res = result.Value.ToString();
+                //if (res == "0")
+                //    transection.Commit();
+                //else
+                //    transection.Rollback();
+
+
+                conn.Close();
+            }
+
+            return list;
         }
 
     }

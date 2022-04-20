@@ -57,6 +57,11 @@ namespace ManagersApplication.Shared
         public string Comt_Comp { get; set; }
     }
 
+    public class Sas_Image_Document
+    {
+        public object Image_Type_Desc { get; set; }
+        public object Image { get; set; }
+    }
 }
 
     

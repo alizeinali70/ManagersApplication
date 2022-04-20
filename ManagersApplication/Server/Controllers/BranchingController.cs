@@ -26,7 +26,7 @@ namespace ManagersApplication.Server.Controllers
         {
             try
             {
-                SelectDBContext context = new SelectDBContext(_config);
+                DBContext context = new DBContext(_config);
                 List<Branching> list = await context.GetAllContractAsync(Regn_Code);
                 foreach (var item in list)
                 {
@@ -48,7 +48,7 @@ namespace ManagersApplication.Server.Controllers
         {
             try
             {
-                SelectDBContext context = new SelectDBContext(_config);
+                DBContext context = new DBContext(_config);
                 Branching_Item _Item = await context.GetNameAsync(RQID);
                 return _Item;
             }
@@ -64,7 +64,7 @@ namespace ManagersApplication.Server.Controllers
         {
             try
             {
-                SelectDBContext context = new SelectDBContext(_config);
+                DBContext context = new DBContext(_config);
                 List<Branching_Item> list = await context.GetRquestRowAsync(RQID);
 
                 return list;
@@ -81,7 +81,7 @@ namespace ManagersApplication.Server.Controllers
         {
             try
             {
-                SelectDBContext context = new SelectDBContext(_config);
+                DBContext context = new DBContext(_config);
                 Contract_Item contract_Item = await context.GetAdmContract(RQID);
 
                 contract_Item.Cont_Date = ConvertDate.MiladiToShamsi(contract_Item.Cont_Date);
@@ -106,7 +106,7 @@ namespace ManagersApplication.Server.Controllers
         {
             try
             {
-                SelectDBContext context = new SelectDBContext(_config);
+                DBContext context = new DBContext(_config);
                 int count = await context.CountAllContractAsync(Regn_Code);
 
                 return count;
@@ -123,7 +123,7 @@ namespace ManagersApplication.Server.Controllers
         {
             try
             {
-                SelectDBContext context = new SelectDBContext(_config);
+                DBContext context = new DBContext(_config);
                 int res = await context.ConfirmContract(RQID);
                 return res;
             }
@@ -142,8 +142,24 @@ namespace ManagersApplication.Server.Controllers
             {
                 string RQID=lst[0];
                 string Desc=lst[1]; 
-                SelectDBContext context = new SelectDBContext(_config);
+                DBContext context = new DBContext(_config);
                 int res = await context.RejectContract(RQID, Desc);
+                return res;
+            }
+            catch (Exception exp)
+            {
+
+                throw;
+            }
+        }
+        [HttpPost("[controller]/[action]")]
+        [Route("Branching/View_Imgasync/")]
+        public async Task<ActionResult<object>> View_Imgasync([FromBody] string RQID)
+        {
+            try
+            {
+                DBContext context = new DBContext(_config);
+                List<object> res = await context.View_Img(RQID);
                 return res;
             }
             catch (Exception exp)

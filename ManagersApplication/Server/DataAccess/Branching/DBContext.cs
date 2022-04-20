@@ -327,12 +327,13 @@ namespace ManagersApplication.Server.DataAccess
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (await reader.ReadAsync())
-                    {
-                        list.Add(new Sas_Image_Document
-                        {
-                            Image_Type_Desc = reader.GetValue(3),
-                            Image = reader.GetValue(4)
-                        });
+                    {                       
+                            list.Add(new Sas_Image_Document
+                            {
+                                Image_Type = reader.GetValue(2),
+                                Image_Type_Desc = reader.GetValue(3),
+                                Image = reader.GetValue(4)
+                            });                        
                     }
                     
                 }

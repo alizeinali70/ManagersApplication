@@ -59,6 +59,7 @@ namespace ManagersApplication.Shared
 
     public class Sas_Image_Document
     {
+        public object Image_Type { get; set; }
         public object Image_Type_Desc { get; set; }
         public object Image { get; set; }
     }

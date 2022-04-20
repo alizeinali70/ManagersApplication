@@ -77,33 +77,37 @@
         </div>
         <div class="row col-lg-8">
             <!-- /.card-header -->
-        <div class="card-body p-0 scroll" style="height:137px;">
-            <table class="table table-striped">
-                <tr>
-                    
-                    <th>نوع عکس</th>
-                    <th>عکس</th>
-                    <th>نمایش</th>
-                    
-                </tr>
-
-                @foreach (var item in Img_list)
-                {
+            <div class="card-body p-0 scroll" style="height:137px;">
+                <table class="table table-striped">
                     <tr>
-                        <td>@item.Image_Type_Desc</td>
-                        <td>@item.Image</td>
-                        <td></td>
-                    </tr>
-                }
 
-            </table>
-        </div>
-        <!-- /.card-body -->
+                        <th>نوع عکس</th>
+                        <th>عکس</th>
+                        <th>نمایش</th>
+
+                    </tr>
+                    @foreach (var item in Img_list)
+                    {
+                        if (@item.Image_Type.ToString() == "8")
+                        {
+                            <tr>
+
+                                <td>@item.Image_Type_Desc</td>
+                                <td>@item.Image_Type_Desc</td>
+                                <td></td>
+
+                            </tr>
+                        }
+                    }
+
+                </table>
+            </div>
+            <!-- /.card-body -->
         </div>
     </div>
-     <div class="row col-lg-8">
-            <div class="col-lg-8 col-8"><label class="text-danger">@Result_Message</label> </div>
-        </div>
+    <div class="row col-lg-8">
+        <div class="col-lg-8 col-8"><label class="text-danger">@Result_Message</label> </div>
+    </div>
     <div class="row col-lg-12 mt-2 mb-2">
         <div class="col-lg-1 col-4">
             <button class="btn btn-block btn-primary bg-success-gradient text-center" @onclick="Confirm" style="width:85px">تایید</button>
@@ -116,7 +120,7 @@
         </div>
         @*<div class="col-lg-1 col-4">
             <button class="btn btn-block btn-primary bg-warning-gradient text-center" @onclick="View_Img" style="width:85px">مشاهده مدارک</button>
-        </div>*@
+            </div>*@
     </div>
 </div>
 
@@ -137,6 +141,7 @@
     public List<string> lst { get; set; }
 
     public string Result_Message { get; set; }
+
     [Parameter]
     public List<Sas_Image_Document> Img_list { get; set; }
 
@@ -148,12 +153,12 @@
         //////////////////////////////////////////
         Get_AdmContract();
         //////////////////////////////////////////
-        View_Img();
+        await View_Img();
     }
     private async Task Confirm()
     {
         var result = await Http.PostAsJsonAsync("api/Branching/ConfirmContractasync/", RQID);
-        var res=await result.Content.ReadAsStringAsync();
+        var res = await result.Content.ReadAsStringAsync();
         if (res == "0")
             Result_Message = "ثبت با موفقیت انجام شد";
         else
@@ -167,11 +172,11 @@
         lst.Add(RQID);
         lst.Add(Desc);
         var result = await Http.PostAsJsonAsync("api/Branching/RejectContractasync/", lst);
-        var res=await result.Content.ReadAsStringAsync();
+        var res = await result.Content.ReadAsStringAsync();
         if (res == "0")
             Result_Message = "ثبت با موفقیت انجام شد";
         else
-            Result_Message = "درخواست شرایط مورد نظر را ندارد";        
+            Result_Message = "درخواست شرایط مورد نظر را ندارد";
     }
 
     private void Back()
@@ -199,7 +204,7 @@
     {
         Img_list = new List<Sas_Image_Document>();
         var result = await Http.PostAsJsonAsync("api/Branching/View_Imgasync/", RQID);
-        var res=await result.Content.ReadAsStringAsync();
+        var res = await result.Content.ReadAsStringAsync();
         Img_list = JsonConvert.DeserializeObject<List<Sas_Image_Document>>(res);
     }
 }

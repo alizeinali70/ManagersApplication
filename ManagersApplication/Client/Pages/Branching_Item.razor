@@ -33,34 +33,34 @@
             </h3>
         </div>
         <div class="card-body font">
-            <div class=" col-lg-6 float-right">
-                <div class="row col-lg-12 mb-2">
-                    <div class="col-lg-4 col-7"> تاریخ قرارداد:</div>
-                    <div class="col-lg-4 col-5">@_contract.Cont_Date </div>
+            <div class=" col-lg-12 float-right">
+                <div class="row col-lg-3 mb-2 float-right">
+                    <div class="col-lg-6 col-7"> تاریخ قرارداد:</div>
+                    <div class="col-lg-6 col-5">@_contract.Cont_Date </div>
                 </div>
-                <div class="row col-lg-12 mb-2">
-                    <div class="col-lg-4 col-7">تاریخ صورت جلسه: </div>
-                    <div class="col-lg-4 col-5">@_contract.View_Date </div>
+                <div class="row col-lg-3 mb-2 float-right">
+                    <div class="col-lg-6 col-7">تاریخ صورت جلسه: </div>
+                    <div class="col-lg-6 col-5">@_contract.View_Date </div>
                 </div>
-                <div class="row col-lg-12 mb-2">
+                <div class="row col-lg-3 mb-2 float-right">
                     <div class="col-lg-6 col-10">مهلت تعهدات متقاضی(روز): </div>
-                    <div class="col-lg-3 col-2">@_contract.Resp_Inst_Equp </div>
+                    <div class="col-lg-6 col-2">@_contract.Resp_Inst_Equp </div>
                 </div>
-                <div class="row col-lg-12 mb-2">
+                <div class="row col-lg-3 mb-2 float-right">
                     <div class="col-lg-6 col-10">مهلت تعهدات شرکت(روز): </div>
-                    <div class="col-lg-3 col-2">@_contract.Resp_Dlve_Powr </div>
+                    <div class="col-lg-6 col-2">@_contract.Resp_Dlve_Powr </div>
                 </div>
             </div>
-            <div class="row col-lg-6 float-right">
-                <div class="row col-lg-12">
-                    <div class="col-lg-4 col-4"> تعهدات متقاضی: </div>
+            <div class="row col-lg-12 float-right">
+                <div class="row col-lg-6 float-right">
+                    <div class="col-lg-3 col-4"> تعهدات متقاضی: </div>
                     <div class="col-lg-8 col-8">
                         <textarea class="form-control">@_contract.Comt_Aplr </textarea>
                     </div>
                 </div>
 
-                <div class="row col-lg-12">
-                    <div class="col-lg-4 col-4"> تعهدات شرکت: </div>
+                <div class="row col-lg-6 float-right">
+                    <div class="col-lg-3 col-4"> تعهدات شرکت: </div>
                     <div class="col-lg-8 col-8">
                         <textarea class="form-control">@_contract.Comt_Comp  </textarea>
                     </div>
@@ -74,16 +74,28 @@
         <div class="row col-lg-4">
             <div class="col-lg-4 col-4"> دلیل عدم تایید: </div>
             <div class="col-lg-8 col-8"><textarea @bind=Desc class="form-control"></textarea> </div>
+            <div class="row col-lg-12 mt-2 mb-2">
+                <div class="col-lg-4 col-4">
+                    <button class="btn btn-block btn-primary bg-success-gradient text-center" @onclick="Confirm" style="width:85px">تایید</button>
+                </div>
+                <div class="col-lg-4 col-4">
+                    <button class="btn btn-block btn-primary bg-danger-gradient text-center" @onclick="Reject" style="width:85px">عدم تایید</button>
+                </div>
+                <div class="col-lg-4 col-4">
+                    <button class="btn btn-block btn-primary bg-warning-gradient text-center" @onclick="Back" style="width:85px">بازگشت</button>
+                </div>
+
+            </div>
         </div>
         <div class="row col-lg-8">
             <!-- /.card-header -->
-            <div class="card-body p-0 scroll" style="height:137px;">
+            <div class="card-body p-0 scroll" style="height:237px;">
                 <table class="table table-striped">
                     <tr>
 
                         <th>نوع عکس</th>
                         <th>عکس</th>
-                        <th>نمایش</th>
+                        @*<th>نمایش</th>*@
 
                     </tr>
                     @foreach (var item in Img_list)
@@ -93,8 +105,8 @@
                             <tr>
 
                                 <td>@item.Image_Type_Desc</td>
-                                <td>@item.Image_Type_Desc</td>
-                                <td></td>
+                                <td><img id="myImg" src="data:image/jpg;base64,@Convert.ToBase64String(item.Image)" width="200" height="200" /></td>
+                                @*<td></td>*@
 
                             </tr>
                         }
@@ -103,25 +115,35 @@
                 </table>
             </div>
             <!-- /.card-body -->
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
+
+                <!-- The Close Button -->
+                <span class="close" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
+
+                <!-- Modal Content (The Image) -->
+                <img class="modal-content" id="img01">
+
+                <!-- Modal Caption (Image Text) -->
+                <div id="caption"></div>
+            </div>
         </div>
     </div>
     <div class="row col-lg-8">
         <div class="col-lg-8 col-8"><label class="text-danger">@Result_Message</label> </div>
     </div>
-    <div class="row col-lg-12 mt-2 mb-2">
+    @* <div class="row col-lg-12 mt-2 mb-2">
         <div class="col-lg-1 col-4">
-            <button class="btn btn-block btn-primary bg-success-gradient text-center" @onclick="Confirm" style="width:85px">تایید</button>
+        <button class="btn btn-block btn-primary bg-success-gradient text-center" @onclick="Confirm" style="width:85px">تایید</button>
         </div>
         <div class="col-lg-1 col-4">
-            <button class="btn btn-block btn-primary bg-danger-gradient text-center" @onclick="Reject" style="width:85px">عدم تایید</button>
+        <button class="btn btn-block btn-primary bg-danger-gradient text-center" @onclick="Reject" style="width:85px">عدم تایید</button>
         </div>
         <div class="col-lg-1 col-4">
-            <button class="btn btn-block btn-primary bg-warning-gradient text-center" @onclick="Back" style="width:85px">بازگشت</button>
+        <button class="btn btn-block btn-primary bg-warning-gradient text-center" @onclick="Back" style="width:85px">بازگشت</button>
         </div>
-        @*<div class="col-lg-1 col-4">
-            <button class="btn btn-block btn-primary bg-warning-gradient text-center" @onclick="View_Img" style="width:85px">مشاهده مدارک</button>
-            </div>*@
-    </div>
+
+        </div>*@
 </div>
 
 

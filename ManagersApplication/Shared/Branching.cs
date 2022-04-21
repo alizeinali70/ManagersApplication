@@ -61,7 +61,7 @@ namespace ManagersApplication.Shared
     {
         public object Image_Type { get; set; }
         public object Image_Type_Desc { get; set; }
-        public object Image { get; set; }
+        public byte[] Image { get; set; }
     }
 }
 

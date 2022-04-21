@@ -16,7 +16,7 @@ div{
     table, th, td {
         border: 1px solid;
         text-align: center;
-        padding: 0.75rem!important;
+        padding: 0.1!important;
         vertical-align: unset!important;
     }
     .main-footer {
@@ -33,7 +33,7 @@ div{
     table, th, td {
         border: 1px solid;
         text-align: center;
-        padding: 0.75rem !important;
+        padding: 0.1rem !important;
         vertical-align: unset !important;
     }
     .card-header, .card-title {

@@ -303,9 +303,7 @@ namespace ManagersApplication.Server.DataAccess
         public async Task<List<object>> View_Img(string RQID)
         {
             ////ADFA_APPS_PACK.GETL_SCAN_P(P_RQID NUMBER , P_RESULT OUT sys_refcursor) IS
-            ///
-
-            var res = "";
+            ///          
             List<object> list = new List<object>();
             using (OracleConnection conn = GetOracleConnection())
             {
@@ -332,12 +330,12 @@ namespace ManagersApplication.Server.DataAccess
                             {
                                 Image_Type = reader.GetValue(2),
                                 Image_Type_Desc = reader.GetValue(3),
-                                Image = reader.GetValue(4)
+                                Image =(byte[])reader.GetValue(4)
                             });                        
                     }
                     
                 }
-                res = result.Value.ToString();
+              
                 //if (res == "0")
                 //    transection.Commit();
                 //else

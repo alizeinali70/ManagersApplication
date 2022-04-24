@@ -16,6 +16,7 @@
                 <th>مرحله</th>
                 <th></th>
             </tr>
+            <tbody>
             @foreach (var item in BranchList)
             {
                 <tr>
@@ -26,7 +27,7 @@
                     <td><button class="btn btn-block btn-primary bg-primary-gradient" @onclick="()=>Click(item.RQID,regn_code)" style="width:65px">نمایش</button></td>
                 </tr>
             }
-
+            </tbody>
         </table>
 
 

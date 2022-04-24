@@ -3,7 +3,7 @@
 
 
 <div class="container-fluid">
-   
+
 
     <div class="card col-lg-12 col-12 float-right">
         <div class="card-header bg-info">
@@ -27,110 +27,110 @@
                     <th>قدرت</th>
                     <th class="td-width">ولتاژ تحویلی</th>
                 </tr>
+                <tbody>
+                    @foreach (var item in BranchItemList)
+                    {
+                        <tr>
+                            @if (item.Gnrt == "1")
+                            {
+                                <td>جدید</td>
+                            }
+                            else
+                            {
+                                <td>تغییر</td>
+                            }
 
-                @foreach (var item in BranchItemList)
-                {
-                    <tr>
-                        @if (item.Gnrt == "1")
-                        {
-                            <td>جدید</td>
-                        }
-                        else
-                        {
-                            <td>تغییر</td>
-                        }
+                            @if (item.Serv_Type == "1")
+                            {
+                                <td>عادی</td>
+                            }
+                            else
+                            {
+                                <td>دیماندی</td>
+                            }
 
-                        @if (item.Serv_Type == "1")
-                        {
-                            <td>عادی</td>
-                        }
-                        else
-                        {
-                            <td>دیماندی</td>
-                        }
+                            <td> @item.Rqtt_Desc</td>
 
-                        <td> @item.Rqtt_Desc</td>
+                            @if (item.Brnc_Type == "1")
+                            {
+                                <td>دائم</td>
+                            }
+                            else if (item.Brnc_Type == "2")
+                            {
+                                <td>آزاد</td>
+                            }
+                            else if (item.Brnc_Type == "3")
+                            {
+                                <td>حاشیه شهر</td>
+                            }
+                            else if (item.Brnc_Type == "4")
+                            {
+                                <td>آزاد به دائم</td>
+                            }
+                            else if (item.Brnc_Type == "5")
+                            {
+                                <td>فتوولتاییک</td>
+                            }
+                            else if (item.Brnc_Type == "6")
+                            {
+                                <td>غیر دائم</td>
+                            }
+                            <td> @item.Loct_Desc</td>
 
-                        @if (item.Brnc_Type == "1")
-                        {
-                            <td>دائم</td>
-                        }
-                        else if (item.Brnc_Type == "2")
-                        {
-                            <td>آزاد</td>
-                        }
-                        else if (item.Brnc_Type == "3")
-                        {
-                            <td>حاشیه شهر</td>
-                        }
-                        else if (item.Brnc_Type == "4")
-                        {
-                            <td>آزاد به دائم</td>
-                        }
-                        else if (item.Brnc_Type == "5")
-                        {
-                            <td>فتوولتاییک</td>
-                        }
-                        else if (item.Brnc_Type == "6")
-                        {
-                            <td>غیر دائم</td>
-                        }
-                        <td> @item.Loct_Desc</td>
+                            @if (item.Inst_Supr == "1")
+                            {
+                                <td>شرکت</td>
+                            }
+                            else if (item.Inst_Supr == "2")
+                            {
+                                <td>متقاضی</td>
+                            }
+                            else
+                            {
+                                <td>شبکه موجود</td>
+                            }
+                            <td>@item.Admn_Numb</td>
 
-                        @if (item.Inst_Supr == "1")
-                        {
-                            <td>شرکت</td>
-                        }
-                        else if (item.Inst_Supr == "2")
-                        {
-                            <td>متقاضی</td>
-                        }
-                        else
-                        {
-                            <td>شبکه موجود</td>
-                        }
-                        <td>@item.Admn_Numb</td>
+                            <td>@item.Rqtp_Desc</td>
 
-                        <td>@item.Rqtp_Desc</td>
+                            @if (item.Use_Type == "1")
+                            {
+                                <td>خانگی</td>
+                            }
+                            else if (item.Use_Type == "2")
+                            {
+                                <td>عمومی</td>
+                            }
+                            else if (item.Use_Type == "3")
+                            {
+                                <td>کشاورزی</td>
+                            }
+                            else if (item.Use_Type == "4")
+                            {
+                                <td>صنعتی</td>
+                            }
+                            else if (item.Use_Type == "5")
+                            {
+                                <td>سایر مصارف</td>
+                            }
 
-                        @if (item.Use_Type == "1")
-                        {
-                            <td>خانگی</td>
-                        }
-                        else if (item.Use_Type == "2")
-                        {
-                            <td>عمومی</td>
-                        }
-                        else if (item.Use_Type == "3")
-                        {
-                            <td>کشاورزی</td>
-                        }
-                        else if (item.Use_Type == "4")
-                        {
-                            <td>صنعتی</td>
-                        }
-                        else if (item.Use_Type == "5")
-                        {
-                            <td>سایر مصارف</td>
-                        }
+                            <td>@item.Ampr</td>
 
-                        <td>@item.Ampr</td>
+                            <td>@item.Phas</td>
 
-                        <td>@item.Phas</td>
+                            <td>@item.Powr</td>
 
-                        <td>@item.Powr</td>
-
-                        @if (item.Volt_Type == "1")
-                        {
-                            <td>اولیه</td>
-                        }
-                        else if (item.Volt_Type == "2")
-                        {
-                            <td>ثانویه</td>
-                        }
-                    </tr>
-                }
-
+                            @if (item.Volt_Type == "1")
+                            {
+                                <td>اولیه</td>
+                            }
+                            else if (item.Volt_Type == "2")
+                            {
+                                <td>ثانویه</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
             </table>
         </div>
         <!-- /.card-body -->

@@ -122,7 +122,7 @@ body {
         position: relative;
         width: 100%;
         padding: 10px;
-        margin: -10px -10px 25px -10px;
+        /*margin: -10px -10px 25px -10px;*/
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         background: #009688;
         font-family: 'Roboto', sans-serif;

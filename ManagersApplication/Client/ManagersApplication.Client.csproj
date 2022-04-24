@@ -33,6 +33,58 @@
 
   <ItemGroup>
     <None Include="Pages\Login.razor" />
+    <None Include="wwwroot\css\build\js\.jscsrc" />
+    <None Include="wwwroot\css\build\js\AdminLTE.js" />
+    <None Include="wwwroot\css\build\js\ControlSidebar.js" />
+    <None Include="wwwroot\css\build\js\Layout.js" />
+    <None Include="wwwroot\css\build\js\PushMenu.js" />
+    <None Include="wwwroot\css\build\js\SiteSearch.js" />
+    <None Include="wwwroot\css\build\js\Treeview.js" />
+    <None Include="wwwroot\css\build\js\Widget.js" />
+    <None Include="wwwroot\css\build\npm\Plugins.js" />
+    <None Include="wwwroot\css\build\npm\Publish.js" />
+    <None Include="wwwroot\css\build\scss\.csslintrc" />
+    <None Include="wwwroot\css\build\scss\AdminLTE-raw.scss" />
+    <None Include="wwwroot\css\build\scss\AdminLTE.scss" />
+    <None Include="wwwroot\css\build\scss\_404_500_errors.scss" />
+    <None Include="wwwroot\css\build\scss\_alerts.scss" />
+    <None Include="wwwroot\css\build\scss\_bootstrap-variables.scss" />
+    <None Include="wwwroot\css\build\scss\_brand.scss" />
+    <None Include="wwwroot\css\build\scss\_buttons.scss" />
+    <None Include="wwwroot\css\build\scss\_callout.scss" />
+    <None Include="wwwroot\css\build\scss\_cards.scss" />
+    <None Include="wwwroot\css\build\scss\_carousel.scss" />
+    <None Include="wwwroot\css\build\scss\_control-sidebar.scss" />
+    <None Include="wwwroot\css\build\scss\_direct-chat.scss" />
+    <None Include="wwwroot\css\build\scss\_dropdown.scss" />
+    <None Include="wwwroot\css\build\scss\_elevation.scss" />
+    <None Include="wwwroot\css\build\scss\_forms.scss" />
+    <None Include="wwwroot\css\build\scss\_fullcalendar.scss" />
+    <None Include="wwwroot\css\build\scss\_info-box.scss" />
+    <None Include="wwwroot\css\build\scss\_invoice.scss" />
+    <None Include="wwwroot\css\build\scss\_labels.scss" />
+    <None Include="wwwroot\css\build\scss\_layout.scss" />
+    <None Include="wwwroot\css\build\scss\_lockscreen.scss" />
+    <None Include="wwwroot\css\build\scss\_login_and_register.scss" />
+    <None Include="wwwroot\css\build\scss\_mailbox.scss" />
+    <None Include="wwwroot\css\build\scss\_main-header.scss" />
+    <None Include="wwwroot\css\build\scss\_main-sidebar.scss" />
+    <None Include="wwwroot\css\build\scss\_miscellaneous.scss" />
+    <None Include="wwwroot\css\build\scss\_mixins.scss" />
+    <None Include="wwwroot\css\build\scss\_navs.scss" />
+    <None Include="wwwroot\css\build\scss\_print.scss" />
+    <None Include="wwwroot\css\build\scss\_products.scss" />
+    <None Include="wwwroot\css\build\scss\_profile.scss" />
+    <None Include="wwwroot\css\build\scss\_progress-bars.scss" />
+    <None Include="wwwroot\css\build\scss\_select2.scss" />
+    <None Include="wwwroot\css\build\scss\_sidebar-mini.scss" />
+    <None Include="wwwroot\css\build\scss\_small-box.scss" />
+    <None Include="wwwroot\css\build\scss\_social-widgets.scss" />
+    <None Include="wwwroot\css\build\scss\_table.scss" />
+    <None Include="wwwroot\css\build\scss\_text.scss" />
+    <None Include="wwwroot\css\build\scss\_timeline.scss" />
+    <None Include="wwwroot\css\build\scss\_users-list.scss" />
+    <None Include="wwwroot\css\build\scss\_variables.scss" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,74 @@
+﻿ @page "/Image_Display/{RQID}/{regn_code}"
+<div class="row col-lg-12 col-xs-12 col-12">
+    <button class="btn btn-block warning bg-warning-gradient float-left text-right" @onclick="Back" style="width:65px">بازگشت</button>
+
+    <!-- /.card-header -->
+    <div class="card-body p-0 scroll">
+        <table class="table table-striped">
+            <tr>
+
+                <th>نوع عکس</th>
+                <th>عکس</th>
+                @*<th>نمایش</th>*@
+
+            </tr>
+            <tbody>
+                @foreach (var item in Img_list)
+                {
+                    if (@item.Image_Type.ToString() == "8")
+                    {
+                        <tr>
+
+                            <td>@item.Image_Type_Desc</td>
+                            <td><img id="myImg" src="data:image/jpg;base64,@Convert.ToBase64String(item.Image)" width="400" height="400" /></td>
+                            @*<td></td>*@
+
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <!-- /.card-body -->
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+        <!-- The Close Button -->
+        <span class="close" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
+
+        <!-- Modal Content (The Image) -->
+        <img class="modal-content" id="img01">
+
+        <!-- Modal Caption (Image Text) -->
+        <div id="caption"></div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string RQID { get; set; }
+
+    [Parameter]
+    public string regn_code { get; set; }
+
+    [Parameter]
+    public List<Sas_Image_Document> Img_list { get; set; }
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await View_Img();
+    }
+    private async Task View_Img()
+    {
+        Img_list = new List<Sas_Image_Document>();
+        var result = await Http.PostAsJsonAsync("api/Branching/View_Imgasync/", RQID);
+        var res = await result.Content.ReadAsStringAsync();
+        Img_list = JsonConvert.DeserializeObject<List<Sas_Image_Document>>(res);
+    }
+    private void Back()
+    {
+        NavigationManager.NavigateTo($"Branching_Item/{RQID.ToString()}/{regn_code}");
+    }
+}

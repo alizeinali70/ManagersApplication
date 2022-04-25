@@ -51,7 +51,7 @@
                     <div class="col-lg-6 col-2">@_contract.Resp_Dlve_Powr </div>
                 </div>
             </div>
-            <div class="row col-lg-12 float-right">
+            <div class="row col-lg-12 float-right mt-1">
                 <div class="row col-lg-6 float-right">
                     <div class="col-lg-3 col-4"> تعهدات متقاضی: </div>
                     <div class="col-lg-8 col-8">
@@ -59,7 +59,7 @@
                     </div>
                 </div>
 
-                <div class="row col-lg-6 float-right">
+                <div class="row col-lg-6 float-right mt-1">
                     <div class="col-lg-3 col-4"> تعهدات شرکت: </div>
                     <div class="col-lg-8 col-8">
                         <textarea class="form-control">@_contract.Comt_Comp  </textarea>
@@ -71,80 +71,32 @@
     </div>
     <!-- /.card -->
     <div class="row col-lg-12 ">
-        <div class="row col-lg-4">
+        <div class="row col-lg-6">
             <div class="col-lg-4 col-4"> دلیل عدم تایید: </div>
             <div class="col-lg-8 col-8"><textarea @bind=Desc class="form-control"></textarea> </div>
-            <div class="row col-lg-12 mt-2 mb-2">
-                <div class="col-lg-4 col-4">
-                    <button class="btn btn-block btn-primary bg-success-gradient text-center" @onclick="Confirm" style="width:85px">تایید</button>
-                </div>
-                <div class="col-lg-4 col-4">
-                    <button class="btn btn-block btn-primary bg-danger-gradient text-center" @onclick="Reject" style="width:85px">عدم تایید</button>
-                </div>
-                <div class="col-lg-4 col-4">
-                    <button class="btn btn-block btn-primary bg-warning-gradient text-center" @onclick="Back" style="width:85px">بازگشت</button>
-                </div>
-
-            </div>
         </div>
-        <div class="row col-lg-8">
-            <!-- /.card-header -->
-            <div class="card-body p-0 scroll" style="height:237px;">
-                <table class="table table-striped">
-                    <tr>
-
-                        <th>نوع عکس</th>
-                        <th>عکس</th>
-                        @*<th>نمایش</th>*@
-
-                    </tr>
-                  
-                    @foreach (var item in Img_list)
-                    {
-                        if (@item.Image_Type.ToString() == "8")
-                        {
-                            <tr>
-
-                                <td>@item.Image_Type_Desc</td>
-                                <td><img id="myImg" src="data:image/jpg;base64,@Convert.ToBase64String(item.Image)" width="200" height="200" /></td>
-                                @*<td></td>*@
-
-                            </tr>
-                        }
-                    }
-
-                </table>
+        <div class="row col-lg-6 mt-2 mb-2 mr-4">
+            <div class="col-lg-3 mt-2 col-sm-3 col-5">
+                <button class="btn btn-block btn-primary bg-success-gradient text-center" @onclick="Confirm" >تایید</button>
             </div>
-            <!-- /.card-body -->
-            <!-- The Modal -->
-            <div id="myModal" class="modal">
-
-                <!-- The Close Button -->
-                <span class="close" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
-
-                <!-- Modal Content (The Image) -->
-                <img class="modal-content" id="img01">
-
-                <!-- Modal Caption (Image Text) -->
-                <div id="caption"></div>
+            <div class="col-lg-3 mt-2 col-sm-3 col-5">
+                <button class="btn btn-block btn-primary bg-danger-gradient text-center" @onclick="Reject" >عدم تایید</button>
+            </div> 
+            <div class="col-lg-3 mt-2 col-sm-3 col-5">
+                <button class="btn btn-block btn-primary bg-warning-gradient text-center" @onclick="Back" >بازگشت</button>
             </div>
+            <div class="col-lg-3 mt-2 col-sm-3 col-5">
+                <button class="btn btn-block btn-primary bg-info-gradient text-center" @onclick="@(()=>Img_Dsiplay(@RQID,regn_code))">مشاهده مدارک</button>
+            </div>
+
         </div>
+        @*</div>*@
+
     </div>
     <div class="row col-lg-8">
         <div class="col-lg-8 col-8"><label class="text-danger">@Result_Message</label> </div>
     </div>
-    @* <div class="row col-lg-12 mt-2 mb-2">
-        <div class="col-lg-1 col-4">
-        <button class="btn btn-block btn-primary bg-success-gradient text-center" @onclick="Confirm" style="width:85px">تایید</button>
-        </div>
-        <div class="col-lg-1 col-4">
-        <button class="btn btn-block btn-primary bg-danger-gradient text-center" @onclick="Reject" style="width:85px">عدم تایید</button>
-        </div>
-        <div class="col-lg-1 col-4">
-        <button class="btn btn-block btn-primary bg-warning-gradient text-center" @onclick="Back" style="width:85px">بازگشت</button>
-        </div>
-
-        </div>*@
+   
 </div>
 
 
@@ -165,18 +117,17 @@
 
     public string Result_Message { get; set; }
 
-    [Parameter]
-    public List<Sas_Image_Document> Img_list { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
         _contract = new Contract_Item();
         //////////////////////////////////////////
-        Get_Requester_Name_Async();
+       await Get_Requester_Name_Async();
         //////////////////////////////////////////
-        Get_AdmContract();
+       await Get_AdmContract();
         //////////////////////////////////////////
-        await View_Img();
+
     }
     private async Task Confirm()
     {
@@ -206,7 +157,10 @@
     {
         NavigationManager.NavigateTo($"/Branching/{regn_code}/");
     }
-
+    private void Img_Dsiplay(string RQID,string regn_code)
+    {        
+        NavigationManager.NavigateTo($"Image_Display/{RQID.ToString()}/{regn_code}");
+    }
 
     private async Task Get_Requester_Name_Async()
     {
@@ -223,11 +177,5 @@
         _contract = JsonConvert.DeserializeObject<Contract_Item>(data);
     }
 
-    private async Task View_Img()
-    {
-        Img_list = new List<Sas_Image_Document>();
-        var result = await Http.PostAsJsonAsync("api/Branching/View_Imgasync/", RQID);
-        var res = await result.Content.ReadAsStringAsync();
-        Img_list = JsonConvert.DeserializeObject<List<Sas_Image_Document>>(res);
-    }
+
 }

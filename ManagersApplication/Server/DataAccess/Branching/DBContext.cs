@@ -21,7 +21,7 @@ namespace ManagersApplication.Server.DataAccess
 
         }
 
-        public async Task<List<Branching>> GetAllContractAsync(string regn_code)
+        public async Task<List<Branching>> GetAllContractAsync(string username)
         {
             int i = 0;
             string cmdtext = "";
@@ -30,17 +30,29 @@ namespace ManagersApplication.Server.DataAccess
                 List<Branching> list = new List<Branching>();
                 using (OracleConnection conn = GetOracleConnection())
                 {
-                    if (regn_code == "999")
-                    {
-                        cmdtext = "select RQID,to_char(UPDT_DATE,'yyyy/MM/dd'),ACTV_DESC from adf_task where " +
-                           "rqtp_code=9 and sub_sys=1 and actv_name ='Cntd'";
-                    }
-                    else
-                    {
-                        cmdtext = "select RQID,to_char(UPDT_DATE,'yyyy/MM/dd'),ACTV_DESC from adf_task where " +
-                             "rqtp_code=9 and sub_sys=1 and actv_name ='Cntd' and Regn_Code = " + regn_code;
-                    }
+                    // if (regn_code == "999")
+                    // {
+                    //     cmdtext = "select RQID,to_char(UPDT_DATE,'yyyy/MM/dd'),ACTV_DESC from adf_task where " +
+                    //        "rqtp_code=9 and sub_sys=1 and actv_name ='Cntd'";
+                    // }
+                    // else
+                    // {
+                    //     cmdtext = "select RQID,to_char(UPDT_DATE,'yyyy/MM/dd'),ACTV_DESC from adf_task where " +
+                    //          "rqtp_code=9 and sub_sys=1 and actv_name ='Cntd' and Regn_Code = " + regn_code;
+                    // }
+                    
                     OracleCommand cmd = new OracleCommand(cmdtext, conn);
+                    cmdtext = "ADFA_MGNT_APPL.ADML_LIST_P";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    //in
+                    cmd.Parameters.Add(new OracleParameter("P_USERNAME", OracleDbType.Varchar2, 20)).Value = username;
+                    cmd.Parameters.Add(new OracleParameter("P_ACTVNAME", OracleDbType.Varchar2, 10)).Value = "cntd";
+
+                    //out
+                    OracleParameter result = new OracleParameter("P_RESULT", OracleDbType.RefCursor);
+                    result.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(result);
+
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
@@ -74,7 +86,10 @@ namespace ManagersApplication.Server.DataAccess
                 Branching_Item _Item = new Branching_Item();
                 using (OracleConnection conn = GetOracleConnection())
                 {
-                    var cmdtext = "select Name from adm_requester where rqst_rqid=" + RQID;
+                    //var cmdtext = "select Name from adm_requester where rqst_rqid=" + RQID;
+                    var cmdtext = "select Name from adm_requester where rqst_rqid = " + RQID +
+                        " AND CODE = (SELECT MAX(CODE) FROM ADM_REQUESTER WHERE RQST_RQID = " + RQID+")";
+                    // select Name from adm_requester where rqst_rqid = :P_RQID AND CODE = (SELECT MAX(CODE) FROM ADM_REQUESTER WHERE RQST_RQID = :P_RQID )
                     OracleCommand cmd = new OracleCommand(cmdtext, conn);
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())

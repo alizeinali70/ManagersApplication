@@ -20,6 +20,46 @@ namespace ManagersApplication.Server.DataAccess
             return new OracleConnection(_conn);
 
         }
+        public async Task<string> LoginAsync(string username)
+        {
+           // Branching branching = new Branching();
+            using (OracleConnection conn = GetOracleConnection())
+            {
+                OracleCommand cmd = new OracleCommand();                
+                cmd.CommandText = "ADFA_MGNT_APPL.CHK_USER_EXIST"; 
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Connection = conn;
+                //in
+                cmd.Parameters.Add(new OracleParameter("P_USERNAME", OracleDbType.Varchar2, 200)).Value = username;
+
+               // cmd.Parameters.Add("P_USERNAME", OracleDbType.Varchar2,200);
+               // cmd.Parameters["P_USERNAME"].Direction = ParameterDirection.Input;
+               // cmd.Parameters["P_USERNAME"].Value = "zonobi";
+
+                //out
+                OracleParameter result = new OracleParameter("P_RESULT", OracleDbType.Varchar2);
+                result.Direction = ParameterDirection.Output;
+                cmd.Parameters.Add(result);
+                cmd.BindByName = true;
+
+                conn.Open();
+
+                cmd.ExecuteNonQuery();
+                var resultValue = cmd.Parameters[1].Value.ToString();
+                return resultValue;
+                //using (var reader = cmd.ExecuteReader())
+                //{
+                //    if (reader.Read())
+                //    {                        
+                //        return result.Value.ToString();
+                //    }
+                //    else
+                //    {
+                //        return "false";
+                //    }
+                //}
+            }
+        }
 
         public async Task<List<Branching>> GetAllContractAsync(string username)
         {
@@ -41,12 +81,14 @@ namespace ManagersApplication.Server.DataAccess
                     //          "rqtp_code=9 and sub_sys=1 and actv_name ='Cntd' and Regn_Code = " + regn_code;
                     // }
                     
-                    OracleCommand cmd = new OracleCommand(cmdtext, conn);
+                    OracleCommand cmd = new OracleCommand();
                     cmdtext = "ADFA_MGNT_APPL.ADML_LIST_P";
+                    cmd.CommandText = cmdtext;
+//                    cmd.Connection=conn;
                     cmd.CommandType = CommandType.StoredProcedure;
                     //in
                     cmd.Parameters.Add(new OracleParameter("P_USERNAME", OracleDbType.Varchar2, 20)).Value = username;
-                    cmd.Parameters.Add(new OracleParameter("P_ACTVNAME", OracleDbType.Varchar2, 10)).Value = "cntd";
+                    cmd.Parameters.Add(new OracleParameter("P_ACTVNAME", OracleDbType.Varchar2, 10)).Value = "Cntd";
 
                     //out
                     OracleParameter result = new OracleParameter("P_RESULT", OracleDbType.RefCursor);
@@ -55,7 +97,7 @@ namespace ManagersApplication.Server.DataAccess
 
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
-                    {
+                    {                        
                         while (await reader.ReadAsync())
                         {
                             list.Add(new Branching()

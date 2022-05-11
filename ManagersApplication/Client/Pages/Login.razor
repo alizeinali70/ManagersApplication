@@ -23,27 +23,28 @@
 
 
 @code {
-    private string username { get; set; }
-    private string password { get; set; }
     [Parameter]
+    public string username { get; set; }
+    private string password { get; set; }
+    
     public string regn_code { get; set; }
     public string error { get; set; }
-    protected void Sign_In(string username, string password)
+
+    protected async Task Sign_In(string username, string password)
     {
-       // username = "modir"; password = "123";
+        username = "zonobi"; password = "123";
+        var getData = await Http.PostAsJsonAsync<string>("api/Login/Login_Async/", username.ToLower());
+        var data = await getData.Content.ReadAsStringAsync();
+       string uname = JsonConvert.DeserializeObject<string>(data);
+
 
         if (username == null && password == null)
             error = "نام کاربری یا کلمه عبور را وارد کنید";
-        else if (username.ToLower() == "modir" && password == "123")
+        else if (username.ToLower() == uname && password == "123")
         {
-            regn_code = "999";
-            NavManager.NavigateTo($"/Index/{regn_code}/");
+           
         }
-        else if (username.ToLower() == "zonobi" && password == "123")
-        {
-            regn_code = "001";
-            NavManager.NavigateTo($"/Index/{regn_code}/");
-        }
+        
         else
             error = "نام کاربری یا کلمه عبور اشتباه است";
     }

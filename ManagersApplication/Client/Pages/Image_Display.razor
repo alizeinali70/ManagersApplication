@@ -12,19 +12,21 @@
                 @*<th>نمایش</th>*@
 
             </tr>
+
             <tbody>
                 @foreach (var item in Img_list)
                 {
-                    if (@item.Image_Type.ToString() == "8")
-                    {
-                        <tr>
+                    
+                    @*if (@item.Image_Type.ToString() == "8")
+                        {*@
+                    <tr>
 
-                            <td>@item.Image_Type_Desc</td>
-                            <td><img id="myImg" src="data:image/jpg;base64,@Convert.ToBase64String(item.Image)" width="400" height="400" /></td>
-                            @*<td></td>*@
+                        <td>@item.Image_Type_Desc</td>
+                        <td><img id="myImg" src="data:image/jpg;base64,@Convert.ToBase64String(item.Image)" width="400" height="400" /></td>
+                        @*<td></td>*@
 
-                        </tr>
-                    }
+                    </tr>
+                    @*}*@
                 }
             </tbody>
         </table>

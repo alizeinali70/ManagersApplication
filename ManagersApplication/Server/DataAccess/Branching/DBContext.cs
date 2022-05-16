@@ -9,7 +9,7 @@ namespace ManagersApplication.Server.DataAccess
         // public readonly IConfiguration _config;
         string _conn;
         OracleTransaction transection = null;
-       public static List<Branching> list = new List<Branching>();
+        public static List<Branching> list = new List<Branching>();
 
         public DBContext(IConfiguration configuration)
         {
@@ -51,7 +51,7 @@ namespace ManagersApplication.Server.DataAccess
 
         }
         public async Task<List<Branching>> GetAllContractAsync(string username)
-        {           
+        {
             try
             {
                 return list;
@@ -65,6 +65,7 @@ namespace ManagersApplication.Server.DataAccess
         {
             try
             {
+                list = new List<Branching>();
                 using (OracleConnection conn = GetOracleConnection())
                 {
                     int i = 0;

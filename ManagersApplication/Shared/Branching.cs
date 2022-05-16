@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ManagersApplication.Shared
 {
@@ -14,7 +9,7 @@ namespace ManagersApplication.Shared
         public int ID { get; set; }
         public long RQID { get; set; }
         public string UPDT_DATE { get; set; }
-        public string ACTV_DESC { get; set; }     
+        public string ACTV_DESC { get; set; }
 
     }
     public class Branching_Item
@@ -38,9 +33,9 @@ namespace ManagersApplication.Shared
         public Int32 Ampr { get; set; }
         public string Phas { get; set; }
         public double Powr { get; set; }
-        public string Volt_Type { get; set; }       
+        public string Volt_Type { get; set; }
     }
-    
+
     public class Contract_Item
     {
         //[Key]
@@ -53,7 +48,7 @@ namespace ManagersApplication.Shared
         public string View_Date { get; set; }
         public Int16 Resp_Inst_Equp { get; set; }
         public Int16 Resp_Dlve_Powr { get; set; }
-        public string Comt_Aplr { get; set; }        
+        public string Comt_Aplr { get; set; }
         public string Comt_Comp { get; set; }
     }
 
@@ -65,16 +60,15 @@ namespace ManagersApplication.Shared
     }
 }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
+

@@ -9,6 +9,7 @@ namespace ManagersApplication.Server.DataAccess
         // public readonly IConfiguration _config;
         string _conn;
         OracleTransaction transection = null;
+       public static List<Branching> list = new List<Branching>();
 
         public DBContext(IConfiguration configuration)
         {
@@ -22,82 +23,74 @@ namespace ManagersApplication.Server.DataAccess
         }
         public async Task<string> LoginAsync(string username)
         {
-           // Branching branching = new Branching();
+            // Branching branching = new Branching();
             using (OracleConnection conn = GetOracleConnection())
             {
-                OracleCommand cmd = new OracleCommand();                
-                cmd.CommandText = "ADFA_MGNT_APPL.CHK_USER_EXIST"; 
+                OracleCommand cmd = new OracleCommand();
+                cmd.CommandText = "ADFA_MGNT_APPL.CHK_USER_EXIST";
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Connection = conn;
                 //in
-                cmd.Parameters.Add(new OracleParameter("P_USERNAME", OracleDbType.Varchar2, 200)).Value = username;
+                // cmd.Parameters.Add(new OracleParameter("P_USERNAME", OracleDbType.Varchar2, 200)).Value = username;
 
-               // cmd.Parameters.Add("P_USERNAME", OracleDbType.Varchar2,200);
-               // cmd.Parameters["P_USERNAME"].Direction = ParameterDirection.Input;
-               // cmd.Parameters["P_USERNAME"].Value = "zonobi";
+                cmd.Parameters.Add("P_USERNAME", OracleDbType.Varchar2, 200);
+                cmd.Parameters["P_USERNAME"].Direction = ParameterDirection.Input;
+                cmd.Parameters["P_USERNAME"].Value = username;
 
                 //out
-                OracleParameter result = new OracleParameter("P_RESULT", OracleDbType.Varchar2);
+                OracleParameter result = new OracleParameter("P_RESULT", OracleDbType.Varchar2, 200);
                 result.Direction = ParameterDirection.Output;
                 cmd.Parameters.Add(result);
                 cmd.BindByName = true;
 
                 conn.Open();
-
                 cmd.ExecuteNonQuery();
                 var resultValue = cmd.Parameters[1].Value.ToString();
                 return resultValue;
-                //using (var reader = cmd.ExecuteReader())
-                //{
-                //    if (reader.Read())
-                //    {                        
-                //        return result.Value.ToString();
-                //    }
-                //    else
-                //    {
-                //        return "false";
-                //    }
-                //}
             }
-        }
 
+        }
         public async Task<List<Branching>> GetAllContractAsync(string username)
-        {
-            int i = 0;
-            string cmdtext = "";
+        {           
             try
             {
-                List<Branching> list = new List<Branching>();
+                return list;
+            }
+            catch (Exception exp)
+            {
+                throw;
+            }
+        }
+        public async Task<int> CountAllContractAsync(string username)
+        {
+            try
+            {
                 using (OracleConnection conn = GetOracleConnection())
                 {
-                    // if (regn_code == "999")
-                    // {
-                    //     cmdtext = "select RQID,to_char(UPDT_DATE,'yyyy/MM/dd'),ACTV_DESC from adf_task where " +
-                    //        "rqtp_code=9 and sub_sys=1 and actv_name ='Cntd'";
-                    // }
-                    // else
-                    // {
-                    //     cmdtext = "select RQID,to_char(UPDT_DATE,'yyyy/MM/dd'),ACTV_DESC from adf_task where " +
-                    //          "rqtp_code=9 and sub_sys=1 and actv_name ='Cntd' and Regn_Code = " + regn_code;
-                    // }
-                    
+                    int i = 0;
+                    conn.Open();
+                    transection = conn.BeginTransaction();
+
                     OracleCommand cmd = new OracleCommand();
-                    cmdtext = "ADFA_MGNT_APPL.ADML_LIST_P";
-                    cmd.CommandText = cmdtext;
-//                    cmd.Connection=conn;
+                    cmd.CommandText = "ADFA_MGNT_APPL.ADML_LIST_P";
+                    cmd.Connection = conn;
                     cmd.CommandType = CommandType.StoredProcedure;
                     //in
-                    cmd.Parameters.Add(new OracleParameter("P_USERNAME", OracleDbType.Varchar2, 20)).Value = username;
-                    cmd.Parameters.Add(new OracleParameter("P_ACTVNAME", OracleDbType.Varchar2, 10)).Value = "Cntd";
+                    cmd.Parameters.Add("P_USERNAME", OracleDbType.Varchar2, 200);
+                    cmd.Parameters["P_USERNAME"].Direction = ParameterDirection.Input;
+                    cmd.Parameters["P_USERNAME"].Value = username;
+
+                    cmd.Parameters.Add("P_ACTVNAME", OracleDbType.Varchar2, 10);
+                    cmd.Parameters["P_ACTVNAME"].Direction = ParameterDirection.Input;
+                    cmd.Parameters["P_ACTVNAME"].Value = "Cntd";
 
                     //out
                     OracleParameter result = new OracleParameter("P_RESULT", OracleDbType.RefCursor);
                     result.Direction = ParameterDirection.Output;
                     cmd.Parameters.Add(result);
 
-                    conn.Open();
                     using (var reader = cmd.ExecuteReader())
-                    {                        
+                    {
                         while (await reader.ReadAsync())
                         {
                             list.Add(new Branching()
@@ -110,16 +103,16 @@ namespace ManagersApplication.Server.DataAccess
                         }
                     }
                     conn.Close();
-                    return list;
+
+                    return list.Count;
                 }
             }
-            catch (Exception exp)
+            catch (Exception)
             {
+
                 throw;
             }
-
         }
-
         public async Task<Branching_Item> GetNameAsync(string RQID)
         {
             try
@@ -128,12 +121,29 @@ namespace ManagersApplication.Server.DataAccess
                 Branching_Item _Item = new Branching_Item();
                 using (OracleConnection conn = GetOracleConnection())
                 {
-                    //var cmdtext = "select Name from adm_requester where rqst_rqid=" + RQID;
-                    var cmdtext = "select Name from adm_requester where rqst_rqid = " + RQID +
-                        " AND CODE = (SELECT MAX(CODE) FROM ADM_REQUESTER WHERE RQST_RQID = " + RQID+")";
-                    // select Name from adm_requester where rqst_rqid = :P_RQID AND CODE = (SELECT MAX(CODE) FROM ADM_REQUESTER WHERE RQST_RQID = :P_RQID )
-                    OracleCommand cmd = new OracleCommand(cmdtext, conn);
+                    //var cmdtext = "select Name from adm_requester where rqst_rqid = " + RQID +
+                    //    " AND CODE = (SELECT MAX(CODE) FROM ADM_REQUESTER WHERE RQST_RQID = " + RQID + ")";
                     conn.Open();
+                    transection = conn.BeginTransaction();
+                    OracleCommand cmd = new OracleCommand();
+                    cmd.CommandText = "ADFA_MGNT_APPL.NAME_RQST_P";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Connection = conn;
+
+                    //in
+                    // cmd.Parameters.Add(new OracleParameter("P_USERNAME", OracleDbType.Varchar2, 200)).Value = username;
+
+                    cmd.Parameters.Add("P_RQID", OracleDbType.Int64, 10);
+                    cmd.Parameters["P_RQID"].Direction = ParameterDirection.Input;
+                    cmd.Parameters["P_RQID"].Value = Int64.Parse(RQID);
+
+                    //out
+                    OracleParameter result = new OracleParameter("P_RESULT", OracleDbType.RefCursor);
+                    result.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(result);
+                    cmd.BindByName = true;
+
+
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (await reader.ReadAsync())
@@ -151,7 +161,6 @@ namespace ManagersApplication.Server.DataAccess
             }
 
         }
-
         public async Task<List<Branching_Item>> GetRquestRowAsync(string RQID)
         {
             int i = 0;
@@ -160,15 +169,26 @@ namespace ManagersApplication.Server.DataAccess
                 List<Branching_Item> list = new List<Branching_Item>();
                 using (OracleConnection conn = GetOracleConnection())
                 {
-                    var cmdtext = "select Gnrt,Serv_Type,Rqtt_Desc,Brnc_Type,Loct_Desc,Inst_Supr,Admn_Numb,Rqtp_Desc,Use_Type," +
-                        " Ampr,Phas,Powr,Volt_Type from request_row " +
-                        " left join requester_type on request_row.Rqtt_Code = requester_type.CODE " +
-                        " left join adm_location on request_row.Loct_Row_No = adm_location.ROW_NO " +
-                        " left join request_type on request_row.RQTP_CODE = request_type.Code" +
-                        " where rqst_rqid = " + RQID;
-
-                    OracleCommand cmd = new OracleCommand(cmdtext, conn);
                     conn.Open();
+                    transection = conn.BeginTransaction();
+                    OracleCommand cmd = new OracleCommand();
+                    cmd.CommandText = "ADFA_MGNT_APPL.RQRO_LIST_P";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Connection = conn;
+
+                    //in
+                    // cmd.Parameters.Add(new OracleParameter("P_USERNAME", OracleDbType.Varchar2, 200)).Value = username;
+
+                    cmd.Parameters.Add("P_RQID", OracleDbType.Int64, 10);
+                    cmd.Parameters["P_RQID"].Direction = ParameterDirection.Input;
+                    cmd.Parameters["P_RQID"].Value = Int64.Parse(RQID);
+
+                    //out
+                    OracleParameter result = new OracleParameter("P_RESULT", OracleDbType.RefCursor);
+                    result.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(result);
+                    cmd.BindByName = true;
+
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (await reader.ReadAsync())
@@ -202,7 +222,6 @@ namespace ManagersApplication.Server.DataAccess
             }
 
         }
-
         public async Task<Contract_Item> GetAdmContract(string RQID)
         {
             try
@@ -210,10 +229,26 @@ namespace ManagersApplication.Server.DataAccess
                 Contract_Item contract_Item = new Contract_Item();
                 using (OracleConnection conn = GetOracleConnection())
                 {
-                    var cmdtext = "select Cont_Date,View_Date,Resp_Inst_Equp,Resp_Dlve_Powr,Comt_Aplr,Comt_Comp from adm_contract " +
-                        "where rqro_rqst_rqid=" + RQID;
-                    OracleCommand cmd = new OracleCommand(cmdtext, conn);
                     conn.Open();
+                    transection = conn.BeginTransaction();
+                    OracleCommand cmd = new OracleCommand();
+                    cmd.CommandText = "ADFA_MGNT_APPL.CONT_INFO_P";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Connection = conn;
+
+                    //in
+                    // cmd.Parameters.Add(new OracleParameter("P_USERNAME", OracleDbType.Varchar2, 200)).Value = username;
+
+                    cmd.Parameters.Add("P_RQID", OracleDbType.Int64, 10);
+                    cmd.Parameters["P_RQID"].Direction = ParameterDirection.Input;
+                    cmd.Parameters["P_RQID"].Value = Int64.Parse(RQID);
+
+                    //out
+                    OracleParameter result = new OracleParameter("P_RESULT", OracleDbType.RefCursor);
+                    result.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(result);
+                    cmd.BindByName = true;
+
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (await reader.ReadAsync())
@@ -241,45 +276,6 @@ namespace ManagersApplication.Server.DataAccess
                 throw;
             }
         }
-      
-        public async Task<int> CountAllContractAsync(string regn_code)
-        {
-            int count = 0;
-            try
-            {
-                List<Branching> list = new List<Branching>();
-                using (OracleConnection conn = GetOracleConnection())
-                {
-                    var cmdtext = "";
-                    if (regn_code == "999")
-                    {
-                        cmdtext = "select RQID,to_char(UPDT_DATE,'yyyy/MM/dd'),ACTV_DESC from adf_task where " +
-                           "rqtp_code=9 and sub_sys=1 and actv_name ='Cntd'";
-                    }
-                    else
-                    {
-                        cmdtext = "select RQID,to_char(UPDT_DATE,'yyyy/MM/dd'),ACTV_DESC from adf_task where " +
-                             "rqtp_code=9 and sub_sys=1 and actv_name ='Cntd' and Regn_Code = " + regn_code;
-                    }
-                    OracleCommand cmd = new OracleCommand(cmdtext, conn);
-                    OracleDataAdapter da = new OracleDataAdapter(cmd);
-                    DataSet ds = new DataSet();
-                    da.Fill(ds);
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-
-                    // count = int.Parse(ds.Tables[0].Rows[0].ItemArray[0].ToString());
-                    count = ds.Tables[0].Rows.Count;
-                    return count;
-                }
-            }
-            catch (Exception exp)
-            {
-                throw;
-            }
-        }
-     
         public async Task<int> ConfirmContract(string RQID)
         {
             ////ADFA_RCPT_RQST.ACPT_CNTA_U(P_RQID NUMBER) RETURN NUMBER 
@@ -300,16 +296,16 @@ namespace ManagersApplication.Server.DataAccess
                 OracleParameter result = new OracleParameter("RSLT", OracleDbType.Int32, 2);
                 result.Direction = ParameterDirection.ReturnValue;
                 cmd.Parameters.Add(result);
-                
+
                 //in
                 cmd.Parameters.Add(new OracleParameter("P_RQID", OracleDbType.Long, 10)).Value = long.Parse(RQID);
 
                 cmd.ExecuteNonQuery();
                 res = result.Value.ToString();
-               if (res == "0")
-                  transection.Commit();
-               else
-                   transection.Rollback();
+                if (res == "0")
+                    transection.Commit();
+                else
+                    transection.Rollback();
 
 
                 conn.Close();
@@ -317,8 +313,7 @@ namespace ManagersApplication.Server.DataAccess
 
             return int.Parse(res);
         }
-
-        public async Task<int> RejectContract(string RQID,string Desc)
+        public async Task<int> RejectContract(string RQID, string Desc)
         {
             ////ADFA_RCPT_RQST.ACPT_CNTA_U(P_RQID NUMBER) RETURN NUMBER 
             ///
@@ -356,7 +351,6 @@ namespace ManagersApplication.Server.DataAccess
 
             return int.Parse(res);
         }
-
         public async Task<List<object>> View_Img(string RQID)
         {
             ////ADFA_APPS_PACK.GETL_SCAN_P(P_RQID NUMBER , P_RESULT OUT sys_refcursor) IS
@@ -370,7 +364,7 @@ namespace ManagersApplication.Server.DataAccess
                 cmd.CommandText = "ADFA_APPS_PACK.GETL_SCAN_P";
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Connection = conn;
-                cmd.BindByName=true;
+                cmd.BindByName = true;
                 //out
                 OracleParameter result = new OracleParameter("P_RESULT", OracleDbType.RefCursor);
                 result.Direction = ParameterDirection.Output;
@@ -382,17 +376,17 @@ namespace ManagersApplication.Server.DataAccess
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (await reader.ReadAsync())
-                    {                       
-                            list.Add(new Sas_Image_Document
-                            {
-                                Image_Type = reader.GetValue(2),
-                                Image_Type_Desc = reader.GetValue(3),
-                                Image =(byte[])reader.GetValue(4)
-                            });                        
+                    {
+                        list.Add(new Sas_Image_Document
+                        {
+                            Image_Type = reader.GetValue(2),
+                            Image_Type_Desc = reader.GetValue(3),
+                            Image = (byte[])reader.GetValue(4)
+                        });
                     }
-                    
+
                 }
-              
+
                 //if (res == "0")
                 //    transection.Commit();
                 //else

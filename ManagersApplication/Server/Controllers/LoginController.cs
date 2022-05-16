@@ -24,12 +24,12 @@ namespace ManagersApplication.Server.Controllers
         /// </summary>
         [HttpGet("[controller]/[action]")]
         [Route("Login/Login_Async")]
-        public async Task<ActionResult<string>> Login_Async([FromBody] string username)
+        public async Task<string> Login_Async([FromBody] string username)
         {
             try
             {
                 DBContext context = new DBContext(_config);
-                string uname = await context.LoginAsync(username);
+                var uname = await context.LoginAsync(username);
 
                 return uname;
             }

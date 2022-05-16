@@ -26,26 +26,32 @@
     [Parameter]
     public string username { get; set; }
     private string password { get; set; }
-    
+
     public string regn_code { get; set; }
     public string error { get; set; }
 
     protected async Task Sign_In(string username, string password)
     {
-        username = "zonobi"; password = "123";
-        var getData = await Http.PostAsJsonAsync<string>("api/Login/Login_Async/", username.ToLower());
-        var data = await getData.Content.ReadAsStringAsync();
-       string uname = JsonConvert.DeserializeObject<string>(data);
-
-
-        if (username == null && password == null)
-            error = "نام کاربری یا کلمه عبور را وارد کنید";
-        else if (username.ToLower() == uname && password == "123")
+        string res = "";
+        //username = "zonobi"; password = "123";
+        if (username != null && password != null || username=="zonobi" || username==" ghorbani09" || username=="zare_f")
         {
-           
+            var getData = await Http.PostAsJsonAsync<string>("api/Login/Login_Async/", username.ToLower());
+            var data = await getData.Content.ReadAsStringAsync();
+            res = JsonConvert.DeserializeObject<string>(data);
+
+
+            if (username.ToLower() == res && password == "123")
+            {
+                NavigationManager.NavigateTo($"/Index/{username}/");
+                //NavigationManager.NavigateTo($"/Index/{regn_code}/");
+            }
+
+            else
+                error = "نام کاربری یا کلمه عبور اشتباه است";
         }
-        
         else
-            error = "نام کاربری یا کلمه عبور اشتباه است";
+            error = "نام کاربری یا کلمه عبور را وارد کنید";
+
     }
 }

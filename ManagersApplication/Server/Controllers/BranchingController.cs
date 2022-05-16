@@ -1,10 +1,6 @@
 ﻿using ManagersApplication.Server.DataAccess;
 using ManagersApplication.Shared;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Threading.Tasks;
 
 namespace ManagersApplication.Server.Controllers
 {
@@ -22,12 +18,12 @@ namespace ManagersApplication.Server.Controllers
 
         [HttpGet("[controller]/[action]")]
         [Route("Branching/Get_All_Contract_Async")]
-        public async Task<ActionResult<List<Branching>>> Get_All_Contract_Async([FromBody] string Regn_Code)
+        public async Task<ActionResult<List<Branching>>> Get_All_Contract_Async([FromBody] string username)
         {
             try
             {
                 DBContext context = new DBContext(_config);
-                List<Branching> list = await context.GetAllContractAsync(Regn_Code);
+                List<Branching> list = await context.GetAllContractAsync(username);
                 foreach (var item in list)
                 {
                     item.UPDT_DATE = ConvertDate.MiladiToShamsi(item.UPDT_DATE);
@@ -102,12 +98,12 @@ namespace ManagersApplication.Server.Controllers
 
         [HttpGet("[controller]/[action]")]
         [Route("Branching/Count_All_Contract_Async")]
-        public async Task<ActionResult<int>> Count_All_Contract_Async([FromBody] string Regn_Code)
+        public async Task<ActionResult<int>> Count_All_Contract_Async([FromBody] string username)
         {
             try
             {
                 DBContext context = new DBContext(_config);
-                int count = await context.CountAllContractAsync(Regn_Code);
+                int count = await context.CountAllContractAsync(username);
 
                 return count;
             }
@@ -140,8 +136,8 @@ namespace ManagersApplication.Server.Controllers
         {
             try
             {
-                string RQID=lst[0];
-                string Desc=lst[1]; 
+                string RQID = lst[0];
+                string Desc = lst[1];
                 DBContext context = new DBContext(_config);
                 int res = await context.RejectContract(RQID, Desc);
                 return res;

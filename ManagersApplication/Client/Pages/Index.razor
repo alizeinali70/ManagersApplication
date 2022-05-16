@@ -1,9 +1,9 @@
-﻿@page "/Index/{regn_code}"
+﻿@page "/Index/{username}"
 
-<TopMenu regn_code=@regn_code></TopMenu>
+<TopMenu username=@username></TopMenu>
 
 @code {
     [Parameter]
-    public string regn_code { get; set; }
+    public string username { get; set; }
      
 }

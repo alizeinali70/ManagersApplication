@@ -10546,6 +10546,7 @@ label:not(.form-check-label):not(.custom-file-label) {
   position: relative;
   display: block;
   margin-bottom: 20px;
+
 }
 
 .small-box > .inner {

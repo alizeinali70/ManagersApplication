@@ -1,4 +1,4 @@
-﻿@page "/Branching/{regn_code}"
+﻿@page "/Branching/{username}"
 
 <div class="card">
     <div class="card-header bg-info">
@@ -18,15 +18,15 @@
             </tr>
             <tbody>
             @foreach (var item in BranchList)
-            {
-                <tr>
-                    <td>@item.ID</td>
-                    <td>@item.RQID</td>
-                    <td>@item.UPDT_DATE</td>
-                    <td>@item.ACTV_DESC</td>
-                    <td><button class="btn btn-block btn-primary bg-primary-gradient" @onclick="()=>Click(item.RQID,regn_code)" style="width:65px">نمایش</button></td>
-                </tr>
-            }
+                    {
+                        <tr>
+                            <td>@item.ID</td>
+                            <td>@item.RQID</td>
+                            <td>@item.UPDT_DATE</td>
+                            <td>@item.ACTV_DESC</td>
+                            <td><button class="btn btn-block btn-primary bg-primary-gradient" @onclick="()=>Click(item.RQID)" style="width:65px">نمایش</button></td>
+                        </tr>
+                    }
             </tbody>
         </table>
 
@@ -49,26 +49,27 @@
     [Parameter]
     public string regn_code { get; set; }
     [Parameter]
-    public List<Branching> BranchList { get; set; } 
+    public string username { get; set; }
+    [Parameter]
+    public List<Branching> BranchList { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         //var getcount = await Http.PostAsJsonAsync<string>("api/Branching/Count_All_Contract_Async/", regn_code);
         BranchList = new List<Branching>();
-        var getData = await Http.PostAsJsonAsync<string>("api/Branching/Get_All_Contract_Async/","");
+        var getData = await Http.PostAsJsonAsync<string>("api/Branching/Get_All_Contract_Async/", username);
         var data = await getData.Content.ReadAsStringAsync();
-       BranchList = JsonConvert.DeserializeObject<List<Branching>>(data);
-     
+         BranchList = JsonConvert.DeserializeObject<List<Branching>>(data);
+
     }
 
-    private void Click(Int64 RQID,string regn_code)
+    private void Click(Int64 RQID)
     {
-        
-        NavigationManager.NavigateTo($"Branching_Item/{RQID.ToString()}/{regn_code}");
+        NavigationManager.NavigateTo($"Branching_Item/{RQID.ToString()}/");
     }
 
-     private void Back()
+    private void Back()
     {
-        NavigationManager.NavigateTo($"/Index/{regn_code}/");
+        NavigationManager.NavigateTo($"/Index/{Temp.username}/");
     }
 }

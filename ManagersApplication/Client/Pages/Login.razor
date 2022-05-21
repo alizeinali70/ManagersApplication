@@ -34,24 +34,30 @@
     {
         string res = "";
         username = "zonobi"; password = "123";
-        if (username != null && password != null || username=="zonobi" || username==" ghorbani09" || username=="zare_f")
+        if (username != null && password != null)
         {
-            var getData = await Http.PostAsJsonAsync<string>("api/Login/Login_Async/", username.ToLower());
-            var data = await getData.Content.ReadAsStringAsync();
-            res = JsonConvert.DeserializeObject<string>(data);
-
-
-            if (username.ToLower() == res && password == "123")
+            if (username == "zonobi" || username == " ghorbani09" || username == "zare_f")
             {
-                NavigationManager.NavigateTo($"/Index/{username}/");
-                //NavigationManager.NavigateTo($"/Index/{regn_code}/");
-            }
+                var getData = await Http.PostAsJsonAsync<string>("api/Login/Login_Async/", username.ToLower());
+                var data = await getData.Content.ReadAsStringAsync();
+                res = JsonConvert.DeserializeObject<string>(data);
 
+
+                if (username.ToLower() == res && password == "123")
+                {
+                    Temp.username = username.ToLower();
+                    NavigationManager.NavigateTo($"/Index/{username}/");
+                    //NavigationManager.NavigateTo($"/Index/{regn_code}/");
+                }
+
+                else
+                    error = "نام کاربری یا کلمه عبور اشتباه است";
+            }
             else
-                error = "نام کاربری یا کلمه عبور اشتباه است";
+                    error = "نام کاربری یا کلمه عبور اشتباه است";
         }
-        else
-            error = "نام کاربری یا کلمه عبور را وارد کنید";
+            else
+                error = "نام کاربری یا کلمه عبور را وارد کنید";
 
     }
 }

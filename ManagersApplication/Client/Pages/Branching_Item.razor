@@ -1,4 +1,4 @@
-﻿@page "/Branching_Item/{RQID}/{regn_code}"
+﻿@page "/Branching_Item/{RQID}/"
 
 
 
@@ -77,16 +77,16 @@
         </div>
         <div class="row col-lg-6 mt-2 mb-2 mr-4">
             <div class="col-lg-3 mt-2 col-sm-3 col-5">
-                <button class="btn btn-block btn-primary bg-success-gradient text-center" @onclick="Confirm" >تایید</button>
+                <button class="btn btn-block btn-primary bg-success-gradient text-center" @onclick="Confirm">تایید</button>
             </div>
             <div class="col-lg-3 mt-2 col-sm-3 col-5">
-                <button class="btn btn-block btn-primary bg-danger-gradient text-center" @onclick="Reject" >عدم تایید</button>
-            </div> 
-            <div class="col-lg-3 mt-2 col-sm-3 col-5">
-                <button class="btn btn-block btn-primary bg-warning-gradient text-center" @onclick="Back" >بازگشت</button>
+                <button class="btn btn-block btn-primary bg-danger-gradient text-center" @onclick="Reject">عدم تایید</button>
             </div>
             <div class="col-lg-3 mt-2 col-sm-3 col-5">
-                <button class="btn btn-block btn-primary bg-info-gradient text-center" @onclick="@(()=>Img_Dsiplay(@RQID,regn_code))">مشاهده مدارک</button>
+                <button class="btn btn-block btn-primary bg-warning-gradient text-center" @onclick="Back">بازگشت</button>
+            </div>
+            <div class="col-lg-3 mt-2 col-sm-3 col-5">
+                <button class="btn btn-block btn-primary bg-info-gradient text-center" @onclick="@(()=>Img_Dsiplay(@RQID))">مشاهده مدارک</button>
             </div>
 
         </div>
@@ -96,7 +96,7 @@
     <div class="row col-lg-8">
         <div class="col-lg-8 col-8"><label class="text-danger">@Result_Message</label> </div>
     </div>
-   
+
 </div>
 
 
@@ -117,15 +117,13 @@
 
     public string Result_Message { get; set; }
 
-
-
     protected override async Task OnInitializedAsync()
     {
         _contract = new Contract_Item();
         //////////////////////////////////////////
-       await Get_Requester_Name_Async();
+        await Get_Requester_Name_Async();
         //////////////////////////////////////////
-       await Get_AdmContract();
+        await Get_AdmContract();
         //////////////////////////////////////////
 
     }
@@ -155,11 +153,12 @@
 
     private void Back()
     {
-        NavigationManager.NavigateTo($"/Branching/{regn_code}/");
+        //NavigationManager.NavigateTo($"/Branching/{RQID}/");
+        NavigationManager.NavigateTo($"/Branching/{Temp.username}/");
     }
-    private void Img_Dsiplay(string RQID,string regn_code)
-    {        
-        NavigationManager.NavigateTo($"Image_Display/{RQID.ToString()}/{regn_code}");
+    private void Img_Dsiplay(string RQID)
+    {
+        NavigationManager.NavigateTo($"Image_Display/{RQID.ToString()}/");
     }
 
     private async Task Get_Requester_Name_Async()

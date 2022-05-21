@@ -16,7 +16,7 @@
                     </div>
                     <div class="icon">
                         @*<i class="fa fa-code-branch"></i>*@
-                        <i class="ion ion-stats-bars fa-beat" style="--fa-beat-scale: 1.5;"></i>
+                        <i class="fa-solid fa-envelope fa-beat" style="--fa-beat-scale: 1.2;"></i>
                     </div>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                     <div class="info-box">
                         <span class="info-box-icon bg-info elevation-1"><i class="fa-solid fa-envelope"></i></span>
 
-                        <div class="info-box-content">
+                        <div class="info-box-content" @onclick="Go_To_Branching"  style="cursor:pointer">
                             <span class="info-box-text">تصویب قرارداد</span>
                             <span class="info-box-number">
                                 <p>تعداد : @BCount</p>
@@ -66,7 +66,7 @@
                     <!-- /.info-box -->
                 </div>
                 <!-- /.col -->
-                <div class="col-sm-6 col-md-3 float-right">
+                @*<div class="col-sm-6 col-md-3 float-right">
                     <div class="info-box mb-3">
                         <span class="info-box-icon bg-danger elevation-1"><i class="fa fa-google-plus"></i></span>
 
@@ -82,7 +82,7 @@
                 <!-- fix for small devices only -->
                 @*<div class="clearfix hidden-md-up"></div>*@
 
-                <div class="col-sm-6 col-md-3 float-right">
+               @* <div class="col-sm-6 col-md-3 float-right">
                     <div class="info-box mb-3">
                         <span class="info-box-icon bg-success elevation-1"><i class="fa fa-shopping-cart"></i></span>
 
@@ -107,7 +107,7 @@
                     </div>
                     <!-- /.info-box -->
                 </div>
-                <!-- /.col -->
+                <!-- /.col -->*@
             </div>
 
         </div>
@@ -132,7 +132,7 @@
 
     private void Go_To_Branching()
     {
-        //  NavigationManager.NavigateTo($"/Branching/{username}/");
+          NavigationManager.NavigateTo($"/Branching/{username}/");
 
     }
     private void Go_To_Energy()

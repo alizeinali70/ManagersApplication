@@ -1,4 +1,4 @@
-﻿ @page "/Image_Display/{RQID}/{regn_code}"
+﻿ @page "/Image_Display/{RQID}/"
 <div class="row col-lg-12 col-xs-12 col-12">
     <button class="btn btn-block warning bg-warning-gradient float-left text-right" @onclick="Back" style="width:65px">بازگشت</button>
 
@@ -71,6 +71,6 @@
     }
     private void Back()
     {
-        NavigationManager.NavigateTo($"Branching_Item/{RQID.ToString()}/{regn_code}");
+        NavigationManager.NavigateTo($"Branching_Item/{RQID.ToString()}/");
     }
 }

@@ -4,19 +4,25 @@
 
     <!-- /.card-header -->
     <div class="card-body p-0 scroll">
+        @foreach (var item in Img_list)
+        {
+            progressValue += 1;
+        }
+        <progress value="@progressValue" max="100" style="width: 100%;height:40px">@(progressValue.ToString() + " %")</progress>
+
         <table class="table table-striped">
             <tr>
 
                 <th>نوع عکس</th>
                 <th>عکس</th>
                 @*<th>نمایش</th>*@
-
             </tr>
-
             <tbody>
+
                 @foreach (var item in Img_list)
                 {
-                    
+
+                    progressValue = 20;
                     @*if (@item.Image_Type.ToString() == "8")
                         {*@
                     <tr>
@@ -55,22 +61,36 @@
 
     [Parameter]
     public List<Sas_Image_Document> Img_list { get; set; }
-
+    [Parameter]
+    public int progressValue { get; set; }
 
 
     protected override async Task OnInitializedAsync()
     {
+
         await View_Img();
     }
     private async Task View_Img()
     {
+
         Img_list = new List<Sas_Image_Document>();
         var result = await Http.PostAsJsonAsync("api/Branching/View_Imgasync/", RQID);
         var res = await result.Content.ReadAsStringAsync();
         Img_list = JsonConvert.DeserializeObject<List<Sas_Image_Document>>(res);
     }
+
     private void Back()
     {
         NavigationManager.NavigateTo($"Branching_Item/{RQID.ToString()}/");
+    }
+
+
+
+    private async Task startProgress()
+    {
+        for (int i = 0; i < 100; i++)
+        {
+            this.progressValue = i;
+        }
     }
 }

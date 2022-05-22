@@ -33,10 +33,11 @@
     protected async Task Sign_In(string username, string password)
     {
         string res = "";
-      //
-         username = "zonobi"; password = "123";
+        //
+        //username = "zonobi"; password = "123";
         if (username != null && password != null)
         {
+            username = username.ToLower();
             if (username == "zonobi" || username == " ghorbani09" || username == "zare_f")
             {
                 var getData = await Http.PostAsJsonAsync<string>("api/Login/Login_Async/", username.ToLower());

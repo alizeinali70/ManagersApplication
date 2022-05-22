@@ -10,6 +10,7 @@ namespace ManagersApplication.Server.DataAccess
         string _conn;
         OracleTransaction transection = null;
         public static List<Branching> list_Contract = new List<Branching>();
+        public static List<Branching> list_PriceAnnounce = new List<Branching>();
 
         public DBContext(IConfiguration configuration)
         {
@@ -50,114 +51,8 @@ namespace ManagersApplication.Server.DataAccess
             }
 
         }
-        #region Contract
-        public async Task<List<Branching>> GetAllContractAsync(string username)
-        {
-            try
-            {
-                list_Contract = new List<Branching>();
-                using (OracleConnection conn = GetOracleConnection())
-                {
-                    int i = 0;
-                    conn.Open();
-                    transection = conn.BeginTransaction();
-
-                    OracleCommand cmd = new OracleCommand();
-                    cmd.CommandText = "ADFA_MGNT_APPL.ADML_LIST_P";
-                    cmd.Connection = conn;
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    //in
-                    cmd.Parameters.Add("P_USERNAME", OracleDbType.Varchar2, 200);
-                    cmd.Parameters["P_USERNAME"].Direction = ParameterDirection.Input;
-                    cmd.Parameters["P_USERNAME"].Value = username;
-
-                    cmd.Parameters.Add("P_ACTVNAME", OracleDbType.Varchar2, 10);
-                    cmd.Parameters["P_ACTVNAME"].Direction = ParameterDirection.Input;
-                    cmd.Parameters["P_ACTVNAME"].Value = "Cntd";
-
-                    //out
-                    OracleParameter result = new OracleParameter("P_RESULT", OracleDbType.RefCursor);
-                    result.Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add(result);
-
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            list_Contract.Add(new Branching()
-                            {
-                                ID = ++i,
-                                RQID = await reader.GetFieldValueAsync<Int64>(0),
-                                UPDT_DATE = await reader.GetFieldValueAsync<string>(1),
-                                ACTV_DESC = await reader.GetFieldValueAsync<string>(2),
-                            });
-                        }
-                    }
-                    conn.Close();
-                }
-                return list_Contract;
-            }
-            catch (Exception exp)
-            {
-                throw;
-            }
-        }
-        public async Task<int> CountAllContractAsync(string username)
-        {
-            try
-            {
-                if (list_Contract.Count == 0)
-                {
-                    list_Contract = new List<Branching>();
-                    using (OracleConnection conn = GetOracleConnection())
-                    {
-                        int i = 0;
-                        conn.Open();
-                        transection = conn.BeginTransaction();
-
-                        OracleCommand cmd = new OracleCommand();
-                        cmd.CommandText = "ADFA_MGNT_APPL.ADML_LIST_P";
-                        cmd.Connection = conn;
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        //in
-                        cmd.Parameters.Add("P_USERNAME", OracleDbType.Varchar2, 200);
-                        cmd.Parameters["P_USERNAME"].Direction = ParameterDirection.Input;
-                        cmd.Parameters["P_USERNAME"].Value = username;
-
-                        cmd.Parameters.Add("P_ACTVNAME", OracleDbType.Varchar2, 10);
-                        cmd.Parameters["P_ACTVNAME"].Direction = ParameterDirection.Input;
-                        cmd.Parameters["P_ACTVNAME"].Value = "Cntd";
-
-                        //out
-                        OracleParameter result = new OracleParameter("P_RESULT", OracleDbType.RefCursor);
-                        result.Direction = ParameterDirection.Output;
-                        cmd.Parameters.Add(result);
-
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            while (await reader.ReadAsync())
-                            {
-                                list_Contract.Add(new Branching()
-                                {
-                                    ID = ++i,
-                                    RQID = await reader.GetFieldValueAsync<Int64>(0),
-                                    UPDT_DATE = await reader.GetFieldValueAsync<string>(1),
-                                    ACTV_DESC = await reader.GetFieldValueAsync<string>(2),
-                                });
-                            }
-                        }
-                        conn.Close();
-                    }
-                    return list_Contract.Count;
-                }
-                return list_Contract.Count;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
+      
+        #region Public
         public async Task<Branching_Item> GetNameAsync(string RQID)
         {
             try
@@ -267,6 +162,117 @@ namespace ManagersApplication.Server.DataAccess
             }
 
         }
+        #endregion
+
+
+        #region Contract
+        public async Task<List<Branching>> GetAllContractAsync(string username)
+        {
+            try
+            {
+                list_Contract = new List<Branching>();
+                using (OracleConnection conn = GetOracleConnection())
+                {
+                    int i = 0;
+                    conn.Open();
+                    transection = conn.BeginTransaction();
+
+                    OracleCommand cmd = new OracleCommand();
+                    cmd.CommandText = "ADFA_MGNT_APPL.ADML_LIST_P";
+                    cmd.Connection = conn;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    //in
+                    cmd.Parameters.Add("P_USERNAME", OracleDbType.Varchar2, 200);
+                    cmd.Parameters["P_USERNAME"].Direction = ParameterDirection.Input;
+                    cmd.Parameters["P_USERNAME"].Value = username;
+
+                    cmd.Parameters.Add("P_ACTVNAME", OracleDbType.Varchar2, 10);
+                    cmd.Parameters["P_ACTVNAME"].Direction = ParameterDirection.Input;
+                    cmd.Parameters["P_ACTVNAME"].Value = "Cntd";
+
+                    //out
+                    OracleParameter result = new OracleParameter("P_RESULT", OracleDbType.RefCursor);
+                    result.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(result);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            list_Contract.Add(new Branching()
+                            {
+                                ID = ++i,
+                                RQID = await reader.GetFieldValueAsync<Int64>(0),
+                                UPDT_DATE = await reader.GetFieldValueAsync<string>(1),
+                                ACTV_DESC = await reader.GetFieldValueAsync<string>(2),
+                            });
+                        }
+                    }
+                    conn.Close();
+                }
+                return list_Contract;
+            }
+            catch (Exception exp)
+            {
+                throw;
+            }
+        }
+        public async Task<int> CountAllContractAsync(string username)
+        {
+            try
+            {
+                if (list_Contract.Count == 0)
+                {
+                    list_Contract = new List<Branching>();
+                    using (OracleConnection conn = GetOracleConnection())
+                    {
+                        int i = 0;
+                        conn.Open();
+                        transection = conn.BeginTransaction();
+
+                        OracleCommand cmd = new OracleCommand();
+                        cmd.CommandText = "ADFA_MGNT_APPL.ADML_LIST_P";
+                        cmd.Connection = conn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        //in
+                        cmd.Parameters.Add("P_USERNAME", OracleDbType.Varchar2, 200);
+                        cmd.Parameters["P_USERNAME"].Direction = ParameterDirection.Input;
+                        cmd.Parameters["P_USERNAME"].Value = username;
+
+                        cmd.Parameters.Add("P_ACTVNAME", OracleDbType.Varchar2, 10);
+                        cmd.Parameters["P_ACTVNAME"].Direction = ParameterDirection.Input;
+                        cmd.Parameters["P_ACTVNAME"].Value = "Cntd";
+
+                        //out
+                        OracleParameter result = new OracleParameter("P_RESULT", OracleDbType.RefCursor);
+                        result.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(result);
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                list_Contract.Add(new Branching()
+                                {
+                                    ID = ++i,
+                                    RQID = await reader.GetFieldValueAsync<Int64>(0),
+                                    UPDT_DATE = await reader.GetFieldValueAsync<string>(1),
+                                    ACTV_DESC = await reader.GetFieldValueAsync<string>(2),
+                                });
+                            }
+                        }
+                        conn.Close();
+                    }
+                    return list_Contract.Count;
+                }
+                return list_Contract.Count;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }       
         public async Task<Contract_Item> GetAdmContract(string RQID)
         {
             try
@@ -444,25 +450,15 @@ namespace ManagersApplication.Server.DataAccess
             return list;
         }
         #endregion
+
         #region PriceAnnounce
         public async Task<List<Branching>> GetAllPriceAnnounceAsync(string username)
         {
             try
             {
-                return list_Contract;
-            }
-            catch (Exception exp)
-            {
-                throw;
-            }
-        }
-        public async Task<int> CountAllAnnounceAsync(string username)
-        {
-            try
-            {
-                if (list_Contract.Count == 0)
+                if (list_PriceAnnounce.Count == 0)
                 {
-                    list_Contract = new List<Branching>();
+                    list_PriceAnnounce = new List<Branching>();
                     using (OracleConnection conn = GetOracleConnection())
                     {
                         int i = 0;
@@ -491,7 +487,7 @@ namespace ManagersApplication.Server.DataAccess
                         {
                             while (await reader.ReadAsync())
                             {
-                                list_Contract.Add(new Branching()
+                                list_PriceAnnounce.Add(new Branching()
                                 {
                                     ID = ++i,
                                     RQID = await reader.GetFieldValueAsync<Int64>(0),
@@ -502,9 +498,65 @@ namespace ManagersApplication.Server.DataAccess
                         }
                         conn.Close();
                     }
-                    return list_Contract.Count;
+                    return list_PriceAnnounce;
                 }
-                return list_Contract.Count;
+                return list_PriceAnnounce;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public async Task<int> CountAllPriceAnnounceAsync(string username)
+        {
+            try
+            {
+                if (list_PriceAnnounce.Count == 0)
+                {
+                    list_PriceAnnounce = new List<Branching>();
+                    using (OracleConnection conn = GetOracleConnection())
+                    {
+                        int i = 0;
+                        conn.Open();
+                        transection = conn.BeginTransaction();
+
+                        OracleCommand cmd = new OracleCommand();
+                        cmd.CommandText = "ADFA_MGNT_APPL.ADML_LIST_P";
+                        cmd.Connection = conn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        //in
+                        cmd.Parameters.Add("P_USERNAME", OracleDbType.Varchar2, 200);
+                        cmd.Parameters["P_USERNAME"].Direction = ParameterDirection.Input;
+                        cmd.Parameters["P_USERNAME"].Value = username;
+
+                        cmd.Parameters.Add("P_ACTVNAME", OracleDbType.Varchar2, 10);
+                        cmd.Parameters["P_ACTVNAME"].Direction = ParameterDirection.Input;
+                        cmd.Parameters["P_ACTVNAME"].Value = "Annp";
+
+                        //out
+                        OracleParameter result = new OracleParameter("P_RESULT", OracleDbType.RefCursor);
+                        result.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(result);
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                list_PriceAnnounce.Add(new Branching()
+                                {
+                                    ID = ++i,
+                                    RQID = await reader.GetFieldValueAsync<Int64>(0),
+                                    UPDT_DATE = await reader.GetFieldValueAsync<string>(1),
+                                    ACTV_DESC = await reader.GetFieldValueAsync<string>(2),
+                                });
+                            }
+                        }
+                        conn.Close();
+                    }
+                    return list_PriceAnnounce.Count;
+                }
+                return list_PriceAnnounce.Count;
             }
             catch (Exception)
             {

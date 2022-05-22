@@ -15,7 +15,7 @@ namespace ManagersApplication.Server.Controllers
         {
             _config = config;
         }
-
+        #region Contract
         [HttpGet("[controller]/[action]")]
         [Route("Branching/Get_All_Contract_Async")]
         public async Task<ActionResult<List<Branching>>> Get_All_Contract_Async([FromBody] string username)
@@ -165,7 +165,41 @@ namespace ManagersApplication.Server.Controllers
                 throw;
             }
         }
+        #endregion
 
+        #region Confirm PriceAnnounce
+        [HttpGet("[controller]/[action]")]
+        [Route("Branching/Get_All_PriceAnnounce_Async")]
+        public async Task<ActionResult<List<Branching>>> Get_All_PriceAnnounce_Async([FromBody] string username)
+        {
+            try
+            {
+                DBContext context = new DBContext(_config);
+                List<Branching> list = await context.GetAllPriceAnnounceAsync(username);
+                
+                return list;
+            }
+            catch (Exception exp)
+            {
+                throw;
+            }
+        }
+        [HttpGet("[controller]/[action]")]
+        [Route("Branching/Count_All_PriceAnnounce_Async")]
+        public async Task<ActionResult<int>> Count_All_PriceAnnounce_Async([FromBody] string username)
+        {
+            try
+            {
+                DBContext context = new DBContext(_config);
+                int count = await context.CountAllPriceAnnounceAsync(username);
 
+                return count;
+            }
+            catch (Exception exp)
+            {
+                throw;
+            }
+        }
+        #endregion
     }
 }

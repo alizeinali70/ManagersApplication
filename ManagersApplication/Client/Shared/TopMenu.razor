@@ -54,11 +54,10 @@
                 <div class="col-sm-6 col-md-3 float-right">
                     <div class="info-box">
                         <span class="info-box-icon bg-info elevation-1"><i class="fa-solid fa-envelope"></i></span>
-
                         <div class="info-box-content" @onclick="Go_To_Branching"  style="cursor:pointer">
                             <span class="info-box-text">تصویب قرارداد</span>
                             <span class="info-box-number">
-                                <p>تعداد : @BCount</p>
+                                <p>تعداد : @ContractCount</p>
                             </span>
                         </div>
                         <!-- /.info-box-content -->
@@ -66,13 +65,14 @@
                     <!-- /.info-box -->
                 </div>
                 <!-- /.col -->
-                @*<div class="col-sm-6 col-md-3 float-right">
+                <div class="col-sm-6 col-md-3 float-right">
                     <div class="info-box mb-3">
                         <span class="info-box-icon bg-danger elevation-1"><i class="fa fa-google-plus"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">لایک‌ها</span>
-                            <span class="info-box-number">41,410</span>
+                        <div class="info-box-content" @onclick="Go_To_PriceAnnounce" style="cursor:pointer">
+                            <span class="info-box-text">تایید اعلام هزینه</span>
+                            <span class="info-box-number">
+                                <p>تعداد : @PriceAnnounce</p>
+                            </span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -80,7 +80,7 @@
                 </div>
                 <!-- /.col -->
                 <!-- fix for small devices only -->
-                @*<div class="clearfix hidden-md-up"></div>*@
+                @*<div class="clearfix hidden-md-up"></div>
 
                @* <div class="col-sm-6 col-md-3 float-right">
                     <div class="info-box mb-3">
@@ -123,18 +123,28 @@
     [Parameter]
     public string username { get; set; }
     [Parameter]
-    public int BCount { get; set; }
+    public int ContractCount { get; set; }
+    [Parameter]
+    public int PriceAnnounce { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        var getcount = await Http.PostAsJsonAsync<string>("api/Branching/Count_All_Contract_Async/", username);
-        BCount = int.Parse(await getcount.Content.ReadAsStringAsync());
+        var getContractcount = await Http.PostAsJsonAsync<string>("api/Branching/Count_All_Contract_Async/", username);
+        ContractCount = int.Parse(await getContractcount.Content.ReadAsStringAsync());
+        /////
+         var getPriceAnnouncecount = await Http.PostAsJsonAsync<string>("api/Branching/Count_All_PriceAnnounce_Async/", username);
+        PriceAnnounce = int.Parse(await getPriceAnnouncecount.Content.ReadAsStringAsync());
     }
 
     private void Go_To_Branching()
     {
           NavigationManager.NavigateTo($"/Branching/{username}/");
-
     }
+    private void Go_To_PriceAnnounce()
+    {
+          NavigationManager.NavigateTo($"/PriceAnnounce/{username}/");
+    }
+
     private void Go_To_Energy()
     {
         /// NavigationManager.NavigateTo("Energy");

@@ -4,6 +4,10 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+   
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT">
+
     <title>مدیران</title>
     <base href="/" />
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
@@ -133,6 +137,11 @@
 
 </html>
 <script>
+    caches.delete("blazor-resources-/").then(function (e) {
+        console.log("'blazor-resources-/' cache deleted");
+    });
+
+
     function myFunction() {
         var x = document.getElementById("sub_branching");
         if (x.style.display === "none") {
@@ -141,4 +150,6 @@
             x.style.display = "none";
         }
     }
+
+
 </script>

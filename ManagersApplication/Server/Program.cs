@@ -5,6 +5,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+
+
+
 var app = builder.Build();
 //builder.Services.AddScoped(sp =>
 //    new HttpClient
@@ -37,3 +40,4 @@ app.MapControllers();
 app.MapFallbackToFile("index.html");
 
 app.Run();
+

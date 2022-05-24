@@ -77,10 +77,13 @@
         </div>
         <div class="row col-lg-6 mt-2 mb-2 mr-4">
             <div class="col-lg-3 mt-2 col-sm-3 col-5">
-                <button class="btn btn-block btn-primary bg-success-gradient text-center" @onclick="Confirm">تایید</button>
+                @*<button class="btn btn-block btn-primary bg-success-gradient text-center" @onclick="Confirm">تایید</button>*@
+                <a href="#" class="btn btn-block btn-primary bg-success-gradient text-center" data-toggle="modal" data-target="#confirmModal">تایید</a>
             </div>
             <div class="col-lg-3 mt-2 col-sm-3 col-5">
-                <button class="btn btn-block btn-primary bg-danger-gradient text-center" @onclick="Reject">عدم تایید</button>
+@*                <button class="btn btn-block btn-primary bg-danger-gradient text-center" @onclick="Reject">عدم تایید</button>*@  
+<a href="#" class="btn btn-block btn-primary bg-danger-gradient text-center" data-toggle="modal" data-target="#rejectModal">عدم تایید</a>
+
             </div>
             <div class="col-lg-3 mt-2 col-sm-3 col-5">
                 <button class="btn btn-block btn-primary bg-warning-gradient text-center" @onclick="Back">بازگشت</button>
@@ -92,6 +95,46 @@
         </div>
         @*</div>*@
 
+    </div>
+    <!-- confir mModal -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">تایید درخواست</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4>آیا از تایید درخواست مطمئن هستید؟</h4>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-block btn-primary bg-success-gradient text-center" @onclick="Confirm">تایید</button>
+                    <button type="button" class="btn btn-block btn-primary bg-info-gradient text-center" data-dismiss="modal">خروج</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- reject mModal -->
+    <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">عدم تایید درخواست</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4>آیا از عدم تایید درخواست مطمئن هستید؟</h4>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-block btn-primary bg-danger-gradient text-center" @onclick="Reject">عدم تایید</button>
+                    <button type="button" class="btn btn-block btn-primary bg-info-gradient text-center" data-dismiss="modal">خروج</button>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row col-lg-8">
         <div class="col-lg-8 col-8"><label class="text-danger">@Result_Message</label> </div>
@@ -129,12 +172,12 @@
     }
     private async Task Confirm()
     {
-        var result = await Http.PostAsJsonAsync("api/Branching/ConfirmContractasync/", RQID);
-        var res = await result.Content.ReadAsStringAsync();
-        if (res == "0")
-            Result_Message = "ثبت با موفقیت انجام شد";
-        else
-            Result_Message = "درخواست شرایط مورد نظر را ندارد";
+         var result = await Http.PostAsJsonAsync("api/Branching/ConfirmContractasync/", RQID);
+         var res = await result.Content.ReadAsStringAsync();
+         if (res == "0")
+             Result_Message = "ثبت با موفقیت انجام شد";
+         else
+             Result_Message = "درخواست شرایط مورد نظر را ندارد";
 
     }
 

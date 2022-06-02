@@ -75,14 +75,140 @@
             <div class="col-lg-4 col-4"> دلیل عدم تایید: </div>
             <div class="col-lg-8 col-8"><textarea @bind=Desc class="form-control"></textarea> </div>
         </div>
+         @* <div class="row col-lg-6 mt-2 mb-2 mr-4">
+              <table class="table table-striped">
+                <tr>
+                    <th>ایجاد یا تغییر</th>
+                    <th>نوع مشترک</th>
+                    <th>نوع متقاضی</th>
+                    <th>نوع انشعاب</th>
+                    <th>موقعیت محل</th>
+                    <th>چگونگی برق رسانی</th>
+                    <th>تعداد</th>
+                    <th class="td-width">نوع تقاضا</th>
+                    <th class="td-width">نوع کاربری</th>
+                    <th>آمپر</th>
+                    <th>فاز</th>
+                    <th>قدرت</th>
+                    <th class="td-width">ولتاژ تحویلی</th>
+                </tr>
+                <tbody>
+                    @foreach (var item in BranchItemList)
+                    {
+                        <tr>
+                            @if (item.Gnrt == "1")
+                            {
+                                <td>جدید</td>
+                            }
+                            else
+                            {
+                                <td>تغییر</td>
+                            }
+
+                            @if (item.Serv_Type == "1")
+                            {
+                                <td>عادی</td>
+                            }
+                            else
+                            {
+                                <td>دیماندی</td>
+                            }
+
+                            <td> @item.Rqtt_Desc</td>
+
+                            @if (item.Brnc_Type == "1")
+                            {
+                                <td>دائم</td>
+                            }
+                            else if (item.Brnc_Type == "2")
+                            {
+                                <td>آزاد</td>
+                            }
+                            else if (item.Brnc_Type == "3")
+                            {
+                                <td>حاشیه شهر</td>
+                            }
+                            else if (item.Brnc_Type == "4")
+                            {
+                                <td>آزاد به دائم</td>
+                            }
+                            else if (item.Brnc_Type == "5")
+                            {
+                                <td>فتوولتاییک</td>
+                            }
+                            else if (item.Brnc_Type == "6")
+                            {
+                                <td>غیر دائم</td>
+                            }
+                            <td> @item.Loct_Desc</td>
+
+                            @if (item.Inst_Supr == "1")
+                            {
+                                <td>شرکت</td>
+                            }
+                            else if (item.Inst_Supr == "2")
+                            {
+                                <td>متقاضی</td>
+                            }
+                            else
+                            {
+                                <td>شبکه موجود</td>
+                            }
+                            <td>@item.Admn_Numb</td>
+
+                            <td>@item.Rqtp_Desc</td>
+
+                            @if (item.Use_Type == "1")
+                            {
+                                <td>خانگی</td>
+                            }
+                            else if (item.Use_Type == "2")
+                            {
+                                <td>عمومی</td>
+                            }
+                            else if (item.Use_Type == "3")
+                            {
+                                <td>کشاورزی</td>
+                            }
+                            else if (item.Use_Type == "4")
+                            {
+                                <td>صنعتی</td>
+                            }
+                            else if (item.Use_Type == "5")
+                            {
+                                <td>سایر مصارف</td>
+                            }
+
+                            <td>@item.Ampr</td>
+
+                            <td>@item.Phas</td>
+
+                            <td>@item.Powr</td>
+
+                            @if (item.Volt_Type == "1")
+                            {
+                                <td>اولیه</td>
+                            }
+                            else if (item.Volt_Type == "2")
+                            {
+                                <td>ثانویه</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+          </div>*@
+    </div>
+    <div class="row col-lg-12 ">
         <div class="row col-lg-6 mt-2 mb-2 mr-4">
             <div class="col-lg-3 mt-2 col-sm-3 col-5">
                 @*<button class="btn btn-block btn-primary bg-success-gradient text-center" @onclick="Confirm">تایید</button>*@
                 <a href="#" class="btn btn-block btn-primary bg-success-gradient text-center" data-toggle="modal" data-target="#confirmModal">تایید</a>
             </div>
             <div class="col-lg-3 mt-2 col-sm-3 col-5">
-@*                <button class="btn btn-block btn-primary bg-danger-gradient text-center" @onclick="Reject">عدم تایید</button>*@  
-<a href="#" class="btn btn-block btn-primary bg-danger-gradient text-center" data-toggle="modal" data-target="#rejectModal">عدم تایید</a>
+                @*                <button class="btn btn-block btn-primary bg-danger-gradient text-center" @onclick="Reject">عدم تایید</button>*@
+                <a href="#" class="btn btn-block btn-primary bg-danger-gradient text-center" data-toggle="modal" data-target="#rejectModal">عدم تایید</a>
 
             </div>
             <div class="col-lg-3 mt-2 col-sm-3 col-5">
@@ -110,8 +236,8 @@
                     <h4>آیا از تایید درخواست مطمئن هستید؟</h4>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-block btn-primary bg-success-gradient text-center" @onclick="Confirm" data-dismiss="modal">تایید</button>
-                    <button type="button" class="btn btn-block btn-primary bg-info-gradient text-center" data-dismiss="modal">خروج</button>
+                    <button class="btn btn-block btn-primary bg-success-gradient text-center" @onclick="Confirm" data-dismiss="modal">بلی</button>
+                    <button type="button" class="btn btn-block btn-primary bg-info-gradient text-center" data-dismiss="modal">خیر</button>
                 </div>
             </div>
         </div>
@@ -130,8 +256,8 @@
                     <h4>آیا از عدم تایید درخواست مطمئن هستید؟</h4>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-block btn-primary bg-danger-gradient text-center" @onclick="Reject" data-dismiss="modal">عدم تایید</button>
-                    <button type="button" class="btn btn-block btn-primary bg-info-gradient text-center" data-dismiss="modal">خروج</button>
+                    <button class="btn btn-block btn-primary bg-danger-gradient text-center" @onclick="Reject" data-dismiss="modal">بلی</button>
+                    <button type="button" class="btn btn-block btn-primary bg-info-gradient text-center" data-dismiss="modal">خیر</button>
                 </div>
             </div>
         </div>
@@ -172,12 +298,12 @@
     }
     private async Task Confirm()
     {
-         var result = await Http.PostAsJsonAsync("api/Branching/ConfirmContractasync/", RQID);
-         var res = await result.Content.ReadAsStringAsync();
-         if (res == "0")
-             Result_Message = "ثبت با موفقیت انجام شد";
-         else
-             Result_Message = "درخواست شرایط مورد نظر را ندارد";
+        var result = await Http.PostAsJsonAsync("api/Branching/ConfirmContractasync/", RQID);
+        var res = await result.Content.ReadAsStringAsync();
+        if (res == "0")
+            Result_Message = "ثبت با موفقیت انجام شد";
+        else
+            Result_Message = "درخواست شرایط مورد نظر را ندارد";
 
     }
 

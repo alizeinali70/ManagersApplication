@@ -449,6 +449,48 @@ namespace ManagersApplication.Server.DataAccess
 
             return list;
         }
+        public async Task<List<string>> GetRejectReason(string RQID)
+        {
+            try
+            {
+                List<string> Reasons = new List<string>();
+                using (OracleConnection conn = GetOracleConnection())
+                {
+                    conn.Open();
+                    transection = conn.BeginTransaction();
+                    OracleCommand cmd = new OracleCommand();
+                    cmd.CommandText = "ADFA_MGNT_APPL.DSGE_RESN_P";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Connection = conn;
+
+                    //in
+                    cmd.Parameters.Add("P_RQID", OracleDbType.Int64, 10);
+                    cmd.Parameters["P_RQID"].Direction = ParameterDirection.Input;
+                    cmd.Parameters["P_RQID"].Value = Int64.Parse(RQID);
+
+                    //out
+                    OracleParameter result = new OracleParameter("P_RESULT", OracleDbType.RefCursor);
+                    result.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(result);
+                    cmd.BindByName = true;
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            Reasons.Add(reader.GetString(2));
+                        }
+                    }
+                }
+                return Reasons;
+            }
+            catch (Exception exp)
+            {
+
+                throw;
+            }
+        }
+
         #endregion
 
         #region PriceAnnounce

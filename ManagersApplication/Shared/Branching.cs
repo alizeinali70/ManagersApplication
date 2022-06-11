@@ -34,6 +34,7 @@ namespace ManagersApplication.Shared
         public string Phas { get; set; }
         public double Powr { get; set; }
         public string Volt_Type { get; set; }
+        public List<string> Reject_Reason { get; set; }
     }
 
     public class Contract_Item

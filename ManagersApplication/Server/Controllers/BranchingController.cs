@@ -24,14 +24,14 @@ namespace ManagersApplication.Server.Controllers
             {
                 DBContext context = new DBContext(_config);
                 List<Branching> list = await context.GetAllContractAsync(username);
-              foreach (var item in list)
-              {
-                  var shamsi=ConvertDate.MiladiToShamsi(item.UPDT_DATE);
-                  item.UPDT_DATE = shamsi;
-              
-                  // item.UPDT_DATE = Convert.ToDateTime(ConvertDate.MiladiToShamsi(item.UPDT_DATE.ToString("yyyy/MM/dd"))).Date;                   
-              }
-               
+                foreach (var item in list)
+                {
+                    var shamsi = ConvertDate.MiladiToShamsi(item.UPDT_DATE);
+                    item.UPDT_DATE = shamsi;
+
+                    // item.UPDT_DATE = Convert.ToDateTime(ConvertDate.MiladiToShamsi(item.UPDT_DATE.ToString("yyyy/MM/dd"))).Date;                   
+                }
+
                 return list;
             }
             catch (Exception exp)
@@ -64,6 +64,22 @@ namespace ManagersApplication.Server.Controllers
             {
                 DBContext context = new DBContext(_config);
                 List<Branching_Item> list = await context.GetRquestRowAsync(RQID);
+                return list;
+            }
+            catch (Exception exp)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost("[controller]/[action]")]
+        [Route("Branching/Get_Reject_Reason_Async/")]
+        public async Task<ActionResult<List<string>>> Get_Reject_Reason_Async([FromBody] string RQID)
+        {
+            try
+            {
+                DBContext context = new DBContext(_config);
+                List<string> list = await context.GetRejectReason(RQID);
 
                 var a = context.GetRejectReason(RQID);
                 return list;
@@ -178,7 +194,7 @@ namespace ManagersApplication.Server.Controllers
             {
                 DBContext context = new DBContext(_config);
                 List<Branching> list = await context.GetAllPriceAnnounceAsync(username);
-                
+
                 return list;
             }
             catch (Exception exp)

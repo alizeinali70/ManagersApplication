@@ -70,135 +70,27 @@
         <!-- /.card-body -->
     </div>
     <!-- /.card -->
-    <div class="row col-lg-12 ">
-        <div class="row col-lg-6">
+    <div class="row col-lg-12 float-right">
+        <div class="row col-lg-6 float-right">
             <div class="col-lg-4 col-4"> دلیل عدم تایید: </div>
             <div class="col-lg-8 col-8"><textarea @bind=Desc class="form-control"></textarea> </div>
         </div>
-         @* <div class="row col-lg-6 mt-2 mb-2 mr-4">
-              <table class="table table-striped">
+        <div class="row col-lg-6 float-right mt-10">
+            <table class="table table-striped">
                 <tr>
-                    <th>ایجاد یا تغییر</th>
-                    <th>نوع مشترک</th>
-                    <th>نوع متقاضی</th>
-                    <th>نوع انشعاب</th>
-                    <th>موقعیت محل</th>
-                    <th>چگونگی برق رسانی</th>
-                    <th>تعداد</th>
-                    <th class="td-width">نوع تقاضا</th>
-                    <th class="td-width">نوع کاربری</th>
-                    <th>آمپر</th>
-                    <th>فاز</th>
-                    <th>قدرت</th>
-                    <th class="td-width">ولتاژ تحویلی</th>
+                    <th class="bg-warning">دلیل عدم تایید</th>
                 </tr>
                 <tbody>
-                    @foreach (var item in BranchItemList)
-                    {
+                     @foreach (var item in RejectReason)
+                        {
                         <tr>
-                            @if (item.Gnrt == "1")
-                            {
-                                <td>جدید</td>
-                            }
-                            else
-                            {
-                                <td>تغییر</td>
-                            }
-
-                            @if (item.Serv_Type == "1")
-                            {
-                                <td>عادی</td>
-                            }
-                            else
-                            {
-                                <td>دیماندی</td>
-                            }
-
-                            <td> @item.Rqtt_Desc</td>
-
-                            @if (item.Brnc_Type == "1")
-                            {
-                                <td>دائم</td>
-                            }
-                            else if (item.Brnc_Type == "2")
-                            {
-                                <td>آزاد</td>
-                            }
-                            else if (item.Brnc_Type == "3")
-                            {
-                                <td>حاشیه شهر</td>
-                            }
-                            else if (item.Brnc_Type == "4")
-                            {
-                                <td>آزاد به دائم</td>
-                            }
-                            else if (item.Brnc_Type == "5")
-                            {
-                                <td>فتوولتاییک</td>
-                            }
-                            else if (item.Brnc_Type == "6")
-                            {
-                                <td>غیر دائم</td>
-                            }
-                            <td> @item.Loct_Desc</td>
-
-                            @if (item.Inst_Supr == "1")
-                            {
-                                <td>شرکت</td>
-                            }
-                            else if (item.Inst_Supr == "2")
-                            {
-                                <td>متقاضی</td>
-                            }
-                            else
-                            {
-                                <td>شبکه موجود</td>
-                            }
-                            <td>@item.Admn_Numb</td>
-
-                            <td>@item.Rqtp_Desc</td>
-
-                            @if (item.Use_Type == "1")
-                            {
-                                <td>خانگی</td>
-                            }
-                            else if (item.Use_Type == "2")
-                            {
-                                <td>عمومی</td>
-                            }
-                            else if (item.Use_Type == "3")
-                            {
-                                <td>کشاورزی</td>
-                            }
-                            else if (item.Use_Type == "4")
-                            {
-                                <td>صنعتی</td>
-                            }
-                            else if (item.Use_Type == "5")
-                            {
-                                <td>سایر مصارف</td>
-                            }
-
-                            <td>@item.Ampr</td>
-
-                            <td>@item.Phas</td>
-
-                            <td>@item.Powr</td>
-
-                            @if (item.Volt_Type == "1")
-                            {
-                                <td>اولیه</td>
-                            }
-                            else if (item.Volt_Type == "2")
-                            {
-                                <td>ثانویه</td>
-                            }
+                            <td>@item</td>
                         </tr>
-                    }
+                        }
                 </tbody>
             </table>
-
-          </div>*@
+             @*mt-2 mb-2 mr-4 *@
+        </div>
     </div>
     <div class="row col-lg-12 ">
         <div class="row col-lg-6 mt-2 mb-2 mr-4">
@@ -285,7 +177,8 @@
     public List<string> lst { get; set; }
 
     public string Result_Message { get; set; }
-
+    [Parameter]
+    public List<string>? RejectReason { get; set; }
     protected override async Task OnInitializedAsync()
     {
         _contract = new Contract_Item();
@@ -294,7 +187,7 @@
         //////////////////////////////////////////
         await Get_AdmContract();
         //////////////////////////////////////////
-
+        await Get_Reject_Reason();
     }
     private async Task Confirm()
     {
@@ -345,5 +238,11 @@
         _contract = JsonConvert.DeserializeObject<Contract_Item>(data);
     }
 
+    private async Task Get_Reject_Reason()
+    {
+        var result_list = await Http.PostAsJsonAsync("api/Branching/Get_Reject_Reason_Async/", RQID);
+        var _json = await result_list.Content.ReadAsStringAsync();
+        RejectReason = JsonConvert.DeserializeObject<List<string>>(_json);
+    }
 
 }

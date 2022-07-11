@@ -219,7 +219,29 @@ namespace ManagersApplication.Server.Controllers
         #endregion
 
         #region Confirm Devided Price Announce
-        
+        [HttpGet("[controller]/[action]")]
+        [Route("Branching/Get_All_Installment_Async")]
+        public async Task<ActionResult<List<Branching>>> Get_All_Installment_Async([FromBody] string username)
+        {
+            try
+            {
+                DBContext context = new DBContext(_config);
+                List<Branching> list = await context.GetAllinstallmentAsync(username);
+                foreach (var item in list)
+                {
+                    var shamsi = ConvertDate.MiladiToShamsi(item.UPDT_DATE);
+                    item.UPDT_DATE = shamsi;
+
+                    // item.UPDT_DATE = Convert.ToDateTime(ConvertDate.MiladiToShamsi(item.UPDT_DATE.ToString("yyyy/MM/dd"))).Date;                   
+                }
+
+                return list;
+            }
+            catch (Exception exp)
+            {
+                throw;
+            }
+        }
 
         #endregion
     }

@@ -77,9 +77,9 @@
                     <div class="info-box mb-3">
                         <span class="info-box-icon bg-danger elevation-1"><i class="fa fa-google-plus"></i></span>
                         <div class="info-box-content"  style="cursor:pointer">
-                            <span class="info-box-text">تایید اعلام هزینه</span>
+                            <span class="info-box-text">تایید تقسیط</span>
                             <span class="info-box-number">
-                                <p>تعداد : @PriceAnnounce</p>
+                                <p>تعداد : @InstallmentCount</p>
                             </span>
                         </div>
                         <!-- /.info-box-content -->
@@ -133,7 +133,9 @@
     [Parameter]
     public int ContractCount { get; set; }
     [Parameter]
-    public int PriceAnnounce { get; set; }
+    public int PriceAnnounceCount { get; set; }
+    [Parameter]
+    public int InstallmentCount { get; set; }
     [Parameter]
     public int Sum { get; set; }
 
@@ -142,19 +144,22 @@
         var getContractcount = await Http.PostAsJsonAsync<string>("api/Branching/Count_All_Contract_Async/", username);
         ContractCount = int.Parse(await getContractcount.Content.ReadAsStringAsync());
         /////
-        var getPriceAnnouncecount = await Http.PostAsJsonAsync<string>("api/Branching/Count_All_PriceAnnounce_Async/", username);
-        PriceAnnounce = int.Parse(await getPriceAnnouncecount.Content.ReadAsStringAsync());
+        //var PriceAnnounceCount = await Http.PostAsJsonAsync<string>("api/Branching/Count_All_PriceAnnounce_Async/", username);
+        //PriceAnnounceCount = int.Parse(await getPriceAnnouncecount.Content.ReadAsStringAsync());
+        /////
+        var getInstallmentcount = await Http.PostAsJsonAsync<string>("api/Branching/Get_All_Installment_Async/", username);
+        InstallmentCount = int.Parse(await getInstallmentcount.Content.ReadAsStringAsync());
 
-        Sum = ContractCount + PriceAnnounce;
+        Sum = ContractCount + InstallmentCount;
     }
 
     private void Go_To_Branching()
     {
-          NavigationManager.NavigateTo($"/Branching/{username}/");
+        NavigationManager.NavigateTo($"/Branching/{username}/");
     }
     private void Go_To_PriceAnnounce()
     {
-          NavigationManager.NavigateTo($"/PriceAnnounce/{username}/");
+        NavigationManager.NavigateTo($"/PriceAnnounce/{username}/");
     }
 
     private void Go_To_Energy()

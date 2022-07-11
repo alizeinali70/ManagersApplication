@@ -80,8 +80,6 @@ namespace ManagersApplication.Server.Controllers
             {
                 DBContext context = new DBContext(_config);
                 List<string> list = await context.GetRejectReason(RQID);
-
-                var a = context.GetRejectReason(RQID);
                 return list;
             }
             catch (Exception exp)
@@ -218,6 +216,11 @@ namespace ManagersApplication.Server.Controllers
                 throw;
             }
         }
+        #endregion
+
+        #region Confirm Devided Price Announce
+        
+
         #endregion
     }
 }

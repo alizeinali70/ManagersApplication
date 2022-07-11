@@ -607,5 +607,10 @@ namespace ManagersApplication.Server.DataAccess
             }
         }
         #endregion
+
+        #region Confirm Devided Price Announce
+
+
+        #endregion
     }
 }

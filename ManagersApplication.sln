@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManagersApplication.Client"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManagersApplication.Shared", "ManagersApplication\Shared\ManagersApplication.Shared.csproj", "{2CD40BAA-82A1-4677-89D3-9B3A765D8673}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagersApplication.UnitTests", "ManagersApplication.UnitTests\ManagersApplication.UnitTests.csproj", "{47A15D52-99C6-4B57-AF58-72681653ED88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManagersApplication.UnitTests", "ManagersApplication.UnitTests\ManagersApplication.UnitTests.csproj", "{47A15D52-99C6-4B57-AF58-72681653ED88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

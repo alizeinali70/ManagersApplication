@@ -11,6 +11,7 @@ namespace ManagersApplication.Server.DataAccess
         OracleTransaction transection = null;
         public static List<Branching> list_Contract = new List<Branching>();
         public static List<Branching> list_PriceAnnounce = new List<Branching>();
+        public static List<Branching> list_Installment = new List<Branching>();
 
         public DBContext(IConfiguration configuration)
         {
@@ -610,11 +611,11 @@ namespace ManagersApplication.Server.DataAccess
 
         #region Confirm Devided Price Announce
 
-        public async Task<List<Branching>> GetAllinstallmentAsync(string username)
+        public async Task<List<Branching>> GetAllInstallmentAsync(string username)
         {
             try
             {
-                list_Contract = new List<Branching>();
+                list_Installment = new List<Branching>();
                 using (OracleConnection conn = GetOracleConnection())
                 {
                     int i = 0;
@@ -643,7 +644,7 @@ namespace ManagersApplication.Server.DataAccess
                     {
                         while (await reader.ReadAsync())
                         {
-                            list_Contract.Add(new Branching()
+                            list_Installment.Add(new Branching()
                             {
                                 ID = ++i,
                                 RQID = await reader.GetFieldValueAsync<Int64>(0),
@@ -654,20 +655,20 @@ namespace ManagersApplication.Server.DataAccess
                     }
                     conn.Close();
                 }
-                return list_Contract;
+                return list_Installment;
             }
             catch (Exception exp)
             {
                 throw;
             }
         }
-        public async Task<int> CountAllinstallmentAsync(string username)
+        public async Task<int> CountAllInstallmentAsync(string username)
         {
             try
             {
-                if (list_Contract.Count == 0)
+                if (list_Installment.Count == 0)
                 {
-                    list_Contract = new List<Branching>();
+                    list_Installment = new List<Branching>();
                     using (OracleConnection conn = GetOracleConnection())
                     {
                         int i = 0;
@@ -685,7 +686,7 @@ namespace ManagersApplication.Server.DataAccess
 
                         cmd.Parameters.Add("P_ACTVNAME", OracleDbType.Varchar2, 10);
                         cmd.Parameters["P_ACTVNAME"].Direction = ParameterDirection.Input;
-                        cmd.Parameters["P_ACTVNAME"].Value = "Cntd";
+                        cmd.Parameters["P_ACTVNAME"].Value = "Insc";
 
                         //out
                         OracleParameter result = new OracleParameter("P_RESULT", OracleDbType.RefCursor);
@@ -696,7 +697,7 @@ namespace ManagersApplication.Server.DataAccess
                         {
                             while (await reader.ReadAsync())
                             {
-                                list_Contract.Add(new Branching()
+                                list_Installment.Add(new Branching()
                                 {
                                     ID = ++i,
                                     RQID = await reader.GetFieldValueAsync<Int64>(0),
@@ -707,9 +708,9 @@ namespace ManagersApplication.Server.DataAccess
                         }
                         conn.Close();
                     }
-                    return list_Contract.Count;
+                    return list_Installment.Count;
                 }
-                return list_Contract.Count;
+                return list_Installment.Count;
             }
             catch (Exception)
             {

@@ -76,7 +76,7 @@
                 <div class="col-sm-6 col-md-3 float-right">
                     <div class="info-box mb-3">
                         <span class="info-box-icon bg-danger elevation-1"><i class="fa fa-google-plus"></i></span>
-                        <div class="info-box-content"  style="cursor:pointer">
+                        <div class="info-box-content" @onclick="Go_To_Installment"  style="cursor:pointer">
                             <span class="info-box-text">تایید تقسیط</span>
                             <span class="info-box-number">
                                 <p>تعداد : @InstallmentCount</p>
@@ -147,7 +147,7 @@
         //var PriceAnnounceCount = await Http.PostAsJsonAsync<string>("api/Branching/Count_All_PriceAnnounce_Async/", username);
         //PriceAnnounceCount = int.Parse(await getPriceAnnouncecount.Content.ReadAsStringAsync());
         /////
-        var getInstallmentcount = await Http.PostAsJsonAsync<string>("api/Branching/Get_All_Installment_Async/", username);
+        var getInstallmentcount = await Http.PostAsJsonAsync<string>("api/Branching/Count_All_Installment_Async/", username);
         InstallmentCount = int.Parse(await getInstallmentcount.Content.ReadAsStringAsync());
 
         Sum = ContractCount + InstallmentCount;
@@ -160,6 +160,10 @@
     private void Go_To_PriceAnnounce()
     {
         NavigationManager.NavigateTo($"/PriceAnnounce/{username}/");
+    }
+    private void Go_To_Installment()
+    {
+        NavigationManager.NavigateTo($"/Installment/{username}/");
     }
 
     private void Go_To_Energy()

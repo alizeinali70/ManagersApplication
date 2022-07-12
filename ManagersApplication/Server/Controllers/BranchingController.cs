@@ -226,7 +226,7 @@ namespace ManagersApplication.Server.Controllers
             try
             {
                 DBContext context = new DBContext(_config);
-                List<Branching> list = await context.GetAllinstallmentAsync(username);
+                List<Branching> list = await context.GetAllInstallmentAsync(username);
                 foreach (var item in list)
                 {
                     var shamsi = ConvertDate.MiladiToShamsi(item.UPDT_DATE);
@@ -242,6 +242,24 @@ namespace ManagersApplication.Server.Controllers
                 throw;
             }
         }
+
+        [HttpGet("[controller]/[action]")]
+        [Route("Branching/Count_All_Installment_Async")]
+        public async Task<ActionResult<int>> Count_All_Installment_Async([FromBody] string username)
+        {
+            try
+            {
+                DBContext context = new DBContext(_config);
+                int count = await context.CountAllInstallmentAsync(username);
+
+                return count;
+            }
+            catch (Exception exp)
+            {
+                throw;
+            }
+        }
+
 
         #endregion
     }

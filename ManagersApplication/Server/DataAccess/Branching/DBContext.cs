@@ -52,7 +52,7 @@ namespace ManagersApplication.Server.DataAccess
             }
 
         }
-      
+
         #region Public
         public async Task<Branching_Item> GetNameAsync(string RQID)
         {
@@ -273,8 +273,8 @@ namespace ManagersApplication.Server.DataAccess
 
                 throw;
             }
-        }       
-        public async Task<Contract_Item> GetAdmContract(string RQID)
+        }
+        public async Task<Contract_Item> GetAdmContractAsync(string RQID)
         {
             try
             {
@@ -328,7 +328,7 @@ namespace ManagersApplication.Server.DataAccess
                 throw;
             }
         }
-        public async Task<int> ConfirmContract(string RQID)
+        public async Task<int> ConfirmContractAsync(string RQID)
         {
             ////ADFA_RCPT_RQST.ACPT_CNTA_U(P_RQID NUMBER) RETURN NUMBER 
             ///
@@ -337,7 +337,7 @@ namespace ManagersApplication.Server.DataAccess
 
             using (OracleConnection conn = GetOracleConnection())
             {
-                conn.Open(); 
+                conn.Open();
                 transection = conn.BeginTransaction();
                 OracleCommand cmd = new OracleCommand();
                 cmd.CommandText = "ADFA_RCPT_RQST.ACPT_CNTA_U";
@@ -365,7 +365,7 @@ namespace ManagersApplication.Server.DataAccess
 
             return int.Parse(res);
         }
-        public async Task<int> RejectContract(string RQID, string Desc)
+        public async Task<int> RejectContractAsync(string RQID, string Desc)
         {
             ////ADFA_RCPT_RQST.ACPT_CNTA_U(P_RQID NUMBER) RETURN NUMBER 
             ///
@@ -403,7 +403,7 @@ namespace ManagersApplication.Server.DataAccess
 
             return int.Parse(res);
         }
-        public async Task<List<object>> View_Img(string RQID)
+        public async Task<List<object>> View_ImgAsync(string RQID)
         {
             ////ADFA_APPS_PACK.GETL_SCAN_P(P_RQID NUMBER , P_RESULT OUT sys_refcursor) IS
             ///          
@@ -450,7 +450,7 @@ namespace ManagersApplication.Server.DataAccess
 
             return list;
         }
-        public async Task<List<string>> GetRejectReason(string RQID)
+        public async Task<List<string>> GetRejectReasonAsync(string RQID)
         {
             try
             {
@@ -713,6 +713,63 @@ namespace ManagersApplication.Server.DataAccess
                 return list_Installment.Count;
             }
             catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public async Task<Installment_Item> GetAdmInstallmentAsync(string RQID)
+        {
+            try
+            {
+                Installment_Item installment_Item = new Installment_Item();
+                using (OracleConnection conn = GetOracleConnection())
+                {
+                    conn.Open();
+                    transection = conn.BeginTransaction();
+                    OracleCommand cmd = new OracleCommand();
+                    cmd.CommandText = "ADFA_MGNT_APPL.PYMT_RQST_P";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Connection = conn;
+
+                    //in
+                    // cmd.Parameters.Add(new OracleParameter("P_USERNAME", OracleDbType.Varchar2, 200)).Value = username;
+
+                    cmd.Parameters.Add("P_RQID", OracleDbType.Int64, 10);
+                    cmd.Parameters["P_RQID"].Direction = ParameterDirection.Input;
+                    cmd.Parameters["P_RQID"].Value = Int64.Parse(RQID);
+
+                    //out
+                    OracleParameter result = new OracleParameter("P_RESULT", OracleDbType.RefCursor);
+                    result.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(result);
+                    cmd.BindByName = true;
+                    OracleDataAdapter da=new OracleDataAdapter(cmd);
+                    DataSet dataSet = new DataSet();
+                    da.Fill(dataSet);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        //while (await reader.ReadAsync())
+                        //{
+                        //    if (!reader.IsDBNull(0))
+                        //        contract_Item.Cont_Date = reader.GetString(0);
+                        //    if (!reader.IsDBNull(1))
+                        //        contract_Item.View_Date = reader.GetString(1);
+                        //    if (!reader.IsDBNull(2))
+                        //        contract_Item.Resp_Inst_Equp = reader.GetInt16(2);
+                        //    if (!reader.IsDBNull(3))
+                        //        contract_Item.Resp_Dlve_Powr = reader.GetInt16(3);
+                        //    if (!reader.IsDBNull(4))
+                        //        contract_Item.Comt_Aplr = reader.GetString(4);
+                        //    if (!reader.IsDBNull(5))
+                        //        contract_Item.Comt_Comp = reader.GetString(5);
+                        //}
+                    }
+                }
+                return installment_Item;
+            }
+            catch (Exception exp)
             {
 
                 throw;

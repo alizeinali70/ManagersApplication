@@ -59,6 +59,20 @@ namespace ManagersApplication.Shared
         public object Image_Type_Desc { get; set; }
         public byte[] Image { get; set; }
     }
+
+    public class Installment_Item
+    {
+        public string EXTP_DESC { get; set; }
+        public string EXTR_PRCT { get; set; }
+        public string INST_AMNT { get; set; }
+
+
+public string RQST_DATE { get; set; }
+public string BLDN_STAT { get; set; }
+//public string { get; set; }
+
+
+    }
 }
 
 

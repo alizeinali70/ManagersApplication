@@ -79,7 +79,7 @@ namespace ManagersApplication.Server.Controllers
             try
             {
                 DBContext context = new DBContext(_config);
-                List<string> list = await context.GetRejectReason(RQID);
+                List<string> list = await context.GetRejectReasonAsync(RQID);
                 return list;
             }
             catch (Exception exp)
@@ -95,7 +95,7 @@ namespace ManagersApplication.Server.Controllers
             try
             {
                 DBContext context = new DBContext(_config);
-                Contract_Item contract_Item = await context.GetAdmContract(RQID);
+                Contract_Item contract_Item = await context.GetAdmContractAsync(RQID);
 
                 contract_Item.Cont_Date = ConvertDate.MiladiToShamsi(contract_Item.Cont_Date);
 
@@ -137,7 +137,7 @@ namespace ManagersApplication.Server.Controllers
             try
             {
                 DBContext context = new DBContext(_config);
-                int res = await context.ConfirmContract(RQID);
+                int res = await context.ConfirmContractAsync(RQID);
                 return res;
             }
             catch (Exception exp)
@@ -156,7 +156,7 @@ namespace ManagersApplication.Server.Controllers
                 string RQID = lst[0];
                 string Desc = lst[1];
                 DBContext context = new DBContext(_config);
-                int res = await context.RejectContract(RQID, Desc);
+                int res = await context.RejectContractAsync(RQID, Desc);
                 return res;
             }
             catch (Exception exp)
@@ -172,7 +172,7 @@ namespace ManagersApplication.Server.Controllers
             try
             {
                 DBContext context = new DBContext(_config);
-                List<object> res = await context.View_Img(RQID);
+                List<object> res = await context.View_ImgAsync(RQID);
                 return res;
             }
             catch (Exception exp)
@@ -260,6 +260,25 @@ namespace ManagersApplication.Server.Controllers
             }
         }
 
+        [HttpPost("[controller]/[action]")]
+        [Route("Branching/Get_AdmInstallment/")]
+        public async Task<ActionResult<Installment_Item>> Get_AdmInstallment([FromBody] string RQID)
+        {
+            try
+            {
+                DBContext context = new DBContext(_config);
+                Installment_Item installment_Item = await context.GetAdmInstallmentAsync(RQID);
+                
+                return installment_Item;
+            }
+            catch (Exception exp)
+            {
+
+                throw;
+            }
+
+
+        }
 
         #endregion
     }

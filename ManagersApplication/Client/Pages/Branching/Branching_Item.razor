@@ -179,6 +179,7 @@
     public string Result_Message { get; set; }
     [Parameter]
     public List<string>? RejectReason { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         _contract = new Contract_Item();

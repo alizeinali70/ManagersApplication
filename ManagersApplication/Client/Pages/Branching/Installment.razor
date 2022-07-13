@@ -17,7 +17,7 @@
                 <th></th>
             </tr>
             <tbody>
-                @foreach (var item in InstallmentList)
+                @foreach (var item in BranchList)
                 {
                     <tr>
                         <td>@item.ID</td>
@@ -51,14 +51,14 @@
     [Parameter]
     public string username { get; set; }
     [Parameter]
-    public List<Branching> InstallmentList { get; set; }
+    public List<Branching> BranchList { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        InstallmentList = new List<Branching>();
+        BranchList = new List<Branching>();
         var getData = await Http.PostAsJsonAsync<string>("api/Branching/Get_All_Installment_Async/", username);
         var data = await getData.Content.ReadAsStringAsync();
-        InstallmentList = JsonConvert.DeserializeObject<List<Branching>>(data);
+        BranchList = JsonConvert.DeserializeObject<List<Branching>>(data);
 
     }
 

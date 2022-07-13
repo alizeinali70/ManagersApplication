@@ -718,11 +718,11 @@ namespace ManagersApplication.Server.DataAccess
                 throw;
             }
         }
-        public async Task<Installment_Item> GetAdmInstallmentAsync(string RQID)
+        public async Task<List<Installment_Item>> GetAdmInstallmentAsync(string RQID)
         {
             try
             {
-                Installment_Item installment_Item = new Installment_Item();
+                List<Installment_Item> installment_Item = new List<Installment_Item>();
                 using (OracleConnection conn = GetOracleConnection())
                 {
                     conn.Open();
@@ -744,27 +744,23 @@ namespace ManagersApplication.Server.DataAccess
                     result.Direction = ParameterDirection.Output;
                     cmd.Parameters.Add(result);
                     cmd.BindByName = true;
-                    OracleDataAdapter da=new OracleDataAdapter(cmd);
-                    DataSet dataSet = new DataSet();
-                    da.Fill(dataSet);
+
+                    OracleDataAdapter adapter = new OracleDataAdapter(cmd);
+                    DataSet ds = new DataSet();
+                    adapter.Fill(ds);
 
                     using (var reader = cmd.ExecuteReader())
                     {
-                        //while (await reader.ReadAsync())
-                        //{
-                        //    if (!reader.IsDBNull(0))
-                        //        contract_Item.Cont_Date = reader.GetString(0);
-                        //    if (!reader.IsDBNull(1))
-                        //        contract_Item.View_Date = reader.GetString(1);
-                        //    if (!reader.IsDBNull(2))
-                        //        contract_Item.Resp_Inst_Equp = reader.GetInt16(2);
-                        //    if (!reader.IsDBNull(3))
-                        //        contract_Item.Resp_Dlve_Powr = reader.GetInt16(3);
-                        //    if (!reader.IsDBNull(4))
-                        //        contract_Item.Comt_Aplr = reader.GetString(4);
-                        //    if (!reader.IsDBNull(5))
-                        //        contract_Item.Comt_Comp = reader.GetString(5);
-                        //}
+                        while (await reader.ReadAsync())
+                        {
+                            installment_Item.Add(new Installment_Item
+                            {                                
+                                EXTP_DESC = await reader.GetFieldValueAsync<string>(1),
+                                INST_AMNT = await reader.GetFieldValueAsync<Int64>(4),
+                                INST_PRCN = await reader.GetFieldValueAsync<Int16>(10),
+                                
+                            });
+                        }
                     }
                 }
                 return installment_Item;

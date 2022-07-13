@@ -33,6 +33,14 @@
                     <th>مبلغ تقسیط</th>
                 </tr>
                 <tbody>
+                    @foreach (var item in _Item)
+                    {
+                        <tr>
+                            <td>@item.EXTP_DESC</td>
+                            <td>@item.INST_AMNT</td>
+                            <td>@item.EXTR_PRCN</td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
@@ -177,7 +185,11 @@
     [Parameter]
     public List<string>? RejectReason { get; set; }
     [Parameter]
-    public Installment_Item _Item { get; set; }
+    public List<Installment_Item> _Item { get; set; }
+
+    public string EXTP_DESC { get; set; }
+    public Int64 EXTR_PRCN { get; set; }
+    public string INST_AMNT { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -185,7 +197,7 @@
         //////////////////////////////////////////
         await Get_Requester_Name_Async();
         //////////////////////////////////////////
-         await Get_AdmInstallment();
+        await Get_AdmInstallment();
         //////////////////////////////////////////
         //  await Get_Reject_Reason();
     }
@@ -240,8 +252,11 @@
 
     private async Task Get_AdmInstallment()
     {
-        var contract_Item = await Http.PostAsJsonAsync("api/Branching/Get_AdmInstallment/", RQID);
-        var data = await contract_Item.Content.ReadAsStringAsync();
-        _Item = JsonConvert.DeserializeObject<Installment_Item>(data);
+        //"api/Branching/Get_AdmInstallment/"
+
+        _Item = new List<Installment_Item>();
+        var getData = await Http.PostAsJsonAsync("api/Branching/Get_AdmInstallment/", RQID);
+        var data = await getData.Content.ReadAsStringAsync();
+        _Item = JsonConvert.DeserializeObject<List<Installment_Item>>(data);
     }
 }

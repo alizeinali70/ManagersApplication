@@ -1,9 +1,9 @@
 ﻿@font-face {
-    font-family: 'IranSans';
+    font-family: 'IranSans'!important;
     src: url('fonts/IranSans.ttf') format('truetype');
 }
 div{
-    font-family:IranSans;
+    font-family:IranSans!important;
 }
 @media (min-width:992px) {
     .margin-right {

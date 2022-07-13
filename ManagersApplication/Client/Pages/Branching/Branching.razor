@@ -3,7 +3,7 @@
 <div class="card">
     <div class="card-header bg-info">
         <h3 class="card-title float-right">نمایش درخواست های انشعاب</h3>
-         <button class="btn btn-block warning bg-warning-gradient float-left text-right" @onclick="Back" style="width:65px">بازگشت</button>
+        <button class="btn btn-block warning bg-warning-gradient float-left text-right" @onclick="Back" style="width:65px">بازگشت</button>
     </div>
     <!-- /.card-header -->
     <div class="card-body p-0 scroll">
@@ -17,16 +17,16 @@
                 <th></th>
             </tr>
             <tbody>
-            @foreach (var item in BranchList)
-                    {
-                        <tr>
-                            <td>@item.ID</td>
-                            <td>@item.RQID</td>
-                            <td>@item.UPDT_DATE</td>
-                            <td>@item.ACTV_DESC</td>
-                            <td><button class="btn btn-block btn-primary bg-primary-gradient" @onclick="()=>Click(item.RQID)" style="width:65px">نمایش</button></td>
-                        </tr>
-                    }
+                @foreach (var item in BranchList)
+                {
+                    <tr>
+                        <td>@item.ID</td>
+                        <td>@item.RQID</td>
+                        <td>@item.UPDT_DATE</td>
+                        <td>@item.ACTV_DESC</td>
+                        <td><button class="btn btn-block btn-primary bg-primary-gradient" @onclick="()=>Click(item.RQID)" style="width:65px">نمایش</button></td>
+                    </tr>
+                }
             </tbody>
         </table>
 
@@ -59,7 +59,7 @@
         BranchList = new List<Branching>();
         var getData = await Http.PostAsJsonAsync<string>("api/Branching/Get_All_Contract_Async/", username);
         var data = await getData.Content.ReadAsStringAsync();
-         BranchList = JsonConvert.DeserializeObject<List<Branching>>(data);
+        BranchList = JsonConvert.DeserializeObject<List<Branching>>(data);
 
     }
 

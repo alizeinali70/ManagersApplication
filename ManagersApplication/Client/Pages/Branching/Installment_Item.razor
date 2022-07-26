@@ -33,12 +33,12 @@
                     <th>مبلغ تقسیط</th>
                 </tr>
                 <tbody>
-                    @foreach (var item in _Item)
+                    @foreach (var item in _ListItemInstallment)
                     {
                         <tr>
                             <td>@item.EXTP_DESC</td>
+                            <td>@item.INST_PRCN</td>
                             <td>@item.INST_AMNT</td>
-                            <td>@item.EXTR_PRCN</td>
                         </tr>
                     }
                 </tbody>
@@ -54,16 +54,16 @@
         <div class="card-body font">
             <div class=" col-lg-12 float-right">
                 <div class="row col-lg-3 mb-2 float-right">
-                    <div class="col-lg-8 col-7"> تاريخ تقاضاي تقسيط :</div>
-                    <div class="col-lg-4 col-5"></div>
+                    <div class="col-lg-7 col-7"> تاريخ تقاضاي تقسيط :</div>
+                    <div class="col-lg-5 col-5">@_InstallmentItem.RQST_DATE</div>
                 </div>
                 <div class="row col-lg-5 mb-2 float-right">
                     <div class="col-lg-6 col-7">وضعیت بنا (در زمان تقاضای تقسیط):</div>
-                    <div class="col-lg-4 col-5"></div>
+                    <div class="col-lg-4 col-5">@_InstallmentItem.BLDN_DESC_VISIT</div>
                 </div>
                 <div class="row col-lg-3 mb-2 float-right">
                     <div class="col-lg-6 col-10">تعداد اقساط :</div>
-                    <div class="col-lg-6 col-2"></div>
+                    <div class="col-lg-6 col-2">@_InstallmentItem.INST_NUMB</div>
                 </div>
                
             </div>
@@ -89,7 +89,7 @@
                     <button class="btn btn-block btn-primary bg-warning-gradient text-center" @onclick="Back">بازگشت</button>
                 </div>
                 <div class="col-lg-3 mt-2 col-sm-3 col-5">
-                    <button class="btn btn-block btn-primary bg-info-gradient text-center" @onclick="@(()=>Img_Dsiplay(@RQID))">مشاهده مدارک</button>
+                    <button class="btn btn-block btn-primary bg-info-gradient text-center" disabled @onclick="@(()=>Img_Dsiplay(@RQID))">مشاهده مدارک</button>
                 </div>
 
             </div>
@@ -185,11 +185,16 @@
     [Parameter]
     public List<string>? RejectReason { get; set; }
     [Parameter]
-    public List<Installment_Item> _Item { get; set; }
+    public List<Installment_Price_Item> _ListItemInstallment { get; set; }
+    [Parameter]
+    public Installment_Price_Details_Item _InstallmentItem { get; set; }
 
     public string EXTP_DESC { get; set; }
-    public Int64 EXTR_PRCN { get; set; }
+    public Int64 INST_PRCN { get; set; }
     public string INST_AMNT { get; set; }
+    public string RQST_DATE { get; set; }
+    public string BLDN_DESC_VISIT { get; set; }
+    public int INST_NUMB { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -200,6 +205,8 @@
         await Get_AdmInstallment();
         //////////////////////////////////////////
         //  await Get_Reject_Reason();
+        //////////
+       await Get_AdmInstallment_Item();
     }
     private async Task Confirm()
     {
@@ -254,9 +261,16 @@
     {
         //"api/Branching/Get_AdmInstallment/"
 
-        _Item = new List<Installment_Item>();
+        _ListItemInstallment = new List<Installment_Price_Item>();
         var getData = await Http.PostAsJsonAsync("api/Branching/Get_AdmInstallment/", RQID);
         var data = await getData.Content.ReadAsStringAsync();
-        _Item = JsonConvert.DeserializeObject<List<Installment_Item>>(data);
+        _ListItemInstallment = JsonConvert.DeserializeObject<List<Installment_Price_Item>>(data);
+    }
+
+    private async Task Get_AdmInstallment_Item()
+    {
+        var Installment_Item = await Http.PostAsJsonAsync("api/Branching/Get_AdmInstallment_Item/", RQID);
+        var data = await Installment_Item.Content.ReadAsStringAsync();
+        _InstallmentItem = JsonConvert.DeserializeObject<Installment_Price_Details_Item>(data);
     }
 }

@@ -718,11 +718,11 @@ namespace ManagersApplication.Server.DataAccess
                 throw;
             }
         }
-        public async Task<List<Installment_Item>> GetAdmInstallmentAsync(string RQID)
+        public async Task<List<Installment_Price_Item>> GetAdmInstallmentAsync(string RQID)
         {
             try
             {
-                List<Installment_Item> installment_Item = new List<Installment_Item>();
+                List<Installment_Price_Item> installment_Item = new List<Installment_Price_Item>();
                 using (OracleConnection conn = GetOracleConnection())
                 {
                     conn.Open();
@@ -745,9 +745,9 @@ namespace ManagersApplication.Server.DataAccess
                     cmd.Parameters.Add(result);
                     cmd.BindByName = true;
 
-                    OracleDataAdapter adapter = new OracleDataAdapter(cmd);
-                    DataSet ds = new DataSet();
-                    adapter.Fill(ds);
+                    //OracleDataAdapter adapter = new OracleDataAdapter(cmd);
+                    //DataSet ds = new DataSet();
+                    //adapter.Fill(ds);
 
 
                     using (var reader = cmd.ExecuteReader())
@@ -755,7 +755,7 @@ namespace ManagersApplication.Server.DataAccess
                         while (await reader.ReadAsync())
                         {
                             //var t = ConvertFromDBVal<Int16>(reader.GetFieldValueAsync<object>(10).Result);
-                            installment_Item.Add(new Installment_Item
+                            installment_Item.Add(new Installment_Price_Item
                             {                            
                                 EXTP_DESC = await reader.GetFieldValueAsync<string>(1),
                                 INST_AMNT = await reader.GetFieldValueAsync<Int64>(4),
@@ -765,6 +765,62 @@ namespace ManagersApplication.Server.DataAccess
                     }
                 }
                 return installment_Item;
+            }
+            catch (Exception exp)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<Installment_Price_Details_Item> GetAdmInstallmentItem(string RQID)
+        {
+            try
+            {
+                Installment_Price_Details_Item Installment_Item = new Installment_Price_Details_Item();
+                using (OracleConnection conn = GetOracleConnection())
+                {
+                    conn.Open();
+                    transection = conn.BeginTransaction();
+                    OracleCommand cmd = new OracleCommand();
+                    cmd.CommandText = "ADFA_MGNT_APPL.INST_RQST_P";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Connection = conn;
+
+                    //in
+                    // cmd.Parameters.Add(new OracleParameter("P_USERNAME", OracleDbType.Varchar2, 200)).Value = username;
+
+                    cmd.Parameters.Add("P_RQID", OracleDbType.Int64, 10);
+                    cmd.Parameters["P_RQID"].Direction = ParameterDirection.Input;
+                    cmd.Parameters["P_RQID"].Value = Int64.Parse(RQID);
+
+
+                    //out
+                    OracleParameter result = new OracleParameter("P_RESULT", OracleDbType.RefCursor);
+                    result.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(result);
+                    cmd.BindByName = true;
+
+
+                    OracleDataAdapter adapter = new OracleDataAdapter(cmd);
+                    DataSet ds = new DataSet();
+                    adapter.Fill(ds);
+
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            if (!reader.IsDBNull(3))
+                                Installment_Item.INST_NUMB = reader.GetInt16(3);
+                            if (!reader.IsDBNull(6))
+                                Installment_Item.RQST_DATE = reader.GetString(6);
+                            if (!reader.IsDBNull(7))
+                                Installment_Item.BLDN_DESC_VISIT = reader.GetString(7);                            
+                        }
+                    }
+                }
+                return Installment_Item;
             }
             catch (Exception exp)
             {

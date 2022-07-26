@@ -12,6 +12,7 @@ namespace ManagersApplication.Shared
         public string ACTV_DESC { get; set; }
 
     }
+
     public class Branching_Item
     {
         [Key]
@@ -60,18 +61,17 @@ namespace ManagersApplication.Shared
         public byte[] Image { get; set; }
     }
 
-    public class Installment_Item
+    public class Installment_Price_Item
     {
         public string EXTP_DESC { get; set; }
         public Int16 INST_PRCN { get; set; }
         public Int64 INST_AMNT { get; set; }
-
-
-//public string RQST_DATE { get; set; }
-//public string BLDN_STAT { get; set; }
-////public string { get; set; }
-
-
+    }
+    public class Installment_Price_Details_Item
+    {     
+        public string RQST_DATE { get; set; }       
+        public string BLDN_DESC_VISIT{ get; set; }
+        public int INST_NUMB { get; set; }
     }
 }
 

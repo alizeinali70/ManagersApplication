@@ -262,15 +262,40 @@ namespace ManagersApplication.Server.Controllers
 
         [HttpPost("[controller]/[action]")]
         [Route("Branching/Get_AdmInstallment/")]
-        public async Task<ActionResult<List<Installment_Item>>> Get_AdmInstallment([FromBody] string RQID)
+        public async Task<ActionResult<List<Installment_Price_Item>>> Get_AdmInstallment([FromBody] string RQID)
         {
             try
             {
                
                 DBContext context = new DBContext(_config);
-                List<Installment_Item> installment_Item = await context.GetAdmInstallmentAsync(RQID);
+                List<Installment_Price_Item> installment_Item = await context.GetAdmInstallmentAsync(RQID);
                 
                 return installment_Item;
+            }
+            catch (Exception exp)
+            {
+
+                throw;
+            }
+
+
+        }
+
+        [HttpPost("[controller]/[action]")]
+        [Route("Branching/Get_AdmInstallment_Item/")]
+        public async Task<ActionResult<Installment_Price_Details_Item>> Get_AdmInstallment_Item([FromBody] string RQID)
+        {
+            try
+            {
+                DBContext context = new DBContext(_config);
+                Installment_Price_Details_Item Installment_Item = await context.GetAdmInstallmentItem(RQID);
+
+               // Installment_Item.Cont_Date = ConvertDate.MiladiToShamsi(Installment_Item.Cont_Date);
+               //
+               // Installment_Item.View_Date = ConvertDate.MiladiToShamsi(Installment_Item.View_Date);
+
+
+                return Installment_Item;
             }
             catch (Exception exp)
             {

@@ -2,7 +2,7 @@
     font-family: 'IranSans'!important;
     src: url('fonts/IranSans.ttf') format('truetype');
 }
-div{
+div body{
     font-family:IranSans!important;
 }
 @media (min-width:992px) {

@@ -749,16 +749,17 @@ namespace ManagersApplication.Server.DataAccess
                     DataSet ds = new DataSet();
                     adapter.Fill(ds);
 
+
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (await reader.ReadAsync())
                         {
+                            //var t = ConvertFromDBVal<Int16>(reader.GetFieldValueAsync<object>(10).Result);
                             installment_Item.Add(new Installment_Item
-                            {                                
+                            {                            
                                 EXTP_DESC = await reader.GetFieldValueAsync<string>(1),
                                 INST_AMNT = await reader.GetFieldValueAsync<Int64>(4),
-                                INST_PRCN = await reader.GetFieldValueAsync<Int16>(10),
-                                
+                                INST_PRCN = ConvertFromDBVal<Int16>(reader.GetFieldValueAsync<object>(10).Result)
                             });
                         }
                     }
@@ -772,5 +773,16 @@ namespace ManagersApplication.Server.DataAccess
             }
         }
         #endregion
+        public static T ConvertFromDBVal<T>(object obj)
+        {
+            if (obj == null || obj == DBNull.Value)
+            {
+                return default(T); // returns the default value for the type
+            }
+            else
+            {
+                return (T)obj;
+            }
+        }
     }
 }

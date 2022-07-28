@@ -5,8 +5,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
-    <META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT">
+    <!--<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT">-->
 
     <title>مدیران</title>
     <base href="/" />
@@ -85,20 +85,17 @@
 
 
 
-        <!--<div id="blazor-error-ui">
-            An unhandled error has occurred.
-            <a href="" class="reload">Reload</a>
+        <div id="blazor-error-ui">
+            خطایی رخ داده است. لطفا با مدیر سیستم تماس بگیرید<a href="" class="reload"></a>
             <a class="dismiss">🗙</a>
-        </div>-->
-        <script src="_framework/blazor.webassembly.js"></script>
-        <script>navigator.serviceWorker.register('service-worker.js');</script>
-    </div>
+        </div>
 
+    </div>
 
     <!-- jQuery -->
     <script src="css/plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
-    <!--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>-->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="css/dist/js/plugins/jquery/jquery-ui.min.js"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
@@ -136,14 +133,24 @@
     <script src="css/dist/js/demo.js"></script>
 
     <!--<script src="Modal.js"></script>-->
+
+
+
+    <script src="_framework/blazor.webassembly.js" ></script>
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
 </body>
 
 </html>
 <script>
-    caches.delete("blazor-resources-/").then(function (e) {
-        console.log("'blazor-resources-/' cache deleted");
-    });
+    //caches.delete("blazor-resources-/").then(function (e) {
+    //    console.log("'blazor-resources-/' cache deleted");
+    //});
 
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+            navigator.serviceWorker.register('/service-worker.js');
+        });
+    }
 
     function myFunction() {
         var x = document.getElementById("sub_branching");

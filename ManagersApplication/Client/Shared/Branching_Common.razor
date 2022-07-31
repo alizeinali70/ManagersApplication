@@ -128,7 +128,9 @@
                     }
                 </tbody>
             </table>
+
         </div>
+        <div class="col-12 col-lg-12 col-md-12 float-start">جمع قدرت : @Sum_Power</div>
         <!-- /.card-body -->
     </div>
 </div>
@@ -149,6 +151,7 @@
     public Int32 Ampr { get; set; }
     public string Phas { get; set; }
     public double Powr { get; set; }
+    public double Sum_Power { get; set; }
     public string Volt_Type { get; set; }
     [Parameter]
     public List<Branching_Item> BranchItemList { get; set; }
@@ -160,5 +163,10 @@
         var result_list = await Http.PostAsJsonAsync("api/Branching/Get_RequestRow_Async/", RQID);
         var _json = await result_list.Content.ReadAsStringAsync();
         BranchItemList = JsonConvert.DeserializeObject<List<Branching_Item>>(_json);
+        // Sum_Power = (double)BranchItemList.Any(x => x.Powr).ToString()
+        foreach (var item in BranchItemList)
+        {
+            Sum_Power += item.Powr;
+        }
     }
 }

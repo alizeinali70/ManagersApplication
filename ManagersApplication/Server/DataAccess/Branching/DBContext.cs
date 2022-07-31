@@ -71,9 +71,9 @@ namespace ManagersApplication.Server.DataAccess
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection = conn;
 
-                    //in
-                    // cmd.Parameters.Add(new OracleParameter("P_USERNAME", OracleDbType.Varchar2, 200)).Value = username;
 
+                
+                    //in
                     cmd.Parameters.Add("P_RQID", OracleDbType.Int64, 10);
                     cmd.Parameters["P_RQID"].Direction = ParameterDirection.Input;
                     cmd.Parameters["P_RQID"].Value = Int64.Parse(RQID);
@@ -83,6 +83,13 @@ namespace ManagersApplication.Server.DataAccess
                     result.Direction = ParameterDirection.Output;
                     cmd.Parameters.Add(result);
                     cmd.BindByName = true;
+
+
+
+                  // OracleDataAdapter adapter = new OracleDataAdapter(cmd);
+                  // DataSet ds = new DataSet();
+                  // adapter.Fill(ds);
+
 
 
                     using (var reader = cmd.ExecuteReader())
@@ -105,6 +112,8 @@ namespace ManagersApplication.Server.DataAccess
         public async Task<List<Branching_Item>> GetRquestRowAsync(string RQID)
         {
             int i = 0;
+           
+
             try
             {
                 List<Branching_Item> list = new List<Branching_Item>();
@@ -130,6 +139,12 @@ namespace ManagersApplication.Server.DataAccess
                     cmd.Parameters.Add(result);
                     cmd.BindByName = true;
 
+
+                  //  OracleDataAdapter adapter = new OracleDataAdapter(cmd);
+                  //  DataSet ds = new DataSet();
+                  //  adapter.Fill(ds);
+
+
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (await reader.ReadAsync())
@@ -148,12 +163,14 @@ namespace ManagersApplication.Server.DataAccess
                                 Use_Type = await reader.GetFieldValueAsync<string>(8),
                                 Ampr = await reader.GetFieldValueAsync<Int32>(9),
                                 Phas = await reader.GetFieldValueAsync<string>(10),
-                                Powr = await reader.GetFieldValueAsync<double>(11),
+                                Powr = await reader.GetFieldValueAsync<double>(11),                                
                                 Volt_Type = await reader.GetFieldValueAsync<string>(12),
                             });
+
                         }
                     }
                     conn.Close();
+                    
                     return list;
                 }
             }
@@ -758,6 +775,7 @@ namespace ManagersApplication.Server.DataAccess
                             installment_Item.Add(new Installment_Price_Item
                             {                            
                                 EXTP_DESC = await reader.GetFieldValueAsync<string>(1),
+                                EXPS_AMNT=await reader.GetFieldValueAsync<Int64>(2),
                                 INST_AMNT = await reader.GetFieldValueAsync<Int64>(4),
                                 INST_PRCN = ConvertFromDBVal<Int16>(reader.GetFieldValueAsync<object>(10).Result)
                             });

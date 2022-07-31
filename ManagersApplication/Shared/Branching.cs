@@ -34,6 +34,7 @@ namespace ManagersApplication.Shared
         public Int32 Ampr { get; set; }
         public string Phas { get; set; }
         public double Powr { get; set; }
+        public double Sum_Power { get; set; }
         public string Volt_Type { get; set; }
         public List<string> Reject_Reason { get; set; }
     }
@@ -66,6 +67,7 @@ namespace ManagersApplication.Shared
         public string EXTP_DESC { get; set; }
         public Int16 INST_PRCN { get; set; }
         public Int64 INST_AMNT { get; set; }
+        public Int64 EXPS_AMNT { get; set; }
     }
     public class Installment_Price_Details_Item
     {     

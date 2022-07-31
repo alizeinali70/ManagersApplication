@@ -218,7 +218,7 @@ namespace ManagersApplication.Server.Controllers
         }
         #endregion
 
-        #region Confirm Devided Price Announce
+        #region Confirm Installment
         [HttpGet("[controller]/[action]")]
         [Route("Branching/Get_All_Installment_Async")]
         public async Task<ActionResult<List<Branching>>> Get_All_Installment_Async([FromBody] string username)

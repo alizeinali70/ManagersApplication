@@ -29,6 +29,7 @@
             <table class="table table-striped">
                 <tr>
                     <th>موضوع پرداخت</th>
+                    <th>مبلغ کل هزینه ها</th>
                     <th>درصد مبلغ نقدی</th>
                     <th>مبلغ تقسیط</th>
                 </tr>
@@ -37,6 +38,7 @@
                     {
                         <tr>
                             <td>@item.EXTP_DESC</td>
+                            <td>@item.EXPS_AMNT</td>
                             <td>@item.INST_PRCN</td>
                             <td>@item.INST_AMNT</td>
                         </tr>
@@ -62,7 +64,7 @@
                     <div class="col-lg-4 col-5">@_InstallmentItem.BLDN_DESC_VISIT</div>
                 </div>
                 <div class="row col-lg-3 mb-2 float-right">
-                    <div class="col-lg-6 col-10">تعداد اقساط :</div>
+                    <div class="col-lg-6 col-8">تعداد اقساط :</div>
                     <div class="col-lg-6 col-2">@_InstallmentItem.INST_NUMB</div>
                 </div>
                
@@ -70,17 +72,13 @@
         </div>
         </div>
 
-
-
-
-
         <div class="row col-lg-12 ">
             <div class="row col-lg-6 mt-2 mb-2 mr-4">
                 <div class="col-lg-3 mt-2 col-sm-3 col-5">
                     @*<button class="btn btn-block btn-primary bg-success-gradient text-center" @onclick="Confirm">تایید</button>*@
                     <a href="#" class="btn btn-block btn-primary bg-success-gradient text-center" disabled data-toggle="modal" data-target="#confirmModal">تایید</a>
                 </div>
-                <div class="col-lg-3 mt-2 col-sm-3 col-5">
+                <div class="col-lg-3 mt-2 col-sm-3 col-5 float-left">
                     @*                <button class="btn btn-block btn-primary bg-danger-gradient text-center" @onclick="Reject">عدم تایید</button>*@
                     <a href="#" class="btn btn-block btn-primary bg-danger-gradient text-center" disabled data-toggle="modal" data-target="#rejectModal">عدم تایید</a>
 
@@ -88,7 +86,7 @@
                 <div class="col-lg-3 mt-2 col-sm-3 col-5">
                     <button class="btn btn-block btn-primary bg-warning-gradient text-center" @onclick="Back">بازگشت</button>
                 </div>
-                <div class="col-lg-3 mt-2 col-sm-3 col-5">
+                <div class="col-lg-3 mt-2 col-sm-3 col-5 float-left">
                     <button class="btn btn-block btn-primary bg-info-gradient text-center" disabled @onclick="@(()=>Img_Dsiplay(@RQID))">مشاهده مدارک</button>
                 </div>
 
@@ -195,6 +193,7 @@
     public string RQST_DATE { get; set; }
     public string BLDN_DESC_VISIT { get; set; }
     public int INST_NUMB { get; set; }
+    public Int64 EXPS_AMNT { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -206,7 +205,7 @@
         //////////////////////////////////////////
         //  await Get_Reject_Reason();
         //////////
-       await Get_AdmInstallment_Item();
+        await Get_AdmInstallment_Item();
     }
     private async Task Confirm()
     {

@@ -97,6 +97,7 @@ namespace ManagersApplication.Server.DataAccess
                         while (await reader.ReadAsync())
                         {
                             _Item.Requster_Name = await reader.GetFieldValueAsync<string>(0);
+                            _Item.Cret_Date =reader.GetFieldValueAsync<DateTime>(1).Result.ToString();
                         }
                     }
                     conn.Close();

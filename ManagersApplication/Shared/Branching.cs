@@ -37,6 +37,7 @@ namespace ManagersApplication.Shared
         public double Sum_Power { get; set; }
         public string Volt_Type { get; set; }
         public List<string> Reject_Reason { get; set; }
+        public string Cret_Date { get; set; }
     }
 
     public class Contract_Item

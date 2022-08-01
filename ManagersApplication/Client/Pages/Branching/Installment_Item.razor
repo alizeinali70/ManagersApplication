@@ -7,7 +7,7 @@
         <div class="card-header">
             <h3 class="card-title">
                 <i class="fa fa-tag"></i>
-                فرم قرارداد - شماره درخواست: @RQID - نام متقاضی: @Requster_Name
+                فرم قرارداد - شماره درخواست: @RQID - نام متقاضی: @Requster_Name - تاریخ درخواست : @Cret_Date
             </h3>
 
         </div>
@@ -173,6 +173,8 @@
 
     public string Requster_Name { get; set; }
 
+    public string Cret_Date { get; set; }
+
     public List<string> lst { get; set; }
     [Parameter]
     public string regn_code { get; set; }
@@ -243,6 +245,8 @@
         Requster_Name = await result_name.Content.ReadAsStringAsync();
         var result_name_json = JsonConvert.DeserializeObject<Branching_Item>(Requster_Name);
         Requster_Name = result_name_json.Requster_Name;
+        Cret_Date = result_name_json.Cret_Date;
+
     }
     private void Img_Dsiplay(string RQID)
     {

@@ -48,6 +48,7 @@ namespace ManagersApplication.Server.Controllers
             {
                 DBContext context = new DBContext(_config);
                 Branching_Item _Item = await context.GetNameAsync(RQID);
+                _Item.Cret_Date = ConvertDate.MiladiToShamsi(_Item.Cret_Date.ToString());
                 return _Item;
             }
             catch (Exception exp)

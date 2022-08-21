@@ -64,6 +64,7 @@
 
     private void Click(Int64 RQID)
     {
+        Temp.username = username;
         NavigationManager.NavigateTo($"Installment_Item/{RQID.ToString()}/");
     }
 

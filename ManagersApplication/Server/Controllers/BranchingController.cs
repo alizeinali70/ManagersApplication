@@ -326,10 +326,13 @@ namespace ManagersApplication.Server.Controllers
       
         [HttpPost("[controller]/[action]")]
         [Route("Branching/RejectInstallmentasync/")]      
-        public async Task<ActionResult<int>> RejectInstallmentasync([FromBody] string RQID)
+        public async Task<ActionResult<int>> RejectInstallmentasync([FromBody] List<string> lst)
         {
             try
             {
+                string RQID = lst[0];
+                string Desc = lst[1];
+
                 DBContext context = new DBContext(_config);
                 int res = await context.RejectInstallmentAsync(RQID);
                 return res;

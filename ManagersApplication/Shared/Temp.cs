@@ -8,6 +8,6 @@ namespace ManagersApplication.Shared
 {
     public class Temp
     {
-        public static string username = "";
+        public static string username;
     }
 }

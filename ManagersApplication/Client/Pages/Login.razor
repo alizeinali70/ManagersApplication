@@ -48,6 +48,7 @@
                 if (username.ToLower() == res && password == "123")
                 {
                     Temp.username = username.ToLower();
+
                     NavigationManager.NavigateTo($"/Index/{username}/");
                     //NavigationManager.NavigateTo($"/Index/{regn_code}/");
                 }

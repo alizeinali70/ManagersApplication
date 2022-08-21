@@ -921,7 +921,7 @@ namespace ManagersApplication.Server.DataAccess
                 OracleParameter result = new OracleParameter("RSLT", OracleDbType.Int32, 2);
                 result.Direction = ParameterDirection.ReturnValue;
                 cmd.Parameters.Add(result);
-
+               
                 //in
                 cmd.Parameters.Add(new OracleParameter("P_RQID", OracleDbType.Long, 10)).Value = long.Parse(RQID);
                 cmd.Parameters.Add(new OracleParameter("P_MAINSTAT", OracleDbType.Long, 10)).Value = 12;

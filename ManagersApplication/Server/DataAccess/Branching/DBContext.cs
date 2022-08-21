@@ -627,7 +627,7 @@ namespace ManagersApplication.Server.DataAccess
         }
         #endregion
 
-        #region Confirm Devided Price Announce
+        #region Confirm Insstalment
 
         public async Task<List<Branching>> GetAllInstallmentAsync(string username)
         {
@@ -857,6 +857,125 @@ namespace ManagersApplication.Server.DataAccess
             else
             {
                 return (T)obj;
+            }
+        }
+
+        public async Task<int> ConfirmInstallmentAsync(string RQID)
+        {
+            ////ADFA_RCPT_RQST.ACPT_CNTA_U(P_RQID NUMBER) RETURN NUMBER 
+            ///
+
+            var res = "";
+
+            using (OracleConnection conn = GetOracleConnection())
+            {
+                conn.Open();
+                transection = conn.BeginTransaction();
+                OracleCommand cmd = new OracleCommand();
+                cmd.CommandText = "ADFA_UTLY_RQST.ACPT_INST_U";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Connection = conn;
+
+                //out
+                OracleParameter result = new OracleParameter("RSLT", OracleDbType.Int32, 2);
+                result.Direction = ParameterDirection.ReturnValue;
+                cmd.Parameters.Add(result);
+
+                //in
+                cmd.Parameters.Add(new OracleParameter("P_RQID", OracleDbType.Long, 10)).Value = long.Parse(RQID);
+                cmd.Parameters.Add(new OracleParameter("P_MAINSTAT", OracleDbType.Long, 10)).Value = 12;
+                cmd.Parameters.Add(new OracleParameter("P_SUBSTAT", OracleDbType.Long, 10)).Value = 35;
+
+                cmd.ExecuteNonQuery();
+                res = result.Value.ToString();
+                if (res == "0")
+                {
+                    transection.Commit();
+                    INST_HSTR_U(long.Parse(RQID));
+                   
+                   // transection.Commit();
+                }
+                else
+                    transection.Rollback();
+
+
+                conn.Close();
+            }
+
+            return int.Parse(res);
+        }
+        public async Task<int> RejectInstallmentAsync(string RQID)
+        {           
+            var res = "";
+
+            using (OracleConnection conn = GetOracleConnection())
+            {
+                conn.Open();
+                transection = conn.BeginTransaction();
+                OracleCommand cmd = new OracleCommand();
+                cmd.CommandText = "ADFA_RCPT_RQST.CNCL_INST_U";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Connection = conn;
+
+                //out
+                OracleParameter result = new OracleParameter("RSLT", OracleDbType.Int32, 2);
+                result.Direction = ParameterDirection.ReturnValue;
+                cmd.Parameters.Add(result);
+
+                //in
+                cmd.Parameters.Add(new OracleParameter("P_RQID", OracleDbType.Long, 10)).Value = long.Parse(RQID);
+                cmd.Parameters.Add(new OracleParameter("P_MAINSTAT", OracleDbType.Long, 10)).Value = 12;
+                cmd.Parameters.Add(new OracleParameter("P_SUBSTAT", OracleDbType.Long, 10)).Value = 35;
+                cmd.Parameters.Add(new OracleParameter("P_USERNAME", OracleDbType.Varchar2, 200)).Value = Temp.username;
+                cmd.Parameters.Add(new OracleParameter("P_ADMDDESC", OracleDbType.Varchar2, 200)).Value = "مخالف";
+
+                cmd.ExecuteNonQuery();
+                res = result.Value.ToString();
+
+
+                if (res == "0")
+                {
+                    transection.Commit();
+                    INST_HSTR_U(long.Parse(RQID));
+                    
+
+                }
+                else
+                    transection.Rollback();
+
+
+                conn.Close();
+            }
+
+            return int.Parse(res);
+        }
+
+        public void INST_HSTR_U(long RQID)
+        {
+            using (OracleConnection conn = GetOracleConnection())
+            {
+               // 
+                conn.Open();
+                transection = conn.BeginTransaction();
+                OracleCommand cmd = new OracleCommand();
+                cmd.CommandText = "ADFA_RQST_ACPT.Inst_Hstr_U";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Connection = conn;
+
+
+                //out
+                OracleParameter result = new OracleParameter("RSLT", OracleDbType.Int32, 2);
+                result.Direction = ParameterDirection.ReturnValue;
+                cmd.Parameters.Add(result);
+
+                //in
+                cmd.Parameters.Add(new OracleParameter("P_Rqid", OracleDbType.Long, 10)).Value = RQID;
+                cmd.Parameters.Add(new OracleParameter("P_USER", OracleDbType.Varchar2, 10)).Value = " ";
+
+                cmd.ExecuteNonQuery();
+             
+                transection.Commit();
+                conn.Close();
             }
         }
     }

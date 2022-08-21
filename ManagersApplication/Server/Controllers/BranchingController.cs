@@ -307,6 +307,39 @@ namespace ManagersApplication.Server.Controllers
 
         }
 
+        [HttpPost("[controller]/[action]")]
+        [Route("Branching/ConfirmInstallmentasync/")]
+        public async Task<ActionResult<int>> ConfirmInstallmentasync([FromBody] string RQID)
+        {
+            try
+            {
+                DBContext context = new DBContext(_config);
+                int res = await context.ConfirmInstallmentAsync(RQID);
+                return res;
+            }
+            catch (Exception exp)
+            {
+
+                throw;
+            }
+        }
+      
+        [HttpPost("[controller]/[action]")]
+        [Route("Branching/RejectInstallmentasync/")]      
+        public async Task<ActionResult<int>> RejectInstallmentasync([FromBody] string RQID)
+        {
+            try
+            {
+                DBContext context = new DBContext(_config);
+                int res = await context.RejectInstallmentAsync(RQID);
+                return res;
+            }
+            catch (Exception exp)
+            {
+
+                throw;
+            }
+        }
         #endregion
     }
 }

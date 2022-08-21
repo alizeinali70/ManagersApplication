@@ -57,15 +57,15 @@
             <div class=" col-lg-12 float-right">
                 <div class="row col-lg-3 mb-2 float-right">
                     <div class="col-lg-7 col-7"> تاريخ تقاضاي تقسيط :</div>
-                    <div class="col-lg-5 col-5">@_InstallmentItem.RQST_DATE</div>
+                    <div class="col-lg-5 col-5 text-bold">@_InstallmentItem.RQST_DATE</div>
                 </div>
                 <div class="row col-lg-5 mb-2 float-right">
                     <div class="col-lg-6 col-7">وضعیت بنا (در زمان تقاضای تقسیط):</div>
-                    <div class="col-lg-4 col-5">@_InstallmentItem.BLDN_DESC_VISIT</div>
+                    <div class="col-lg-4 col-5 text-bold">@_InstallmentItem.BLDN_DESC_VISIT</div>
                 </div>
                 <div class="row col-lg-3 mb-2 float-right">
                     <div class="col-lg-6 col-8">تعداد اقساط :</div>
-                    <div class="col-lg-6 col-2">@_InstallmentItem.INST_NUMB</div>
+                    <div class="col-lg-6 col-2 text-bold">@_InstallmentItem.INST_NUMB</div>
                 </div>
                
             </div>
@@ -76,7 +76,7 @@
             <div class="row col-lg-6 mt-2 mb-2 mr-4">
                 <div class="col-lg-3 mt-2 col-sm-3 col-5">
                     @*<button class="btn btn-block btn-primary bg-success-gradient text-center" @onclick="Confirm">تایید</button>*@
-                    <a href="#" class="btn btn-block btn-primary bg-success-gradient text-center" disabled data-toggle="modal" data-target="#confirmModal">تایید</a>
+                    <a href="#" class="btn btn-block btn-primary bg-success-gradient text-center" data-toggle="modal" data-target="#confirmModal">تایید</a>
                 </div>
                 <div class="col-lg-3 mt-2 col-sm-3 col-5 float-left">
                     @*                <button class="btn btn-block btn-primary bg-danger-gradient text-center" @onclick="Reject">عدم تایید</button>*@
@@ -199,11 +199,12 @@
 
     protected override async Task OnInitializedAsync()
     {
+        //////////////////////////////////////////
+        await Get_AdmInstallment();
 
         //////////////////////////////////////////
         await Get_Requester_Name_Async();
-        //////////////////////////////////////////
-        await Get_AdmInstallment();
+
         //////////////////////////////////////////
         //  await Get_Reject_Reason();
         //////////
@@ -211,7 +212,7 @@
     }
     private async Task Confirm()
     {
-        var result = await Http.PostAsJsonAsync("api/Branching/ConfirmContractasync/", RQID);
+        var result = await Http.PostAsJsonAsync("api/Branching/ConfirmInstallmentasync/", RQID);
         var res = await result.Content.ReadAsStringAsync();
         if (res == "0")
             Result_Message = "ثبت با موفقیت انجام شد";
@@ -225,7 +226,7 @@
         lst = new List<string>();
         lst.Add(RQID);
         lst.Add(Desc);
-        var result = await Http.PostAsJsonAsync("api/Branching/RejectContractasync/", lst);
+        var result = await Http.PostAsJsonAsync("api/Branching/RejectInstallmentasync/", lst);
         var res = await result.Content.ReadAsStringAsync();
         if (res == "0")
             Result_Message = "ثبت با موفقیت انجام شد";
@@ -233,12 +234,12 @@
             Result_Message = "درخواست شرایط مورد نظر را ندارد";
     }
 
-
     private void Back()
     {
         //NavigationManager.NavigateTo($"/Branching/{RQID}/");
         NavigationManager.NavigateTo($"/Installment/{Temp.username}/");
     }
+
     private async Task Get_Requester_Name_Async()
     {
         var result_name = await Http.PostAsJsonAsync("api/Branching/Get_Requester_Name_Async/", RQID);
@@ -248,6 +249,7 @@
         Cret_Date = result_name_json.Cret_Date;
 
     }
+
     private void Img_Dsiplay(string RQID)
     {
         NavigationManager.NavigateTo($"Image_Display/{RQID.ToString()}/");
@@ -272,8 +274,11 @@
 
     private async Task Get_AdmInstallment_Item()
     {
+        _InstallmentItem = new Installment_Price_Details_Item();
         var Installment_Item = await Http.PostAsJsonAsync("api/Branching/Get_AdmInstallment_Item/", RQID);
         var data = await Installment_Item.Content.ReadAsStringAsync();
         _InstallmentItem = JsonConvert.DeserializeObject<Installment_Price_Details_Item>(data);
     }
+
+   
 }

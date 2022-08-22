@@ -913,7 +913,7 @@ namespace ManagersApplication.Server.DataAccess
                 conn.Open();
                 transection = conn.BeginTransaction();
                 OracleCommand cmd = new OracleCommand();
-                cmd.CommandText = "ADFA_RCPT_RQST.CNCL_INST_U";
+                cmd.CommandText = "ADFA_UTLY_RQST.CNCL_INST_U";
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Connection = conn;
 

@@ -334,7 +334,7 @@ namespace ManagersApplication.Server.Controllers
                 string Desc = lst[1];
 
                 DBContext context = new DBContext(_config);
-                int res = await context.RejectInstallmentAsync(RQID);
+                int res = await context.RejectInstallmentAsync(RQID,Desc);
                 return res;
             }
             catch (Exception exp)

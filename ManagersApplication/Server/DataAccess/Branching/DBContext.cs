@@ -904,7 +904,7 @@ namespace ManagersApplication.Server.DataAccess
 
             return int.Parse(res);
         }
-        public async Task<int> RejectInstallmentAsync(string RQID)
+        public async Task<int> RejectInstallmentAsync(string RQID,string desc)
         {           
             var res = "";
 
@@ -927,7 +927,7 @@ namespace ManagersApplication.Server.DataAccess
                 cmd.Parameters.Add(new OracleParameter("P_MAINSTAT", OracleDbType.Long, 10)).Value = 12;
                 cmd.Parameters.Add(new OracleParameter("P_SUBSTAT", OracleDbType.Long, 10)).Value = 35;
                 cmd.Parameters.Add(new OracleParameter("P_USERNAME", OracleDbType.Varchar2, 200)).Value = Temp.username;
-                cmd.Parameters.Add(new OracleParameter("P_ADMDDESC", OracleDbType.Varchar2, 200)).Value = "مخالف";
+                cmd.Parameters.Add(new OracleParameter("P_ADMDDESC", OracleDbType.Varchar2, 200)).Value = desc;
 
                 cmd.ExecuteNonQuery();
                 res = result.Value.ToString();
